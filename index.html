@@ -2,187 +2,393 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>RPG Stats Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Летопись Героя</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=MedievalSharp&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary: #3b82f6;
-      --accent: #ef4444;
-      --bg: #f3f4f6;
-      --panel: #ffffff;
-      --text: #1f2937;
-      --cell-bg: #e5e7eb;
-      --cell-fill: #3b82f6;
+      --gold: #d4a94e;
+      --gold-bright: #f5d47a;
+      --parchment: #1a1410;
+      --panel: #241a12;
+      --ink: #e8d9b5;
+      --cell-empty: #3a2c1c;
+      --cell-fill: linear-gradient(180deg, #f5d47a, #b8860b);
+      --danger: #a33b2e;
     }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
       margin: 0;
-      padding: 20px;
+      min-height: 100vh;
+      font-family: 'Cinzel', serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
+
+    h1 {
+      font-family: 'MedievalSharp', cursive;
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 24px 0 6px;
+      color: var(--gold-bright);
+      text-shadow: 0 0 14px rgba(245, 212, 122, .45), 0 2px 2px #000;
+      letter-spacing: 2px;
     }
-    h1 { margin-top: 0; }
-    .section-title {
-      margin-top: 32px;
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 8px;
+
+    .subtitle {
+      text-align: center;
+      font-size: .95rem;
+      opacity: .7;
+      margin-bottom: 28px;
     }
-    .stat-card {
-      background: var(--panel);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      margin-bottom: 16px;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    input[type="number"] {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 15px;
-    }
-    .level-display {
-      margin-top: 12px;
-      font-weight: bold;
-      color: var(--accent);
-    }
-    /* Progress bar as cells */
-    .progress-cells {
+
+    .app {
       display: flex;
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    /* ===== Левая панель: кузня характеристик ===== */
+    .forge {
+      flex: 1 1 460px;
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 22px;
+      background:
+        linear-gradient(160deg, rgba(212,169,78,.08), transparent 55%),
+        var(--panel);
+      box-shadow:
+        inset 0 0 30px rgba(0,0,0,.7),
+        0 0 22px rgba(212,169,78,.25);
+    }
+
+    .forge h2 {
+      font-family: 'MedievalSharp', cursive;
+      margin: 0 0 4px;
+      color: var(--gold-bright);
+      font-size: 1.4rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .forge .hint {
+      text-align: center;
+      font-size: .8rem;
+      opacity: .6;
+      margin: 0 0 18px;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 12px;
+      border: 1px solid rgba(212,169,78,.35);
+      border-radius: 10px;
+      margin-bottom: 14px;
+      background: rgba(0,0,0,.35);
+    }
+
+    .stat-name {
+      flex: 0 0 130px;
+      font-size: .95rem;
+      letter-spacing: .5px;
+    }
+
+    /* Уровень в большом круге */
+    .level-orb {
+      flex: 0 0 58px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 35% 30%, #6b4f1d, #241a12 70%);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 14px rgba(245,212,122,.35), inset 0 0 10px rgba(0,0,0,.8);
+      user-select: none;
+    }
+    .level-orb .lvl-label {
+      font-size: .55rem;
+      letter-spacing: 1px;
+      opacity: .75;
+      text-transform: uppercase;
+    }
+    .level-orb .lvl-value {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--gold-bright);
+      text-shadow: 0 0 8px rgba(245,212,122,.6);
+    }
+
+    /* Прогресс из квадратиков */
+    .cells {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
       gap: 4px;
-      margin-top: 10px;
-      height: 24px;
+      height: 26px;
     }
     .cell {
-      flex: 1;
-      background: var(--cell-bg);
-      border-radius: 4px;
-      position: relative;
+      border-radius: 3px;
+      border: 1px solid rgba(212,169,78,.4);
+      background: var(--cell-empty);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,.8);
+      transition: background .25s, box-shadow .25s;
     }
     .cell.filled {
       background: var(--cell-fill);
+      box-shadow: 0 0 8px rgba(245,212,122,.55), inset 0 1px 1px rgba(255,255,255,.4);
     }
-    .cell::after {
-      content: attr(data-points);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 11px;
-      color: rgba(255,255,255,0.9);
-      opacity: 0.8;
+    .cell.burst {
+      animation: burst .45s ease;
     }
-    button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
+    @keyframes burst {
+      0%   { transform: scale(1.6); box-shadow: 0 0 22px rgba(245,212,122,.95); }
+      100% { transform: scale(1); }
+    }
+
+    /* Стрелки вверх/вниз */
+    .arrows {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .arrow-btn {
+      width: 38px;
+      height: 26px;
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      background: linear-gradient(180deg, #3a2c1c, #241a12);
+      color: var(--gold-bright);
+      font-size: 1rem;
       cursor: pointer;
-      font-weight: 600;
-      margin-top: 16px;
+      transition: background .15s, transform .1s;
     }
-    button:hover { background: #2563eb; }
+    .arrow-btn:hover { background: linear-gradient(180deg, #57431f, #332514); }
+    .arrow-btn:active { transform: scale(.92); }
+    .arrow-btn:disabled { opacity: .3; cursor: default; transform: none; }
+
+    /* ===== Правая часть: паутинка ===== */
+    .web-panel {
+      flex: 1 1 460px;
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 22px;
+      background:
+        linear-gradient(200deg, rgba(212,169,78,.06), transparent 60%),
+        var(--panel);
+      box-shadow:
+        inset 0 0 30px rgba(0,0,0,.7),
+        0 0 22px rgba(212,169,78,.25);
+    }
+    .web-panel h2 {
+      font-family: 'MedievalSharp', cursive;
+      margin: 0 0 12px;
+      color: var(--gold-bright);
+      font-size: 1.4rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    canvas { display: block; margin: 0 auto; }
+
+    @media (max-width: 900px) {
+      .app { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>RPG Характеристики</h1>
-    <p>Вводи очки в поля. Каждые 10 очков — уровень +1 и сброс счётчика.</p>
 
-    <!-- Физические характеристики -->
-    <div class="section-title">Физические характеристики</div>
-    <div id="physical-stats"></div>
+  <h1>⚔ Летопись Героя ⚔</h1>
+  <p class="subtitle">Повышай характеристики — и паутина твоей судьбы расправит крылья</p>
 
-    <!-- Психологические характеристики -->
-    <div class="section-title">Психологические характеристики</div>
-    <div id="psychological-stats"></div>
+  <div class="app">
+    <!-- ЛЕВАЯ ЧАСТЬ: повышение характеристик (обособлено рамкой) -->
+    <section class="forge">
+      <h2>Кузня характеристик</h2>
+      <p class="hint">Каждые 10 очков куют новый уровень</p>
+      <div id="stats"></div>
+    </section>
 
-    <!-- Умственные способности -->
-    <div class="section-title">Умственные способности</div>
-    <div id="mental-stats"></div>
-
-    <button onclick="saveStats()">Сохранить и обновить прогресс</button>
+    <!-- ПРАВАЯ ЧАСТЬ: паутинка характеристик -->
+    <section class="web-panel">
+      <h2>Паутина Судьбы</h2>
+      <canvas id="radar" width="520" height="520"></canvas>
+    </section>
   </div>
 
   <script>
-    // Конфигурация характеристик
-    const statsConfig = [
-      { category: 'physical', name: 'Сила', points: 0, level: 1 },
-      { category: 'physical', name: 'Выносливость', points: 0, level: 1 },
-      { category: 'psychological', name: 'Воля', points: 0, level: 1 },
-      { category: 'psychological', name: 'Эмпатия', points: 0, level: 1 },
-      { category: 'mental', name: 'Интеллект', points: 0, level: 1 },
-      { category: 'mental', name: 'Память', points: 0, level: 1 }
+    // ==== Конфигурация характеристик ====
+    const stats = [
+      { name: 'Сила',        cat: 'physical',       total: 0 },
+      { name: 'Выносливость',cat: 'physical',       total: 0 },
+      { name: 'Воля',        cat: 'psychological',  total: 0 },
+      { name: 'Мудрость',    cat: 'psychological',  total: 0 },
+      { name: 'Интеллект',   cat: 'mental',         total: 0 },
+      { name: 'Память',      cat: 'mental',         total: 0 }
     ];
 
-    const MAX_CELLS = 10; // 10 ячеек = 1 уровень
+    const CELLS = 10; // ячеек в прогресс-баре
 
+    const levelOf = s => 1 + Math.floor(s.total / CELLS);
+    const cellsOf = s => s.total % CELLS;
+
+    // ==== Отрисовка левой панели ====
     function renderStats() {
-      document.getElementById('physical-stats').innerHTML = '';
-      document.getElementById('psychological-stats').innerHTML = '';
-      document.getElementById('mental-stats').innerHTML = '';
+      const container = document.getElementById('stats');
+      container.innerHTML = '';
 
-      statsConfig.forEach(stat => {
-        const container = document.getElementById(`${stat.category}-stats`);
-        const card = document.createElement('div');
-        card.className = 'stat-card';
+      stats.forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'stat-row';
 
-        // Ввод очков
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.min = '0';
-        input.placeholder = 'Очки';
-        input.value = stat.points;
-        input.dataset.name = stat.name;
+        // Круг уровня
+        const orb = document.createElement('div');
+        orb.className = 'level-orb';
+        orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(s)}</span>`;
 
-        // Отображение уровня
-        const levelDisplay = document.createElement('div');
-        levelDisplay.className = 'level-display';
-        levelDisplay.textContent = `Уровень: ${stat.level}`;
-
-        // Прогресс-бар из ячеек
-        const cellsContainer = document.createElement('div');
-        cellsContainer.className = 'progress-cells';
-        for (let i = 0; i < MAX_CELLS; i++) {
-          const cell = document.createElement('div');
-          cell.className = `cell ${i < stat.points ? 'filled' : ''}`;
-          cell.dataset.points = i + 1; // для подсказки
-          cellsContainer.appendChild(cell);
+        // Прогресс из квадратиков
+        const cells = document.createElement('div');
+        cells.className = 'cells';
+        const filled = cellsOf(s);
+        for (let i = 0; i < CELLS; i++) {
+          const c = document.createElement('div');
+          c.className = 'cell' + (i < filled ? ' filled' : '');
+          cells.appendChild(c);
         }
 
-        card.appendChild(document.createElement('label')).textContent = stat.name;
-        card.appendChild(input);
-        card.appendChild(levelDisplay);
-        card.appendChild(cellsContainer);
-        container.appendChild(card);
+        // Стрелки вверх/вниз
+        const arrows = document.createElement('div');
+        arrows.className = 'arrows';
+        const up = document.createElement('button');
+        up.className = 'arrow-btn';
+        up.textContent = '▲';
+        up.addEventListener('click', () => change(s, +1, cells));
+        const down = document.createElement('button');
+        down.className = 'arrow-btn';
+        down.textContent = '▼';
+        down.disabled = s.total <= 0;
+        down.addEventListener('click', () => change(s, -1, cells));
+        arrows.append(up, down);
+
+        const name = document.createElement('div');
+        name.className = 'stat-name';
+        name.textContent = s.name;
+
+        row.append(name, orb, cells, arrows);
+        container.appendChild(row);
       });
+      drawRadar();
     }
 
-    function saveStats() {
-      const inputs = document.querySelectorAll('input[type="number"]');
-      inputs.forEach(input => {
-        const name = input.dataset.name;
-        const stat = statsConfig.find(s => s.name === name);
-        if (stat) {
-          let points = parseInt(input.value, 10) || 0;
-          // Логика уровней: каждые 10 очков = +1 уровень, остаток — текущие очки
-          stat.level = 1 + Math.floor(points / MAX_CELLS);
-          stat.points = points % MAX_CELLS;
-        }
-      });
+    function change(s, delta, cellsEl) {
+      s.total = Math.max(0, s.total + delta);
+
+      // Момент кузни: уровень вырос — подсветим вспышкой
+      const grew = levelOf(s) > (s._prevLevel || 1);
+      s._prevLevel = levelOf(s);
+
+      if (grew && cellsEl) {
+        const first = cellsEl.querySelector('.cell.filled');
+        if (first) first.classList.add('burst');
+      }
       renderStats();
     }
 
-    // Инициализация
+    // ==== Паутинка (radar chart) на canvas ====
+    function drawRadar() {
+      const canvas = document.getElementById('radar');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const cx = W / 2, cy = H / 2;
+      const R = Math.min(W, H) / 2 - 60;
+      const n = stats.length;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Максимум уровня для масштаба: растёт вместе с героем
+      const maxLevel = Math.max(5, ...stats.map(levelOf));
+
+      // Паутинные кольца (уровни)
+      ctx.strokeStyle = 'rgba(212,169,78,.25)';
+      ctx.lineWidth = 1;
+      for (let ring = 1; ring <= maxLevel; ring++) {
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const a = (i % n) * (2 * Math.PI / n) - Math.PI / 2;
+          const r = R * ring / maxLevel;
+          const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      // Лучи к вершинам
+      stats.forEach((s, i) => {
+        const a = i * (2 * Math.PI / n) - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+        ctx.stroke();
+
+        // Подписи характеристик
+        const lx = cx + (R + 26) * Math.cos(a);
+        const ly = cy + (R + 26) * Math.sin(a);
+        ctx.fillStyle = '#e8d9b5';
+        ctx.font = '15px Cinzel, serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${s.name} [${levelOf(s)}]`, lx, ly);
+      });
+
+      // Полигон значений — лучи соединены между собой
+      const poly = stats.map((s, i) => {
+        const a = i * (2 * Math.PI / n) - Math.PI / 2;
+        // радиус = уровень + заполнение текущей ячейки, для живости паутины
+        const v = levelOf(s) + cellsOf(s) / CELLS;
+        const r = R * v / maxLevel;
+        return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+      });
+
+      // Свечение под полигоном
+      const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, R);
+      grad.addColorStop(0, 'rgba(245,212,122,.45)');
+      grad.addColorStop(1, 'rgba(163,59,46,.35)');
+
+      ctx.beginPath();
+      poly.forEach(([x, y], i) => i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y));
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.strokeStyle = '#f5d47a';
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = 'rgba(245,212,122,.8)';
+      ctx.shadowBlur = 14;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Вершины-руны
+      poly.forEach(([x, y]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = '#f5d47a';
+        ctx.shadowColor = 'rgba(245,212,122,.9)';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    }
+
     renderStats();
   </script>
 </body>
