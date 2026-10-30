@@ -10,8 +10,8 @@
       --gold-bright: #f5d47a;
       --panel: #241a12;
       --ink: #e8d9b5;
-      --cell-empty: #3a2c1c;
-      --cell-fill: linear-gradient(180deg, #f5d47a, #b8860b);
+      --cell-empty: #2a2014;
+      --cell-fill: linear-gradient(180deg, #ffe9a8, #e0a92c);
       --green: #8fd47a;
       --purple: #c88ff5;
     }
@@ -40,19 +40,6 @@
     .header-controls {
       position: absolute;
       top: 14px; right: 18px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .header-controls label { font-size: .85rem; opacity: .85; }
-    .header-controls input {
-      background: rgba(0,0,0,.5);
-      border: 1px solid var(--gold);
-      border-radius: 6px;
-      color: var(--ink);
-      padding: 5px 8px;
-      font-family: inherit;
-      width: 120px;
     }
     .trash-btn {
       background: linear-gradient(180deg, #3a2c1c, #241a12);
@@ -74,8 +61,8 @@
 
     .app {
       display: grid;
-      grid-template-columns: 1fr 1.15fr 1fr;
-      gap: 26px;
+      grid-template-columns: .8fr 1.2fr 1.1fr;
+      gap: 24px;
       max-width: 1500px;
       margin: 0 auto 40px;
       padding: 0 20px;
@@ -85,38 +72,112 @@
     .panel {
       border: 2px solid var(--gold);
       border-radius: 14px;
-      padding: 20px;
+      padding: 14px;
       background:
         linear-gradient(160deg, rgba(212,169,78,.07), transparent 55%),
         var(--panel);
       box-shadow: inset 0 0 30px rgba(0,0,0,.7), 0 0 22px rgba(212,169,78,.22);
     }
+    .panel + .panel { margin-top: 18px; }
     .panel h2 {
-      margin: 0 0 6px;
+      margin: 0 0 4px;
       color: var(--gold-bright);
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       text-align: center;
       letter-spacing: 1px;
       text-shadow: 0 0 10px rgba(245,212,122,.4);
     }
-    .hint { text-align: center; font-size: .78rem; opacity: .6; margin: 0 0 16px; }
+    .hint { text-align: center; font-size: .7rem; opacity: .6; margin: 0 0 12px; }
 
-    /* ===== Характеристики ===== */
+    /* ===== Портрет героя ===== */
+    .portrait-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .portrait-frame {
+      position: relative;
+      width: 128px; height: 128px;
+      border-radius: 50%;
+      border: 3px solid var(--gold-bright);
+      box-shadow: 0 0 22px rgba(245,212,122,.45), inset 0 0 16px rgba(0,0,0,.7);
+      background: radial-gradient(circle at 35% 30%, #3a2c1c, #1a1208 75%);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .portrait-frame:hover {
+      box-shadow: 0 0 30px rgba(245,212,122,.7), inset 0 0 16px rgba(0,0,0,.7);
+      transform: scale(1.03);
+    }
+    .portrait-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .portrait-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      opacity: .55;
+    }
+    .portrait-placeholder .ph-hint {
+      font-size: .58rem;
+      letter-spacing: 1px;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .portrait-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10,7,5,.65);
+      opacity: 0;
+      transition: opacity .25s;
+      font-size: .62rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 6px;
+    }
+    .portrait-frame:hover .portrait-overlay { opacity: 1; }
+    .portrait-name-input {
+      margin-top: 10px;
+      background: rgba(0,0,0,.5);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      color: var(--gold-bright);
+      padding: 6px 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      text-align: center;
+      width: 170px;
+    }
+    .portrait-name-input:focus { outline: none; box-shadow: 0 0 10px rgba(245,212,122,.4); }
+
+    /* ===== Характеристики и навыки (компактно) ===== */
     .stat-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 10px;
+      gap: 8px;
+      padding: 7px 8px;
       border: 1px solid rgba(212,169,78,.35);
-      border-radius: 10px;
-      margin-bottom: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
       background: rgba(0,0,0,.35);
     }
-    .stat-name { flex: 0 0 118px; font-size: .88rem; }
+    .stat-name { flex: 0 0 96px; font-size: .76rem; }
 
     .level-orb {
-      flex: 0 0 56px;
-      width: 56px; height: 56px;
+      flex: 0 0 40px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -129,12 +190,12 @@
     .level-orb.pulse { animation: orbPulse .8s ease; }
     @keyframes orbPulse {
       0%   { box-shadow: 0 0 14px rgba(245,212,122,.35); }
-      40%  { box-shadow: 0 0 34px rgba(245,212,122,.95); transform: scale(1.12); }
+      40%  { box-shadow: 0 0 34px rgba(245,212,122,.95); transform: scale(1.15); }
       100% { box-shadow: 0 0 14px rgba(245,212,122,.35); transform: scale(1); }
     }
-    .lvl-label { font-size: .5rem; letter-spacing: 1px; opacity: .75; text-transform: uppercase; }
+    .lvl-label { font-size: .42rem; letter-spacing: 1px; opacity: .75; text-transform: uppercase; }
     .lvl-value {
-      font-size: 1.5rem; line-height: 1;
+      font-size: 1.05rem; line-height: 1;
       color: var(--gold-bright);
       text-shadow: 0 0 8px rgba(245,212,122,.6);
     }
@@ -143,44 +204,168 @@
       flex: 1;
       display: grid;
       grid-template-columns: repeat(10, 1fr);
-      gap: 4px;
-      height: 24px;
+      gap: 3px;
+      height: 20px;
     }
     .cell {
       border-radius: 3px;
-      border: 1px solid rgba(212,169,78,.4);
+      border: 1px solid rgba(212,169,78,.55);
       background: var(--cell-empty);
-      box-shadow: inset 0 1px 3px rgba(0,0,0,.8);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,.9);
       transition: background .25s, box-shadow .25s;
     }
     .cell.filled {
       background: var(--cell-fill);
-      box-shadow: 0 0 8px rgba(245,212,122,.55), inset 0 1px 1px rgba(255,255,255,.4);
+      border-color: #ffe9a8;
+      box-shadow: 0 0 10px rgba(255,226,138,.85), inset 0 1px 1px rgba(255,255,255,.6);
     }
     .cell.burst { animation: burst .45s ease; }
     @keyframes burst {
-      0% { transform: scale(1.6); box-shadow: 0 0 22px rgba(245,212,122,.95); }
+      0% { transform: scale(1.7); box-shadow: 0 0 26px rgba(255,226,138,1); }
       100% { transform: scale(1); }
     }
 
-    .arrows { display: flex; flex-direction: column; gap: 4px; }
-    .arrow-btn {
-      width: 36px; height: 24px;
-      border: 1px solid var(--gold);
-      border-radius: 6px;
-      background: linear-gradient(180deg, #3a2c1c, #241a12);
-      color: var(--gold-bright);
-      font-size: .95rem;
-      cursor: pointer;
-      transition: background .15s, transform .1s;
+    .row-del {
+      background: none; border: none;
+      color: rgba(232,217,181,.4);
+      font-size: .8rem; cursor: pointer;
+      padding: 2px;
     }
-    .arrow-btn:hover { background: linear-gradient(180deg, #57431f, #332514); }
-    .arrow-btn:active { transform: scale(.92); }
-    .arrow-btn:disabled { opacity: .3; cursor: default; transform: none; }
+    .row-del:hover { color: #ff9b8a; }
+
+    /* ===== Формы (задания и навыки) ===== */
+    .maker {
+      border: 1px solid rgba(212,169,78,.45);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
+      background: rgba(0,0,0,.35);
+    }
+    .maker input[type="text"] {
+      width: 100%;
+      background: rgba(0,0,0,.5);
+      border: 1px solid rgba(212,169,78,.5);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 6px 9px;
+      font-family: inherit;
+      font-size: .82rem;
+      margin-bottom: 7px;
+    }
+    .maker .row { display: flex; gap: 7px; margin-bottom: 7px; }
+    .maker .row:last-child { margin-bottom: 0; }
+    select {
+      flex: 1;
+      background: #332514;
+      border: 1px solid rgba(212,169,78,.5);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 5px;
+      font-family: inherit;
+      font-size: .78rem;
+      min-width: 0;
+    }
+    .forge-btn {
+      flex: 0 0 auto;
+      background: linear-gradient(180deg, #57431f, #332514);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      color: var(--gold-bright);
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: .82rem;
+      letter-spacing: .5px;
+      cursor: pointer;
+      transition: box-shadow .2s;
+      white-space: nowrap;
+    }
+    .forge-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
+
+    /* ===== Задания ===== */
+    .quest-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .quest {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 8px 10px;
+      border: 1px solid rgba(212,169,78,.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: rgba(0,0,0,.35);
+      transition: box-shadow .3s, transform .3s;
+    }
+    .quest.r-regular   { border-left-color: var(--green); }
+    .quest.r-common    { border-left-color: var(--gold-bright); }
+    .quest.r-legendary { border-left-color: var(--purple); }
+    .quest.done { opacity: .55; }
+    .quest.flash { animation: questFlash .55s ease; }
+    @keyframes questFlash {
+      0%  { box-shadow: 0 0 0 rgba(245,212,122,0); transform: scale(1); }
+      40% { box-shadow: 0 0 26px rgba(245,212,122,.9); transform: scale(1.03); }
+      100%{ box-shadow: 0 0 0 rgba(245,212,122,0); transform: scale(1); }
+    }
+    .quest.vanish { animation: questVanish .6s ease forwards; }
+    @keyframes questVanish {
+      to { opacity: 0; transform: translateX(46px) scale(.85); filter: blur(2px); }
+    }
+    .q-check { margin-top: 2px; }
+    .q-check input { width: 15px; height: 15px; accent-color: #b8860b; cursor: pointer; }
+    .q-body { flex: 1; }
+    .q-text { font-size: .84rem; margin-bottom: 3px; }
+    .quest.done .q-text { text-decoration: line-through; opacity: .7; }
+    .q-meta { font-size: .68rem; opacity: .8; }
+    .q-meta .q-skill { color: #a8c8f5; }
+    .badge {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: .62rem;
+      border: 1px solid currentColor;
+      margin-right: 6px;
+    }
+    .badge.r-regular   { color: var(--green); }
+    .badge.r-common    { color: var(--gold-bright); }
+    .badge.r-legendary { color: var(--purple); }
+    .q-timer { font-size: .66rem; color: var(--green); margin-top: 3px; }
+    .q-del {
+      background: none; border: none;
+      color: rgba(232,217,181,.45);
+      font-size: .8rem; cursor: pointer;
+      padding: 2px 4px;
+    }
+    .q-del:hover { color: #ff9b8a; }
+
+    /* ===== Журнал ===== */
+    .journal { margin-top: 14px; }
+    .journal ul {
+      list-style: none;
+      margin: 0; padding: 0;
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: .74rem;
+      line-height: 1.45;
+    }
+    .journal li {
+      padding: 5px 8px;
+      border-bottom: 1px dashed rgba(212,169,78,.2);
+      opacity: .9;
+    }
+    .journal li.new { animation: journalIn .5s ease; }
+    @keyframes journalIn {
+      from { opacity: 0; transform: translateX(14px); }
+      to   { opacity: .9; transform: none; }
+    }
+    .quest-list::-webkit-scrollbar, .journal ul::-webkit-scrollbar { width: 6px; }
+    .quest-list::-webkit-scrollbar-thumb, .journal ul::-webkit-scrollbar-thumb { background: #57431f; border-radius: 3px; }
 
     /* ===== Центр: уровень героя и паутина ===== */
     .throne { text-align: center; }
-    .hero-block { margin-bottom: 14px; }
+    .hero-block { margin-bottom: 12px; }
     .hero-orb {
       width: 84px; height: 84px;
       margin: 0 auto 8px;
@@ -216,124 +401,6 @@
 
     canvas { display: block; margin: 0 auto; }
 
-    /* ===== Задания ===== */
-    .quest-maker {
-      border: 1px solid rgba(212,169,78,.45);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 14px;
-      background: rgba(0,0,0,.35);
-    }
-    .quest-maker input[type="text"] {
-      width: 100%;
-      background: rgba(0,0,0,.5);
-      border: 1px solid rgba(212,169,78,.5);
-      border-radius: 6px;
-      color: var(--ink);
-      padding: 7px 10px;
-      font-family: inherit;
-      font-size: .88rem;
-      margin-bottom: 8px;
-    }
-    .quest-maker .row {
-      display: flex; gap: 8px; margin-bottom: 8px;
-    }
-    select {
-      flex: 1;
-      background: #332514;
-      border: 1px solid rgba(212,169,78,.5);
-      border-radius: 6px;
-      color: var(--ink);
-      padding: 6px;
-      font-family: inherit;
-      font-size: .85rem;
-    }
-    .forge-btn {
-      width: 100%;
-      background: linear-gradient(180deg, #57431f, #332514);
-      border: 1px solid var(--gold);
-      border-radius: 8px;
-      color: var(--gold-bright);
-      padding: 9px;
-      font-family: inherit;
-      font-size: .95rem;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: box-shadow .2s;
-    }
-    .forge-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
-
-    .quest {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 12px;
-      border: 1px solid rgba(212,169,78,.3);
-      border-left: 4px solid var(--gold);
-      border-radius: 8px;
-      margin-bottom: 10px;
-      background: rgba(0,0,0,.35);
-      transition: box-shadow .3s, transform .3s;
-    }
-    .quest.r-regular   { border-left-color: var(--green); }
-    .quest.r-common    { border-left-color: var(--gold-bright); }
-    .quest.r-legendary { border-left-color: var(--purple); }
-    .quest.done { opacity: .55; }
-    .quest.flash { animation: questFlash .55s ease; }
-    @keyframes questFlash {
-      0%  { box-shadow: 0 0 0 rgba(245,212,122,0); transform: scale(1); }
-      40% { box-shadow: 0 0 26px rgba(245,212,122,.9); transform: scale(1.03); }
-      100%{ box-shadow: 0 0 0 rgba(245,212,122,0); transform: scale(1); }
-    }
-    .q-check { margin-top: 3px; }
-    .q-check input { width: 17px; height: 17px; accent-color: #b8860b; cursor: pointer; }
-    .q-body { flex: 1; }
-    .q-text { font-size: .92rem; margin-bottom: 4px; }
-    .quest.done .q-text { text-decoration: line-through; opacity: .7; }
-    .q-meta { font-size: .74rem; opacity: .8; }
-    .badge {
-      display: inline-block;
-      padding: 1px 8px;
-      border-radius: 10px;
-      font-size: .68rem;
-      border: 1px solid currentColor;
-      margin-right: 6px;
-    }
-    .badge.r-regular   { color: var(--green); }
-    .badge.r-common    { color: var(--gold-bright); }
-    .badge.r-legendary { color: var(--purple); }
-    .q-timer { font-size: .72rem; color: var(--green); margin-top: 4px; }
-    .q-del {
-      background: none; border: none;
-      color: rgba(232,217,181,.45);
-      font-size: .9rem; cursor: pointer;
-      padding: 2px 4px;
-    }
-    .q-del:hover { color: #ff9b8a; }
-
-    /* ===== Журнал ===== */
-    .journal { margin-top: 18px; }
-    .journal ul {
-      list-style: none;
-      margin: 0; padding: 0;
-      max-height: 260px;
-      overflow-y: auto;
-      font-size: .8rem;
-      line-height: 1.45;
-    }
-    .journal li {
-      padding: 6px 8px;
-      border-bottom: 1px dashed rgba(212,169,78,.2);
-      opacity: .9;
-    }
-    .journal li.new { animation: journalIn .5s ease; }
-    @keyframes journalIn {
-      from { opacity: 0; transform: translateX(14px); }
-      to   { opacity: .9; transform: none; }
-    }
-    .journal li::-webkit-scrollbar, .quest-list::-webkit-scrollbar { width: 6px; }
-    .journal ul::-webkit-scrollbar-thumb, .quest-list::-webkit-scrollbar-thumb { background: #57431f; border-radius: 3px; }
-
     /* ===== Парящие награды ===== */
     .float {
       position: fixed;
@@ -352,12 +419,13 @@
     .float.gold   { color: var(--gold-bright); }
     .float.green  { color: var(--green); }
     .float.purple { color: var(--purple); }
+    .float.blue   { color: #a8c8f5; }
 
-    .empty-note { text-align: center; font-size: .8rem; opacity: .5; font-style: italic; padding: 10px; }
+    .empty-note { text-align: center; font-size: .74rem; opacity: .5; font-style: italic; padding: 8px; }
 
     @media (max-width: 1150px) {
       .app { grid-template-columns: 1fr; }
-      .header-controls { position: static; justify-content: center; margin-bottom: 12px; }
+      .header-controls { position: static; text-align: center; margin-bottom: 12px; }
     }
   </style>
 </head>
@@ -365,20 +433,31 @@
 
   <header>
     <h1>⚔ Летопись Героя ⚔</h1>
-    <p class="subtitle">Кузня слева, паутина судьбы в центре, свиток заданий справа</p>
+    <p class="subtitle">Кузня и гримуар слева, паутина судьбы в центре, свиток заданий справа</p>
     <div class="header-controls">
-      <label>Имя героя: <input id="heroNameInput" maxlength="20" /></label>
       <button id="resetBtn" class="trash-btn" title="Обнулить прогресс">🗑</button>
     </div>
   </header>
 
   <div class="app">
-    <!-- ЛЕВАЯ ЧАСТЬ: повышение характеристик -->
-    <section class="panel">
-      <h2>Кузня характеристик</h2>
-      <p class="hint">Каждые 10 очков куют новый уровень</p>
-      <div id="stats"></div>
-    </section>
+    <!-- ЛЕВАЯ ЧАСТЬ: характеристики + навыки -->
+    <div>
+      <section class="panel">
+        <h2>Кузня характеристик</h2>
+        <p class="hint">Каждые 10 очков куют новый уровень. Растут только от заданий.</p>
+        <div id="stats"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Гримуар навыков</h2>
+        <p class="hint">Навык кует уровень так же: каждые 10 очков. Очки дают задания.</p>
+        <div class="maker">
+          <input type="text" id="skillText" placeholder="Начертай навык…" maxlength="30" />
+          <button class="forge-btn" id="addSkillBtn" style="width:100%">✒ Вписать в гримуар</button>
+        </div>
+        <div id="skills"></div>
+      </section>
+    </div>
 
     <!-- ЦЕНТР: уровень героя и паутина -->
     <section class="panel throne">
@@ -394,10 +473,24 @@
       <canvas id="radar" width="540" height="540"></canvas>
     </section>
 
-    <!-- ПРАВАЯ ЧАСТЬ: задания + журнал -->
+    <!-- ПРАВАЯ ЧАСТЬ: портрет + задания + журнал -->
     <section class="panel">
+      <!-- Облик героя -->
+      <div class="portrait-block">
+        <div class="portrait-frame" id="portraitFrame" title="Загрузить портрет">
+          <img id="portraitImg" alt="" style="display:none" />
+          <div class="portrait-placeholder" id="portraitPlaceholder">
+            <span>🧝</span>
+            <span class="ph-hint">Облик героя</span>
+          </div>
+          <div class="portrait-overlay">Сменить облик</div>
+        </div>
+        <input type="file" id="portraitInput" accept="image/*" style="display:none" />
+        <input type="text" id="heroNameInput" class="portrait-name-input" maxlength="20" />
+      </div>
+
       <h2>Свиток заданий</h2>
-      <div class="quest-maker">
+      <div class="maker">
         <input type="text" id="questText" placeholder="Начертай задание…" maxlength="80" />
         <div class="row">
           <select id="questStat"></select>
@@ -407,7 +500,10 @@
             <option value="legendary">Легендарное — 100 опыта, 10 очков</option>
           </select>
         </div>
-        <button class="forge-btn" id="addQuestBtn">✒ Вписать в свиток</button>
+        <div class="row">
+          <select id="questSkill"></select>
+          <button class="forge-btn" id="addQuestBtn">✒ Вписать в свиток</button>
+        </div>
       </div>
       <div class="quest-list" id="questList"></div>
 
@@ -422,8 +518,8 @@
     'use strict';
 
     // ===== Константы =====
-    const SAVE_KEY = 'rpgHeroSave_v1';
-    const CELLS = 10;        // ячеек в прогресс-баре характеристики
+    const SAVE_KEY = 'rpgHeroSave_v3';
+    const CELLS = 10;
     const XP_PER_LEVEL = 100;
     const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -437,18 +533,20 @@
     ];
 
     const RARITIES = {
-      regular:   { adj: 'регулярное',   xp: 10,  pts: 1,  repeat: true,  floatClass: 'green'  },
-      common:    { adj: 'обычное',      xp: 30,  pts: 3,  repeat: false, floatClass: 'gold'   },
-      legendary: { adj: 'легендарное',  xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
+      regular:   { adj: 'регулярное',  xp: 10,  pts: 1,  repeat: true,  floatClass: 'green'  },
+      common:    { adj: 'обычное',     xp: 30,  pts: 3,  repeat: false, floatClass: 'gold'   },
+      legendary: { adj: 'легендарное', xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
     };
 
     // ===== Состояние =====
     function defaultState() {
       return {
         heroName: 'Путник',
+        portrait: null,
         heroLevel: 1,
         xp: 0,
         stats: STATS.map(s => ({ nom: s.nom, acc: s.acc, total: 0 })),
+        skills: [],
         quests: [],
         journal: []
       };
@@ -465,6 +563,9 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && Array.isArray(parsed.stats) && parsed.stats.length === STATS.length) {
+            if (!Array.isArray(parsed.skills)) parsed.skills = [];
+            if (!Array.isArray(parsed.quests)) parsed.quests = [];
+            if (!Array.isArray(parsed.journal)) parsed.journal = [];
             state = parsed;
             return true;
           }
@@ -485,6 +586,7 @@
     }
     const xpWord  = n => `${n} ${plural(n, 'очко', 'очка', 'очков')} опыта`;
     const ptsWord = (n, acc) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${acc}`;
+    const cap = s => s[0].toUpperCase() + s.slice(1);
 
     // ===== Звук (Web Audio API) =====
     let audioCtx = null;
@@ -509,7 +611,6 @@
       o.start(start);
       o.stop(start + dur + 0.05);
     }
-    // «Дзынь» при повышении уровня характеристики
     function ding() {
       const ctx = ensureAudio();
       if (!ctx) return;
@@ -517,12 +618,11 @@
       note(880, t, 0.55, 0.35);
       note(1320, t + 0.05, 0.5, 0.18);
     }
-    // Аккорд при повышении уровня героя
     function fanfare() {
       const ctx = ensureAudio();
       if (!ctx) return;
       const t = ctx.currentTime;
-      note(659, t,        0.5, 0.3);
+      note(659, t, 0.5, 0.3);
       note(880, t + 0.12, 0.5, 0.3);
       note(1108, t + 0.24, 0.7, 0.32);
       note(1318, t + 0.36, 0.8, 0.3);
@@ -556,7 +656,57 @@
       setTimeout(() => el.remove(), 1800);
     }
 
-    // ===== Кузня характеристик =====
+    // ===== Портрет героя =====
+    function renderPortrait() {
+      const img = document.getElementById('portraitImg');
+      const ph = document.getElementById('portraitPlaceholder');
+      if (state.portrait) {
+        img.src = state.portrait;
+        img.style.display = 'block';
+        ph.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        ph.style.display = 'flex';
+      }
+    }
+
+    function setupPortrait() {
+      const frame = document.getElementById('portraitFrame');
+      const input = document.getElementById('portraitInput');
+
+      frame.addEventListener('click', () => input.click());
+
+      input.addEventListener('change', () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          // Сжимаем картинку в квадрат 256×256, чтобы не раздуть localStorage
+          const tmp = new Image();
+          tmp.onload = () => {
+            const c = document.createElement('canvas');
+            c.width = 256; c.height = 256;
+            const ctx = c.getContext('2d');
+
+            // Кроп по центру с сохранением пропорций
+            const side = Math.min(tmp.width, tmp.height);
+            ctx.drawImage(
+              tmp,
+              (tmp.width - side) / 2, (tmp.height - side) / 2, side, side,
+              0, 0, 256, 256
+            );
+            state.portrait = c.toDataURL('image/jpeg', 0.85);
+            save();
+            renderPortrait();
+          };
+          tmp.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+        input.value = ''; // позволяет выбрать тот же файл повторно
+      });
+    }
+
+    // ===== Кузня характеристик (только отображение) =====
     function renderStats() {
       const container = document.getElementById('stats');
       container.innerHTML = '';
@@ -567,7 +717,7 @@
 
         const name = document.createElement('div');
         name.className = 'stat-name';
-        name.textContent = s.nom[0].toUpperCase() + s.nom.slice(1);
+        name.textContent = cap(s.nom);
 
         const orb = document.createElement('div');
         orb.className = 'level-orb' + (s._pulse ? ' pulse' : '');
@@ -583,49 +733,103 @@
           cells.appendChild(c);
         }
 
-        const arrows = document.createElement('div');
-        arrows.className = 'arrows';
-        const up = document.createElement('button');
-        up.className = 'arrow-btn';
-        up.textContent = '▲';
-        up.addEventListener('click', () => addPoints(s, 1, cells, orb));
-        const down = document.createElement('button');
-        down.className = 'arrow-btn';
-        down.textContent = '▼';
-        down.disabled = s.total <= 0;
-        down.addEventListener('click', () => addPoints(s, -1, cells, orb));
-        arrows.append(up, down);
-
-        row.append(name, orb, cells, arrows);
+        row.append(name, orb, cells);
         container.appendChild(row);
       });
     }
 
-    function addPoints(s, delta, cellsEl, orbEl) {
+    function gainStatPoints(s, pts) {
       const before = levelOf(s);
-      s.total = Math.max(0, s.total + delta);
+      s.total += pts;
       const after = levelOf(s);
-
       if (after > before) {
         log(`${state.heroName} повысил ${s.nom} до ${after} уровня`);
         ding();
-        if (orbEl) { orbEl.classList.add('pulse'); }
+        s._pulse = true;
       }
-      if (cellsEl) {
-        const first = cellsEl.querySelector('.cell.filled');
-        if (first) first.classList.add('burst');
+    }
+
+    // ===== Гримуар навыков =====
+    function renderSkills() {
+      const container = document.getElementById('skills');
+      container.innerHTML = '';
+
+      if (!state.skills.length) {
+        container.innerHTML = '<div class="empty-note">Гримуар пуст. Впиши первый навык!</div>';
+        return;
       }
+
+      state.skills.forEach(sk => {
+        const row = document.createElement('div');
+        row.className = 'stat-row';
+
+        const name = document.createElement('div');
+        name.className = 'stat-name';
+        name.textContent = sk.name;
+
+        const orb = document.createElement('div');
+        orb.className = 'level-orb' + (sk._pulse ? ' pulse' : '');
+        orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(sk)}</span>`;
+        sk._pulse = false;
+
+        const cells = document.createElement('div');
+        cells.className = 'cells';
+        const filled = cellsOf(sk);
+        for (let i = 0; i < CELLS; i++) {
+          const c = document.createElement('div');
+          c.className = 'cell' + (i < filled ? ' filled' : '');
+          cells.appendChild(c);
+        }
+
+        const del = document.createElement('button');
+        del.className = 'row-del';
+        del.textContent = '✕';
+        del.title = 'Вычеркнуть навык';
+        del.addEventListener('click', () => {
+          state.skills = state.skills.filter(x => x.id !== sk.id);
+          state.quests.forEach(q => { if (q.skill === sk.name) q.skill = null; });
+          save();
+          renderSkills();
+          renderQuestMaker();
+        });
+
+        row.append(name, orb, cells, del);
+        container.appendChild(row);
+      });
+    }
+
+    function gainSkillPoints(sk, pts) {
+      const before = levelOf(sk);
+      sk.total += pts;
+      const after = levelOf(sk);
+      if (after > before) {
+        log(`${state.heroName} повысил навык «${sk.name}» до ${after} уровня`);
+        ding();
+        sk._pulse = true;
+      }
+    }
+
+    function addSkill() {
+      const input = document.getElementById('skillText');
+      const name = input.value.trim();
+      if (!name) { input.focus(); return; }
+      if (state.skills.some(sk => sk.name.toLowerCase() === name.toLowerCase())) {
+        input.focus(); return;
+      }
+      state.skills.push({ id: Date.now() + Math.random().toString(36).slice(2, 7), name, total: 0 });
+      input.value = '';
       save();
-      renderStats();
+      renderSkills();
+      renderQuestMaker();
     }
 
     // ===== Паутина (плавная анимация) =====
-    let disp = state.stats.map(() => 0); // отображаемые значения для интерполяции
+    let disp = state.stats.map(() => 0);
 
     function targetValue(s) {
       const maxLevel = Math.max(5, ...state.stats.map(levelOf));
       const v = levelOf(s) + cellsOf(s) / CELLS;
-      return v / maxLevel; // доля радиуса 0..1
+      return v / maxLevel;
     }
 
     function drawRadar() {
@@ -640,7 +844,6 @@
 
       const maxLevel = Math.max(5, ...state.stats.map(levelOf));
 
-      // Кольца-уровни
       ctx.strokeStyle = 'rgba(212,169,78,.25)';
       ctx.lineWidth = 1;
       for (let ring = 1; ring <= maxLevel; ring++) {
@@ -654,7 +857,6 @@
         ctx.stroke();
       }
 
-      // Лучи к вершинам и подписи
       ctx.strokeStyle = 'rgba(212,169,78,.35)';
       state.stats.forEach((s, i) => {
         const a = i * (2 * Math.PI / n) - Math.PI / 2;
@@ -672,7 +874,6 @@
         ctx.fillText(`${s.nom} [${levelOf(s)}]`, lx, ly);
       });
 
-      // Полигон значений (лучи соединены между собой)
       const poly = state.stats.map((s, i) => {
         const a = i * (2 * Math.PI / n) - Math.PI / 2;
         const r = R * disp[i];
@@ -695,7 +896,6 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Вершины-руны
       poly.forEach(([x, y]) => {
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
@@ -708,16 +908,11 @@
     }
 
     function animateRadar() {
-      let moving = false;
       state.stats.forEach((s, i) => {
         const target = targetValue(s);
         const diff = target - disp[i];
-        if (Math.abs(diff) > 0.002) {
-          disp[i] += diff * 0.12;
-          moving = true;
-        } else {
-          disp[i] = target;
-        }
+        if (Math.abs(diff) > 0.002) disp[i] += diff * 0.12;
+        else disp[i] = target;
       });
       drawRadar();
       requestAnimationFrame(animateRadar);
@@ -727,8 +922,7 @@
     function renderHero() {
       document.getElementById('heroLevelValue').textContent = state.heroLevel;
       document.getElementById('xpFill').style.width = (state.xp / XP_PER_LEVEL * 100) + '%';
-      document.getElementById('xpText').textContent =
-        `Опыт: ${state.xp} / ${XP_PER_LEVEL}`;
+      document.getElementById('xpText').textContent = `Опыт: ${state.xp} / ${XP_PER_LEVEL}`;
     }
 
     function gainXp(amount) {
@@ -740,33 +934,37 @@
         fanfare();
         const orb = document.getElementById('heroOrb');
         orb.classList.remove('pulse');
-        void orb.offsetWidth; // перезапуск анимации
+        void orb.offsetWidth;
         orb.classList.add('pulse');
       }
       renderHero();
     }
 
-    function gainStatPoints(s, pts) {
-      const before = levelOf(s);
-      s.total += pts;
-      const after = levelOf(s);
-      if (after > before) {
-        log(`${state.heroName} повысил ${s.nom} до ${after} уровня`);
-        ding();
-        s._pulse = true;
-      }
-    }
-
     // ===== Задания =====
     function renderQuestMaker() {
-      const sel = document.getElementById('questStat');
-      sel.innerHTML = '';
+      const statSel = document.getElementById('questStat');
+      statSel.innerHTML = '';
       state.stats.forEach(s => {
         const opt = document.createElement('option');
         opt.value = s.nom;
-        opt.textContent = s.nom[0].toUpperCase() + s.nom.slice(1);
-        sel.appendChild(opt);
+        opt.textContent = cap(s.nom);
+        statSel.appendChild(opt);
       });
+
+      const skillSel = document.getElementById('questSkill');
+      const prev = skillSel.value;
+      skillSel.innerHTML = '';
+      const none = document.createElement('option');
+      none.value = '';
+      none.textContent = 'Навык: никакой';
+      skillSel.appendChild(none);
+      state.skills.forEach(sk => {
+        const opt = document.createElement('option');
+        opt.value = sk.name;
+        opt.textContent = 'Навык: ' + sk.name;
+        skillSel.appendChild(opt);
+      });
+      if ([...skillSel.options].some(o => o.value === prev)) skillSel.value = prev;
     }
 
     function remainingTime(doneAt) {
@@ -795,7 +993,7 @@
         const input = document.createElement('input');
         input.type = 'checkbox';
         input.checked = q.done;
-        if (q.done || (RARITIES[q.rarity].repeat && q.doneAt)) input.disabled = q.done;
+        input.disabled = q.done;
         input.addEventListener('change', () => completeQuest(q, row));
         checkWrap.appendChild(input);
         row.appendChild(checkWrap);
@@ -805,10 +1003,12 @@
         const text = document.createElement('div');
         text.className = 'q-text';
         text.textContent = q.text;
+        const stat = state.stats.find(s => s.nom === q.stat);
         const meta = document.createElement('div');
         meta.className = 'q-meta';
-        meta.innerHTML = `<span class="badge r-${q.rarity}">${rar.adj[0].toUpperCase() + rar.adj.slice(1)}</span>` +
-          `${xpWord(rar.xp)} · ${ptsWord(rar.pts, state.stats.find(s => s.nom === q.stat).acc)}`;
+        meta.innerHTML = `<span class="badge r-${q.rarity}">${cap(rar.adj)}</span>` +
+          `${xpWord(rar.xp)} · ${ptsWord(rar.pts, stat ? stat.acc : '')}` +
+          (q.skill ? ` · <span class="q-skill">+1 к навыку «${q.skill}»</span>` : '');
         body.append(text, meta);
 
         if (q.done && rar.repeat) {
@@ -847,24 +1047,43 @@
       if (rar.repeat) q.doneAt = Date.now();
 
       const stat = state.stats.find(s => s.nom === q.stat);
+      const skill = q.skill ? state.skills.find(sk => sk.name === q.skill) : null;
 
-      // Анимация вспышки и парящих наград
+      // Вспышка и парящие награды
       if (row) {
         const rect = row.getBoundingClientRect();
         row.classList.add('flash');
-        floatText(`+${rar.xp} опыта`, rect.left + 90, rect.top + 6, 'gold');
-        floatText(`+${rar.pts} к ${stat.nom}`, rect.left + 90, rect.top + 34, rar.floatClass);
+        floatText(`+${rar.xp} опыта`, rect.left + 90, rect.top + 4, 'gold');
+        floatText(`+${rar.pts} к ${stat ? stat.nom : ''}`, rect.left + 90, rect.top + 30, rar.floatClass);
+        if (skill) floatText(`+1 к «${skill.name}»`, rect.left + 90, rect.top + 56, 'blue');
       }
 
       // Награда
       gainXp(rar.xp);
-      gainStatPoints(stat, rar.pts);
+      if (stat) gainStatPoints(stat, rar.pts);
+      if (skill) gainSkillPoints(skill, 1);
 
-      log(`${state.heroName} выполнил ${rar.adj} задание "${q.text}", получил ` +
-          `${xpWord(rar.xp)} и повысил ${stat.acc} на ${ptsWord(rar.pts, '')}`.replace('очков к ', 'очков') );
+      let msg = `${state.heroName} выполнил ${rar.adj} задание "${q.text}", получил ${xpWord(rar.xp)}`;
+      if (stat) msg += ` и повысил ${stat.acc} на ${plural(rar.pts, 'очко', 'очка', 'очков')}`;
+      if (skill) msg += (stat ? ' и навык' : ' и повысил навык') + ` «${skill.name}» на ${plural(1, 'очко', 'очка', 'очков')}`;
+      msg += '.';
+      log(msg);
 
       save();
-      setTimeout(() => { renderStats(); renderQuests(); renderJournal(false); }, 550);
+
+      if (rar.repeat) {
+        setTimeout(() => { renderStats(); renderSkills(); renderQuests(); renderJournal(false); }, 550);
+      } else {
+        // Одноразовые задания сами исчезают из свитка
+        setTimeout(() => {
+          if (row) row.classList.add('vanish');
+        }, 500);
+        setTimeout(() => {
+          state.quests = state.quests.filter(x => x.id !== q.id);
+          save();
+          renderStats(); renderSkills(); renderQuests(); renderJournal(false);
+        }, 1150);
+      }
     }
 
     function addQuest() {
@@ -877,13 +1096,15 @@
         text,
         stat: document.getElementById('questStat').value,
         rarity: document.getElementById('questRarity').value,
+        skill: document.getElementById('questSkill').value || null,
         done: false,
         doneAt: null
       };
       const rar = RARITIES[q.rarity];
       const stat = state.stats.find(s => s.nom === q.stat);
-      log(`${state.heroName} получил ${rar.adj} задание "${q.text}", ` +
-          `${xpWord(rar.xp)}, ${ptsWord(rar.pts, stat.acc)}.`);
+      let msg = `${state.heroName} получил ${rar.adj} задание "${q.text}", ${xpWord(rar.xp)}, ${ptsWord(rar.pts, stat ? stat.acc : '')}`;
+      if (q.skill) msg += `, +1 ${plural(1, 'очко', 'очка', 'очков')} к навыку «${q.skill}»`;
+      log(msg + '.');
 
       state.quests.push(q);
       textInput.value = '';
@@ -930,14 +1151,15 @@
           disp = state.stats.map(() => 0);
           try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
           document.getElementById('heroNameInput').value = state.heroName;
-          renderStats(); renderHero(); renderQuests(); renderJournal(false);
+          renderPortrait();
+          renderStats(); renderSkills(); renderHero(); renderQuestMaker(); renderQuests(); renderJournal(false);
         }
       });
     }
 
     // ===== Инициализация =====
     function init() {
-      const restored = load();
+      load();
 
       const nameInput = document.getElementById('heroNameInput');
       nameInput.value = state.heroName;
@@ -946,14 +1168,22 @@
         save();
       });
 
+      setupPortrait();
+
       document.getElementById('addQuestBtn').addEventListener('click', addQuest);
       document.getElementById('questText').addEventListener('keydown', e => {
         if (e.key === 'Enter') addQuest();
       });
+      document.getElementById('addSkillBtn').addEventListener('click', addSkill);
+      document.getElementById('skillText').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addSkill();
+      });
 
       setupReset();
+      renderPortrait();
       renderQuestMaker();
       renderStats();
+      renderSkills();
       renderHero();
       renderQuests();
       renderJournal(false);
@@ -965,4 +1195,5 @@
   </script>
 </body>
 </html>
+
 
