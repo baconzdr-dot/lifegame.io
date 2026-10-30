@@ -89,7 +89,7 @@
     }
     .hint { text-align: center; font-size: .7rem; opacity: .6; margin: 0 0 12px; }
 
-    /* ===== Портрет героя ===== */
+    /* ===== Портрет героя: большой, квадратная рамка ===== */
     .portrait-block {
       display: flex;
       flex-direction: column;
@@ -98,18 +98,18 @@
     }
     .portrait-frame {
       position: relative;
-      width: 128px; height: 128px;
-      border-radius: 50%;
+      width: 180px; height: 180px;
+      border-radius: 14px;
       border: 3px solid var(--gold-bright);
-      box-shadow: 0 0 22px rgba(245,212,122,.45), inset 0 0 16px rgba(0,0,0,.7);
+      box-shadow: 0 0 26px rgba(245,212,122,.45), inset 0 0 18px rgba(0,0,0,.7);
       background: radial-gradient(circle at 35% 30%, #3a2c1c, #1a1208 75%);
       overflow: hidden;
       cursor: pointer;
       transition: box-shadow .25s, transform .25s;
     }
     .portrait-frame:hover {
-      box-shadow: 0 0 30px rgba(245,212,122,.7), inset 0 0 16px rgba(0,0,0,.7);
-      transform: scale(1.03);
+      box-shadow: 0 0 36px rgba(245,212,122,.7), inset 0 0 18px rgba(0,0,0,.7);
+      transform: scale(1.02);
     }
     .portrait-frame img {
       width: 100%; height: 100%;
@@ -123,13 +123,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 2.4rem;
+      font-size: 3.4rem;
       opacity: .55;
     }
     .portrait-placeholder .ph-hint {
-      font-size: .58rem;
+      font-size: .6rem;
       letter-spacing: 1px;
-      margin-top: 6px;
+      margin-top: 8px;
       text-transform: uppercase;
     }
     .portrait-overlay {
@@ -141,26 +141,57 @@
       background: rgba(10,7,5,.65);
       opacity: 0;
       transition: opacity .25s;
-      font-size: .62rem;
+      font-size: .68rem;
       letter-spacing: 1px;
       text-transform: uppercase;
       text-align: center;
       padding: 6px;
     }
     .portrait-frame:hover .portrait-overlay { opacity: 1; }
-    .portrait-name-input {
-      margin-top: 10px;
-      background: rgba(0,0,0,.5);
-      border: 1px solid var(--gold);
-      border-radius: 6px;
+
+    /* Имя на главной — запечатано */
+    .portrait-name {
+      margin-top: 12px;
+      font-size: 1.15rem;
       color: var(--gold-bright);
-      padding: 6px 10px;
-      font-family: inherit;
-      font-size: 1rem;
+      text-shadow: 0 0 10px rgba(245,212,122,.4);
+      letter-spacing: 1px;
       text-align: center;
-      width: 170px;
+      border-bottom: 1px dashed rgba(212,169,78,.5);
+      padding: 0 12px 4px;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .portrait-name-input:focus { outline: none; box-shadow: 0 0 10px rgba(245,212,122,.4); }
+
+    /* Счётчик монет */
+    .coins {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--gold);
+      border-radius: 22px;
+      padding: 6px 18px;
+      background: radial-gradient(circle at 35% 30%, #3a2c1c, #1a1208 80%);
+      box-shadow: 0 0 12px rgba(245,212,122,.3), inset 0 0 8px rgba(0,0,0,.7);
+    }
+    .coins .coin-icon {
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 4px rgba(245,212,122,.8));
+    }
+    .coins .coin-value {
+      font-size: 1.05rem;
+      color: var(--gold-bright);
+      text-shadow: 0 0 8px rgba(245,212,122,.5);
+    }
+    .coins.bump { animation: coinBump .5s ease; }
+    @keyframes coinBump {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.12); box-shadow: 0 0 24px rgba(245,212,122,.8), inset 0 0 8px rgba(0,0,0,.7); }
+      100% { transform: scale(1); }
+    }
 
     /* ===== Характеристики и навыки (компактно) ===== */
     .stat-row {
@@ -423,6 +454,95 @@
 
     .empty-note { text-align: center; font-size: .74rem; opacity: .5; font-style: italic; padding: 8px; }
 
+    /* ===== Стартовая страница ===== */
+    #startScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #2e2214 0%, #120d08 65%, #0a0705 100%);
+    }
+    #startScreen.hidden { display: none; }
+    .start-card {
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 34px 40px;
+      max-width: 460px;
+      width: 92%;
+      text-align: center;
+      background:
+        linear-gradient(160deg, rgba(212,169,78,.09), transparent 60%),
+        var(--panel);
+      box-shadow: inset 0 0 40px rgba(0,0,0,.75), 0 0 34px rgba(212,169,78,.3);
+      animation: startIn .8s ease;
+    }
+    @keyframes startIn {
+      from { opacity: 0; transform: translateY(24px) scale(.96); }
+      to   { opacity: 1; transform: none; }
+    }
+    .start-card h2 {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+      color: var(--gold-bright);
+      text-shadow: 0 0 16px rgba(245,212,122,.5);
+      letter-spacing: 1px;
+    }
+    .start-card .greeting {
+      font-size: .92rem;
+      line-height: 1.55;
+      opacity: .85;
+      margin: 0 0 22px;
+    }
+    .start-frame {
+      width: 160px; height: 160px;
+      margin: 0 auto 16px;
+      border-radius: 14px;
+      border: 3px solid var(--gold-bright);
+      box-shadow: 0 0 24px rgba(245,212,122,.45), inset 0 0 14px rgba(0,0,0,.7);
+      background: radial-gradient(circle at 35% 30%, #3a2c1c, #1a1208 75%);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .start-frame:hover {
+      box-shadow: 0 0 34px rgba(245,212,122,.7), inset 0 0 14px rgba(0,0,0,.7);
+      transform: scale(1.03);
+    }
+    .start-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .start-frame .portrait-placeholder { font-size: 3rem; }
+    .start-name-input {
+      width: 100%;
+      background: rgba(0,0,0,.5);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      color: var(--gold-bright);
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .start-name-input:focus { outline: none; box-shadow: 0 0 12px rgba(245,212,122,.4); }
+    .start-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #57431f, #332514);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      color: var(--gold-bright);
+      padding: 12px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: box-shadow .2s;
+    }
+    .start-btn:hover { box-shadow: 0 0 18px rgba(245,212,122,.55); }
+    .start-hint { font-size: .68rem; opacity: .55; margin-top: 14px; }
+    .name-sealed { font-size: .66rem; opacity: .55; font-style: italic; margin-top: 6px; }
+
     @media (max-width: 1150px) {
       .app { grid-template-columns: 1fr; }
       .header-controls { position: static; text-align: center; margin-bottom: 12px; }
@@ -430,6 +550,28 @@
   </style>
 </head>
 <body>
+
+  <!-- СТАРТОВАЯ СТРАНИЦА (только при первом визите) -->
+  <div id="startScreen">
+    <div class="start-card">
+      <h2>⚔ Летопись Героя ⚔</h2>
+      <p class="greeting">
+        Приветствуем тебя, странник! Впереди — путь из деяний и свершений.
+        Выбирай облик, запечатлей имя — и летопись начнёт писать сама себя.
+      </p>
+      <div class="start-frame" id="startFrame" title="Выбрать облик">
+        <img id="startImg" alt="" style="display:none" />
+        <div class="portrait-placeholder" id="startPlaceholder">
+          <span>🧝</span>
+          <div class="ph-hint" style="font-size:.6rem;letter-spacing:1px;margin-top:8px;">Облик героя</div>
+        </div>
+      </div>
+      <input type="file" id="startPortraitInput" accept="image/*" style="display:none" />
+      <input type="text" id="startNameInput" class="start-name-input" placeholder="Начертай имя героя…" maxlength="20" />
+      <button class="start-btn" id="startBtn">✦ Начать путь ✦</button>
+      <div class="start-hint">Имя запечатается навеки — выбирай с умом, странник.</div>
+    </div>
+  </div>
 
   <header>
     <h1>⚔ Летопись Героя ⚔</h1>
@@ -473,9 +615,9 @@
       <canvas id="radar" width="540" height="540"></canvas>
     </section>
 
-    <!-- ПРАВАЯ ЧАСТЬ: портрет + задания + журнал -->
+    <!-- ПРАВАЯ ЧАСТЬ: портрет + монеты + задания + журнал -->
     <section class="panel">
-      <!-- Облик героя -->
+      <!-- Облик героя: большой, квадратная рамка -->
       <div class="portrait-block">
         <div class="portrait-frame" id="portraitFrame" title="Загрузить портрет">
           <img id="portraitImg" alt="" style="display:none" />
@@ -486,7 +628,12 @@
           <div class="portrait-overlay">Сменить облик</div>
         </div>
         <input type="file" id="portraitInput" accept="image/*" style="display:none" />
-        <input type="text" id="heroNameInput" class="portrait-name-input" maxlength="20" />
+        <div class="portrait-name" id="heroNameDisplay"></div>
+        <div class="name-sealed">имя запечатано навеки</div>
+        <div class="coins" id="coinsBox">
+          <span class="coin-icon">🪙</span>
+          <span class="coin-value" id="coinsValue">0</span>
+        </div>
       </div>
 
       <h2>Свиток заданий</h2>
@@ -543,6 +690,8 @@
       return {
         heroName: 'Путник',
         portrait: null,
+        coins: 0,
+        firstLaunch: true,
         heroLevel: 1,
         xp: 0,
         stats: STATS.map(s => ({ nom: s.nom, acc: s.acc, total: 0 })),
@@ -566,6 +715,9 @@
             if (!Array.isArray(parsed.skills)) parsed.skills = [];
             if (!Array.isArray(parsed.quests)) parsed.quests = [];
             if (!Array.isArray(parsed.journal)) parsed.journal = [];
+            // Прогресс из прошлых версий уже начат — стартовую страницу не показываем
+            if (typeof parsed.firstLaunch !== 'boolean') parsed.firstLaunch = false;
+            if (typeof parsed.coins !== 'number') parsed.coins = 0;
             state = parsed;
             return true;
           }
@@ -656,54 +808,109 @@
       setTimeout(() => el.remove(), 1800);
     }
 
-    // ===== Портрет героя =====
+    // ===== Сжатие изображения (общее для старта и смены облика) =====
+    function compressImage(file, cb) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const tmp = new Image();
+        tmp.onload = () => {
+          const c = document.createElement('canvas');
+          c.width = 256; c.height = 256;
+          const ctx = c.getContext('2d');
+          const side = Math.min(tmp.width, tmp.height);
+          ctx.drawImage(
+            tmp,
+            (tmp.width - side) / 2, (tmp.height - side) / 2, side, side,
+            0, 0, 256, 256
+          );
+          cb(c.toDataURL('image/jpeg', 0.85));
+        };
+        tmp.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function bindPortrait(inputId, apply) {
+      const input = document.getElementById(inputId);
+      input.addEventListener('change', () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        compressImage(file, (data) => {
+          state.portrait = data;
+          apply();
+          save();
+        });
+        input.value = '';
+      });
+    }
+
     function renderPortrait() {
       const img = document.getElementById('portraitImg');
       const ph = document.getElementById('portraitPlaceholder');
+      const startImg = document.getElementById('startImg');
+      const startPh = document.getElementById('startPlaceholder');
       if (state.portrait) {
         img.src = state.portrait;
         img.style.display = 'block';
         ph.style.display = 'none';
+        startImg.src = state.portrait;
+        startImg.style.display = 'block';
+        startPh.style.display = 'none';
       } else {
         img.style.display = 'none';
         ph.style.display = 'flex';
+        startImg.style.display = 'none';
+        startPh.style.display = 'flex';
       }
     }
 
-    function setupPortrait() {
-      const frame = document.getElementById('portraitFrame');
-      const input = document.getElementById('portraitInput');
+    // ===== Стартовая страница =====
+    function setupStartScreen() {
+      const screen = document.getElementById('startScreen');
+      const frame = document.getElementById('startFrame');
+      const input = document.getElementById('startPortraitInput');
+      const nameInput = document.getElementById('startNameInput');
+      const btn = document.getElementById('startBtn');
+
+      if (!state.firstLaunch) {
+        screen.classList.add('hidden');
+        return;
+      }
 
       frame.addEventListener('click', () => input.click());
+      nameInput.focus();
 
-      input.addEventListener('change', () => {
-        const file = input.files && input.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-          // Сжимаем картинку в квадрат 256×256, чтобы не раздуть localStorage
-          const tmp = new Image();
-          tmp.onload = () => {
-            const c = document.createElement('canvas');
-            c.width = 256; c.height = 256;
-            const ctx = c.getContext('2d');
+      const begin = () => {
+        const name = nameInput.value.trim();
+        if (!name) { nameInput.focus(); return; }
+        state.heroName = name;
+        state.firstLaunch = false;
+        save();
+        renderHeroName();
+        screen.classList.add('hidden');
+        // Разрешаем звуки после первого клика пользователя
+        ensureAudio();
+      };
 
-            // Кроп по центру с сохранением пропорций
-            const side = Math.min(tmp.width, tmp.height);
-            ctx.drawImage(
-              tmp,
-              (tmp.width - side) / 2, (tmp.height - side) / 2, side, side,
-              0, 0, 256, 256
-            );
-            state.portrait = c.toDataURL('image/jpeg', 0.85);
-            save();
-            renderPortrait();
-          };
-          tmp.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-        input.value = ''; // позволяет выбрать тот же файл повторно
-      });
+      btn.addEventListener('click', begin);
+      nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') begin(); });
+      bindPortrait('startPortraitInput', renderPortrait);
+    }
+
+    // ===== Имя героя (на главной — только отображение) =====
+    function renderHeroName() {
+      document.getElementById('heroNameDisplay').textContent = state.heroName;
+    }
+
+    // ===== Монеты =====
+    function renderCoins(bump) {
+      document.getElementById('coinsValue').textContent = state.coins;
+      if (bump) {
+        const box = document.getElementById('coinsBox');
+        box.classList.remove('bump');
+        void box.offsetWidth;
+        box.classList.add('bump');
+      }
     }
 
     // ===== Кузня характеристик (только отображение) =====
@@ -1055,11 +1262,14 @@
         row.classList.add('flash');
         floatText(`+${rar.xp} опыта`, rect.left + 90, rect.top + 4, 'gold');
         floatText(`+${rar.pts} к ${stat ? stat.nom : ''}`, rect.left + 90, rect.top + 30, rar.floatClass);
-        if (skill) floatText(`+1 к «${skill.name}»`, rect.left + 90, rect.top + 56, 'blue');
+        floatText(`+${rar.xp} 🪙`, rect.left + 90, rect.top + 56, 'gold');
+        if (skill) floatText(`+1 к «${skill.name}»`, rect.left + 90, rect.top + 82, 'blue');
       }
 
-      // Награда
+      // Награда: опыт, монеты (в том же количестве), очки характеристики и навыка
       gainXp(rar.xp);
+      state.coins += rar.xp;
+      renderCoins(true);
       if (stat) gainStatPoints(stat, rar.pts);
       if (skill) gainSkillPoints(skill, 1);
 
@@ -1147,11 +1357,19 @@
           armed = false;
           btn.classList.remove('armed');
           btn.textContent = '🗑';
+          const oldName = state.heroName;
+          const oldPortrait = state.portrait;
           state = defaultState();
+          // Имя и облик переживают обнуление — они запечатаны
+          state.heroName = oldName;
+          state.portrait = oldPortrait;
+          state.firstLaunch = false;
           disp = state.stats.map(() => 0);
           try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-          document.getElementById('heroNameInput').value = state.heroName;
+          save();
           renderPortrait();
+          renderHeroName();
+          renderCoins(false);
           renderStats(); renderSkills(); renderHero(); renderQuestMaker(); renderQuests(); renderJournal(false);
         }
       });
@@ -1161,14 +1379,8 @@
     function init() {
       load();
 
-      const nameInput = document.getElementById('heroNameInput');
-      nameInput.value = state.heroName;
-      nameInput.addEventListener('change', () => {
-        state.heroName = nameInput.value.trim() || 'Путник';
-        save();
-      });
-
-      setupPortrait();
+      setupStartScreen();
+      bindPortrait('portraitInput', renderPortrait);
 
       document.getElementById('addQuestBtn').addEventListener('click', addQuest);
       document.getElementById('questText').addEventListener('keydown', e => {
@@ -1181,6 +1393,8 @@
 
       setupReset();
       renderPortrait();
+      renderHeroName();
+      renderCoins(false);
       renderQuestMaker();
       renderStats();
       renderSkills();
@@ -1195,5 +1409,3 @@
   </script>
 </body>
 </html>
-
-
