@@ -37,7 +37,6 @@
       text-shadow: 0 0 14px rgba(245, 212, 122, .45), 0 2px 2px #000;
       letter-spacing: 2px;
     }
-    .subtitle { text-align: center; font-size: .9rem; opacity: .7; margin: 0 0 20px; padding: 0 14px; }
 
     header { position: relative; }
     .header-controls {
@@ -50,7 +49,7 @@
       border-radius: 8px;
       color: var(--ink);
       font-size: 1.1rem;
-      width: 44px; height: 44px;   /* удобная зона касания */
+      width: 44px; height: 44px;
       cursor: pointer;
       transition: all .2s;
     }
@@ -69,7 +68,7 @@
       max-width: 1500px;
       margin: 0 auto 40px;
       padding: 0 20px;
-      align-items: start;
+      align-items: stretch;   /* колонки вытягиваются по самой высокой */
     }
 
     .panel {
@@ -81,7 +80,6 @@
         var(--panel);
       box-shadow: inset 0 0 30px rgba(0,0,0,.7), 0 0 22px rgba(212,169,78,.22);
     }
-    .panel + .panel { margin-top: 18px; }
     .panel h2 {
       margin: 0 0 4px;
       color: var(--gold-bright);
@@ -91,6 +89,13 @@
       text-shadow: 0 0 10px rgba(245,212,122,.4);
     }
     .hint { text-align: center; font-size: .7rem; opacity: .6; margin: 0 0 12px; }
+
+    /* Левая колонка: две панели делят высоту колонки поровну */
+    .col-left {
+      display: flex;
+      flex-direction: column;
+    }
+    .col-left .panel { flex: 1; }
 
     /* ===== Портрет героя ===== */
     .portrait-block {
@@ -171,7 +176,6 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .name-sealed { font-size: .66rem; opacity: .55; font-style: italic; margin-top: 6px; }
 
     .coins {
       margin-top: 10px;
@@ -268,7 +272,7 @@
       background: none; border: none;
       color: rgba(232,217,181,.4);
       font-size: .9rem; cursor: pointer;
-      padding: 8px;                /* крупнее для пальца */
+      padding: 8px;
     }
     .row-del:hover { color: #ff9b8a; }
 
@@ -286,9 +290,9 @@
       border: 1px solid rgba(212,169,78,.5);
       border-radius: 6px;
       color: var(--ink);
-      padding: 10px 10px;          /* просторнее под касание */
+      padding: 10px 10px;
       font-family: inherit;
-      font-size: 16px;             /* 16px — чтобы iOS не зумил при фокусе */
+      font-size: 16px;
       margin-bottom: 8px;
     }
     .maker .row { display: flex; gap: 7px; margin-bottom: 8px; }
@@ -317,7 +321,7 @@
       cursor: pointer;
       transition: box-shadow .2s;
       white-space: nowrap;
-      min-height: 42px;            /* зона касания */
+      min-height: 42px;
     }
     .forge-btn:active { transform: scale(.97); }
     .forge-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
@@ -357,7 +361,7 @@
     }
     .q-check { margin-top: 3px; flex: 0 0 auto; }
     .q-check input {
-      width: 22px; height: 22px;   /* крупный чекбокс под палец */
+      width: 22px; height: 22px;
       accent-color: #b8860b;
       cursor: pointer;
       display: block;
@@ -413,7 +417,11 @@
     .quest-list::-webkit-scrollbar-thumb, .journal ul::-webkit-scrollbar-thumb { background: #57431f; border-radius: 3px; }
 
     /* ===== Центр: уровень героя и паутина ===== */
-    .throne { text-align: center; }
+    .throne {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
     .hero-block { margin-bottom: 12px; }
     .hero-orb {
       width: 84px; height: 84px;
@@ -449,7 +457,14 @@
     }
     .xp-text { font-size: .78rem; opacity: .8; }
 
-    canvas { display: block; margin: 0 auto; max-width: 100%; }
+    .radar-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+    }
+    canvas { display: block; max-width: 100%; }
 
     /* ===== Парящие награды ===== */
     .float {
@@ -567,7 +582,6 @@
     /* ===== Планшеты и узкие экраны ===== */
     @media (max-width: 1150px) {
       h1 { font-size: 1.5rem; }
-      .subtitle { font-size: .8rem; margin-bottom: 16px; }
 
       .app {
         grid-template-columns: 1fr;
@@ -575,11 +589,12 @@
         max-width: 640px;
         padding: 0 12px;
         margin-bottom: 32px;
+        align-items: start;
       }
-      /* На телефоне порядок Daily-first: облик+задания, потом паутина, потом кузня и гримуар */
       .col-right { order: 1; }
       .throne    { order: 2; }
       .col-left  { order: 3; }
+      .col-left .panel { flex: 0 0 auto; }
 
       .panel { padding: 12px; }
 
@@ -603,7 +618,6 @@
     /* ===== Телефоны ===== */
     @media (max-width: 480px) {
       h1 { font-size: 1.25rem; margin-top: 16px; letter-spacing: 1px; }
-      .subtitle { font-size: .74rem; }
 
       .app { gap: 14px; padding: 0 8px; }
       .panel { padding: 10px; border-width: 1.5px; border-radius: 12px; }
@@ -618,7 +632,7 @@
 
       .stat-name { flex: 0 0 76px; font-size: .7rem; }
       .level-orb { flex: 0 0 34px; width: 34px; height: 34px; }
-      .lvl-label { display: none; }           /* экономим место: только число */
+      .lvl-label { display: none; }
       .lvl-value { font-size: .95rem; }
       .cells { height: 17px; gap: 2px; }
 
@@ -670,9 +684,8 @@
 
   <header>
     <h1>⚔ Летопись Героя ⚔</h1>
-    <p class="subtitle">Кузня и гримуар, паутина судьбы, свиток заданий</p>
     <div class="header-controls">
-      <button id="resetBtn" class="trash-btn" title="Обнулить прогресс">🗑</button>
+      <button id="resetBtn" class="trash-btn" title="Обнулить весь прогресс">🗑</button>
     </div>
   </header>
 
@@ -698,16 +711,18 @@
 
     <!-- ЦЕНТР: уровень героя и паутина -->
     <section class="panel throne">
-      <div class="hero-block">
+      <div class="hero-block" id="heroBlock">
         <div class="hero-orb" id="heroOrb">
           <span class="lvl-label">уровень</span>
-          <span class="lvl-value" id="heroLevelValue">1</size></span>
+          <span class="lvl-value" id="heroLevelValue">1</span>
         </div>
         <div class="hero-label">Уровень героя</div>
         <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
         <div class="xp-text" id="xpText">Опыт: 0 / 100</div>
       </div>
-      <canvas id="radar" width="540" height="540"></canvas>
+      <div class="radar-wrap" id="radarWrap">
+        <canvas id="radar" width="540" height="540"></canvas>
+      </div>
     </section>
 
     <!-- ПРАВАЯ ЧАСТЬ: портрет + монеты + задания + журнал -->
@@ -723,7 +738,6 @@
         </div>
         <input type="file" id="portraitInput" accept="image/*" style="display:none" />
         <div class="portrait-name" id="heroNameDisplay"></div>
-        <div class="name-sealed">имя запечатано навеки</div>
         <div class="coins" id="coinsBox">
           <span class="coin-icon">🪙</span>
           <span class="coin-value" id="coinsValue">0</span>
@@ -763,7 +777,6 @@
     const CELLS = 10;
     const XP_PER_LEVEL = 100;
     const DAY_MS = 24 * 60 * 60 * 1000;
-    const RADAR_MAX = 540;
 
     const STATS = [
       { nom: 'сила',         acc: 'силу' },
@@ -959,6 +972,14 @@
     }
 
     // ===== Стартовая страница =====
+    function showStartScreen() {
+      const screen = document.getElementById('startScreen');
+      const nameInput = document.getElementById('startNameInput');
+      screen.classList.remove('hidden');
+      nameInput.value = '';
+      setTimeout(() => nameInput.focus(), 50);
+    }
+
     function setupStartScreen() {
       const screen = document.getElementById('startScreen');
       const frame = document.getElementById('startFrame');
@@ -1132,8 +1153,14 @@
 
     function sizeCanvas() {
       const canvas = document.getElementById('radar');
-      const panel = canvas.parentElement;
-      const size = Math.max(280, Math.min(RADAR_MAX, panel.clientWidth - 8));
+      const throne = canvas.closest('.throne');
+      const heroBlock = document.getElementById('heroBlock');
+
+      // Паутина заполняет всё свободное место центральной панели
+      const width = throne.clientWidth - 8;
+      const height = throne.clientHeight - heroBlock.offsetHeight - 18;
+      const size = Math.round(Math.max(280, Math.min(width, height, 760)));
+
       if (canvas.width !== size) {
         canvas.width = size;
         canvas.height = size;
@@ -1145,7 +1172,7 @@
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height;
       const cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) / 2 - Math.max(34, W * 0.12); // запас под подписи
+      const R = Math.min(W, H) / 2 - Math.max(34, W * 0.12);
       const n = state.stats.length;
       const labelR = R + Math.max(20, W * 0.055);
       const fontSize = Math.max(11, Math.round(W * 0.028));
@@ -1438,7 +1465,7 @@
       if (changed) { save(); renderQuests(); }
     }
 
-    // ===== Кнопка обнуления =====
+    // ===== Кнопка обнуления: полный сброс до стартовой страницы =====
     function setupReset() {
       const btn = document.getElementById('resetBtn');
       let armed = false, timer = null;
@@ -1457,19 +1484,20 @@
           armed = false;
           btn.classList.remove('armed');
           btn.textContent = '🗑';
-          const oldName = state.heroName;
-          const oldPortrait = state.portrait;
-          state = defaultState();
-          state.heroName = oldName;
-          state.portrait = oldPortrait;
-          state.firstLaunch = false;
-          disp = state.stats.map(() => 0);
+          // Полный сброс: стереть сохранение, вернуться на стартовую страницу
           try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-          save();
+          state = defaultState();
+          disp = state.stats.map(() => 0);
           renderPortrait();
           renderHeroName();
           renderCoins(false);
-          renderStats(); renderSkills(); renderHero(); renderQuestMaker(); renderQuests(); renderJournal(false);
+          renderStats();
+          renderSkills();
+          renderHero();
+          renderQuestMaker();
+          renderQuests();
+          renderJournal(false);
+          showStartScreen();
         }
       });
     }
@@ -1503,7 +1531,6 @@
       animateRadar();
       setInterval(tick, 1000);
 
-      // Перестраиваем паутину при повороте экрана и изменении окна
       window.addEventListener('resize', sizeCanvas);
       window.addEventListener('orientationchange', sizeCanvas);
     }
