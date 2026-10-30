@@ -4,17 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Летопись Героя</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=MedievalSharp&display=swap" rel="stylesheet" />
   <style>
     :root {
       --gold: #d4a94e;
       --gold-bright: #f5d47a;
-      --parchment: #1a1410;
       --panel: #241a12;
       --ink: #e8d9b5;
       --cell-empty: #3a2c1c;
       --cell-fill: linear-gradient(180deg, #f5d47a, #b8860b);
-      --danger: #a33b2e;
+      --green: #8fd47a;
+      --purple: #c88ff5;
     }
 
     * { box-sizing: border-box; }
@@ -22,122 +21,130 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: 'Cinzel', serif;
+      font-family: 'Bookman Old Style', 'Bookman', Georgia, serif;
       color: var(--ink);
-      background:
-        radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
+      background: radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
     }
 
     h1 {
-      font-family: 'MedievalSharp', cursive;
       text-align: center;
-      font-size: 2.2rem;
-      margin: 24px 0 6px;
+      font-size: 2rem;
+      margin: 20px 0 4px;
       color: var(--gold-bright);
       text-shadow: 0 0 14px rgba(245, 212, 122, .45), 0 2px 2px #000;
       letter-spacing: 2px;
     }
+    .subtitle { text-align: center; font-size: .9rem; opacity: .7; margin: 0 0 20px; }
 
-    .subtitle {
-      text-align: center;
-      font-size: .95rem;
-      opacity: .7;
-      margin-bottom: 28px;
-    }
-
-    .app {
-      display: flex;
-      gap: 32px;
-      max-width: 1200px;
-      margin: 0 auto 40px;
-      padding: 0 20px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-    /* ===== Левая панель: кузня характеристик ===== */
-    .forge {
-      flex: 1 1 460px;
-      border: 2px solid var(--gold);
-      border-radius: 14px;
-      padding: 22px;
-      background:
-        linear-gradient(160deg, rgba(212,169,78,.08), transparent 55%),
-        var(--panel);
-      box-shadow:
-        inset 0 0 30px rgba(0,0,0,.7),
-        0 0 22px rgba(212,169,78,.25);
-    }
-
-    .forge h2 {
-      font-family: 'MedievalSharp', cursive;
-      margin: 0 0 4px;
-      color: var(--gold-bright);
-      font-size: 1.4rem;
-      text-align: center;
-      letter-spacing: 1px;
-    }
-
-    .forge .hint {
-      text-align: center;
-      font-size: .8rem;
-      opacity: .6;
-      margin: 0 0 18px;
-    }
-
-    .stat-row {
+    header { position: relative; }
+    .header-controls {
+      position: absolute;
+      top: 14px; right: 18px;
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 14px 12px;
+    }
+    .header-controls label { font-size: .85rem; opacity: .85; }
+    .header-controls input {
+      background: rgba(0,0,0,.5);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 5px 8px;
+      font-family: inherit;
+      width: 120px;
+    }
+    .trash-btn {
+      background: linear-gradient(180deg, #3a2c1c, #241a12);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: 1.1rem;
+      width: 40px; height: 40px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .trash-btn:hover { box-shadow: 0 0 12px rgba(163,59,46,.7); border-color: #a33b2e; }
+    .trash-btn.armed {
+      border-color: #a33b2e;
+      color: #ff9b8a;
+      font-size: .62rem;
+      box-shadow: 0 0 14px rgba(163,59,46,.8);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 26px;
+      max-width: 1500px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 20px;
+      background:
+        linear-gradient(160deg, rgba(212,169,78,.07), transparent 55%),
+        var(--panel);
+      box-shadow: inset 0 0 30px rgba(0,0,0,.7), 0 0 22px rgba(212,169,78,.22);
+    }
+    .panel h2 {
+      margin: 0 0 6px;
+      color: var(--gold-bright);
+      font-size: 1.25rem;
+      text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(245,212,122,.4);
+    }
+    .hint { text-align: center; font-size: .78rem; opacity: .6; margin: 0 0 16px; }
+
+    /* ===== Характеристики ===== */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 10px;
       border: 1px solid rgba(212,169,78,.35);
       border-radius: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       background: rgba(0,0,0,.35);
     }
+    .stat-name { flex: 0 0 118px; font-size: .88rem; }
 
-    .stat-name {
-      flex: 0 0 130px;
-      font-size: .95rem;
-      letter-spacing: .5px;
-    }
-
-    /* Уровень в большом круге */
     .level-orb {
-      flex: 0 0 58px;
-      width: 58px;
-      height: 58px;
+      flex: 0 0 56px;
+      width: 56px; height: 56px;
       border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       background: radial-gradient(circle at 35% 30%, #6b4f1d, #241a12 70%);
       border: 2px solid var(--gold);
       box-shadow: 0 0 14px rgba(245,212,122,.35), inset 0 0 10px rgba(0,0,0,.8);
       user-select: none;
+      transition: box-shadow .3s;
     }
-    .level-orb .lvl-label {
-      font-size: .55rem;
-      letter-spacing: 1px;
-      opacity: .75;
-      text-transform: uppercase;
+    .level-orb.pulse { animation: orbPulse .8s ease; }
+    @keyframes orbPulse {
+      0%   { box-shadow: 0 0 14px rgba(245,212,122,.35); }
+      40%  { box-shadow: 0 0 34px rgba(245,212,122,.95); transform: scale(1.12); }
+      100% { box-shadow: 0 0 14px rgba(245,212,122,.35); transform: scale(1); }
     }
-    .level-orb .lvl-value {
-      font-family: 'MedievalSharp', cursive;
-      font-size: 1.5rem;
-      line-height: 1;
+    .lvl-label { font-size: .5rem; letter-spacing: 1px; opacity: .75; text-transform: uppercase; }
+    .lvl-value {
+      font-size: 1.5rem; line-height: 1;
       color: var(--gold-bright);
       text-shadow: 0 0 8px rgba(245,212,122,.6);
     }
 
-    /* Прогресс из квадратиков */
     .cells {
       flex: 1;
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 4px;
-      height: 26px;
+      height: 24px;
     }
     .cell {
       border-radius: 3px;
@@ -150,28 +157,20 @@
       background: var(--cell-fill);
       box-shadow: 0 0 8px rgba(245,212,122,.55), inset 0 1px 1px rgba(255,255,255,.4);
     }
-    .cell.burst {
-      animation: burst .45s ease;
-    }
+    .cell.burst { animation: burst .45s ease; }
     @keyframes burst {
-      0%   { transform: scale(1.6); box-shadow: 0 0 22px rgba(245,212,122,.95); }
+      0% { transform: scale(1.6); box-shadow: 0 0 22px rgba(245,212,122,.95); }
       100% { transform: scale(1); }
     }
 
-    /* Стрелки вверх/вниз */
-    .arrows {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .arrows { display: flex; flex-direction: column; gap: 4px; }
     .arrow-btn {
-      width: 38px;
-      height: 26px;
+      width: 36px; height: 24px;
       border: 1px solid var(--gold);
       border-radius: 6px;
       background: linear-gradient(180deg, #3a2c1c, #241a12);
       color: var(--gold-bright);
-      font-size: 1rem;
+      font-size: .95rem;
       cursor: pointer;
       transition: background .15s, transform .1s;
     }
@@ -179,85 +178,402 @@
     .arrow-btn:active { transform: scale(.92); }
     .arrow-btn:disabled { opacity: .3; cursor: default; transform: none; }
 
-    /* ===== Правая часть: паутинка ===== */
-    .web-panel {
-      flex: 1 1 460px;
-      border: 2px solid var(--gold);
-      border-radius: 14px;
-      padding: 22px;
-      background:
-        linear-gradient(200deg, rgba(212,169,78,.06), transparent 60%),
-        var(--panel);
-      box-shadow:
-        inset 0 0 30px rgba(0,0,0,.7),
-        0 0 22px rgba(212,169,78,.25);
+    /* ===== Центр: уровень героя и паутина ===== */
+    .throne { text-align: center; }
+    .hero-block { margin-bottom: 14px; }
+    .hero-orb {
+      width: 84px; height: 84px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: radial-gradient(circle at 35% 30%, #7a5a20, #241a12 70%);
+      border: 3px solid var(--gold-bright);
+      box-shadow: 0 0 24px rgba(245,212,122,.5), inset 0 0 14px rgba(0,0,0,.8);
+      transition: box-shadow .3s;
     }
-    .web-panel h2 {
-      font-family: 'MedievalSharp', cursive;
-      margin: 0 0 12px;
-      color: var(--gold-bright);
-      font-size: 1.4rem;
-      text-align: center;
-      letter-spacing: 1px;
+    .hero-orb.pulse { animation: orbPulse .9s ease; }
+    .hero-orb .lvl-label { font-size: .55rem; }
+    .hero-orb .lvl-value { font-size: 2rem; }
+    .hero-label { font-size: .85rem; letter-spacing: 1px; opacity: .85; }
+
+    .xp-bar {
+      width: 240px; height: 14px;
+      margin: 8px auto 4px;
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      background: var(--cell-empty);
+      box-shadow: inset 0 1px 4px rgba(0,0,0,.8);
+      overflow: hidden;
     }
+    .xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #b8860b, #f5d47a);
+      box-shadow: 0 0 10px rgba(245,212,122,.6);
+      transition: width .5s ease;
+    }
+    .xp-text { font-size: .78rem; opacity: .8; }
+
     canvas { display: block; margin: 0 auto; }
 
-    @media (max-width: 900px) {
-      .app { flex-direction: column; }
+    /* ===== Задания ===== */
+    .quest-maker {
+      border: 1px solid rgba(212,169,78,.45);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: rgba(0,0,0,.35);
+    }
+    .quest-maker input[type="text"] {
+      width: 100%;
+      background: rgba(0,0,0,.5);
+      border: 1px solid rgba(212,169,78,.5);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 7px 10px;
+      font-family: inherit;
+      font-size: .88rem;
+      margin-bottom: 8px;
+    }
+    .quest-maker .row {
+      display: flex; gap: 8px; margin-bottom: 8px;
+    }
+    select {
+      flex: 1;
+      background: #332514;
+      border: 1px solid rgba(212,169,78,.5);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 6px;
+      font-family: inherit;
+      font-size: .85rem;
+    }
+    .forge-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #57431f, #332514);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      color: var(--gold-bright);
+      padding: 9px;
+      font-family: inherit;
+      font-size: .95rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: box-shadow .2s;
+    }
+    .forge-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
+
+    .quest {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(212,169,78,.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: rgba(0,0,0,.35);
+      transition: box-shadow .3s, transform .3s;
+    }
+    .quest.r-regular   { border-left-color: var(--green); }
+    .quest.r-common    { border-left-color: var(--gold-bright); }
+    .quest.r-legendary { border-left-color: var(--purple); }
+    .quest.done { opacity: .55; }
+    .quest.flash { animation: questFlash .55s ease; }
+    @keyframes questFlash {
+      0%  { box-shadow: 0 0 0 rgba(245,212,122,0); transform: scale(1); }
+      40% { box-shadow: 0 0 26px rgba(245,212,122,.9); transform: scale(1.03); }
+      100%{ box-shadow: 0 0 0 rgba(245,212,122,0); transform: scale(1); }
+    }
+    .q-check { margin-top: 3px; }
+    .q-check input { width: 17px; height: 17px; accent-color: #b8860b; cursor: pointer; }
+    .q-body { flex: 1; }
+    .q-text { font-size: .92rem; margin-bottom: 4px; }
+    .quest.done .q-text { text-decoration: line-through; opacity: .7; }
+    .q-meta { font-size: .74rem; opacity: .8; }
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-size: .68rem;
+      border: 1px solid currentColor;
+      margin-right: 6px;
+    }
+    .badge.r-regular   { color: var(--green); }
+    .badge.r-common    { color: var(--gold-bright); }
+    .badge.r-legendary { color: var(--purple); }
+    .q-timer { font-size: .72rem; color: var(--green); margin-top: 4px; }
+    .q-del {
+      background: none; border: none;
+      color: rgba(232,217,181,.45);
+      font-size: .9rem; cursor: pointer;
+      padding: 2px 4px;
+    }
+    .q-del:hover { color: #ff9b8a; }
+
+    /* ===== Журнал ===== */
+    .journal { margin-top: 18px; }
+    .journal ul {
+      list-style: none;
+      margin: 0; padding: 0;
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: .8rem;
+      line-height: 1.45;
+    }
+    .journal li {
+      padding: 6px 8px;
+      border-bottom: 1px dashed rgba(212,169,78,.2);
+      opacity: .9;
+    }
+    .journal li.new { animation: journalIn .5s ease; }
+    @keyframes journalIn {
+      from { opacity: 0; transform: translateX(14px); }
+      to   { opacity: .9; transform: none; }
+    }
+    .journal li::-webkit-scrollbar, .quest-list::-webkit-scrollbar { width: 6px; }
+    .journal ul::-webkit-scrollbar-thumb, .quest-list::-webkit-scrollbar-thumb { background: #57431f; border-radius: 3px; }
+
+    /* ===== Парящие награды ===== */
+    .float {
+      position: fixed;
+      z-index: 99;
+      font-weight: bold;
+      pointer-events: none;
+      font-size: 1.1rem;
+      text-shadow: 0 0 8px rgba(0,0,0,.9);
+      animation: floatUp 1.7s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) scale(.7); }
+      15%  { opacity: 1; transform: translateY(-8px) scale(1.12); }
+      100% { opacity: 0; transform: translateY(-76px) scale(1); }
+    }
+    .float.gold   { color: var(--gold-bright); }
+    .float.green  { color: var(--green); }
+    .float.purple { color: var(--purple); }
+
+    .empty-note { text-align: center; font-size: .8rem; opacity: .5; font-style: italic; padding: 10px; }
+
+    @media (max-width: 1150px) {
+      .app { grid-template-columns: 1fr; }
+      .header-controls { position: static; justify-content: center; margin-bottom: 12px; }
     }
   </style>
 </head>
 <body>
 
-  <h1>⚔ Летопись Героя ⚔</h1>
-  <p class="subtitle">Повышай характеристики — и паутина твоей судьбы расправит крылья</p>
+  <header>
+    <h1>⚔ Летопись Героя ⚔</h1>
+    <p class="subtitle">Кузня слева, паутина судьбы в центре, свиток заданий справа</p>
+    <div class="header-controls">
+      <label>Имя героя: <input id="heroNameInput" maxlength="20" /></label>
+      <button id="resetBtn" class="trash-btn" title="Обнулить прогресс">🗑</button>
+    </div>
+  </header>
 
   <div class="app">
-    <!-- ЛЕВАЯ ЧАСТЬ: повышение характеристик (обособлено рамкой) -->
-    <section class="forge">
+    <!-- ЛЕВАЯ ЧАСТЬ: повышение характеристик -->
+    <section class="panel">
       <h2>Кузня характеристик</h2>
       <p class="hint">Каждые 10 очков куют новый уровень</p>
       <div id="stats"></div>
     </section>
 
-    <!-- ПРАВАЯ ЧАСТЬ: паутинка характеристик -->
-    <section class="web-panel">
-      <h2>Паутина Судьбы</h2>
-      <canvas id="radar" width="520" height="520"></canvas>
+    <!-- ЦЕНТР: уровень героя и паутина -->
+    <section class="panel throne">
+      <div class="hero-block">
+        <div class="hero-orb" id="heroOrb">
+          <span class="lvl-label">уровень</span>
+          <span class="lvl-value" id="heroLevelValue">1</span>
+        </div>
+        <div class="hero-label">Уровень героя</div>
+        <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+        <div class="xp-text" id="xpText">Опыт: 0 / 100</div>
+      </div>
+      <canvas id="radar" width="540" height="540"></canvas>
+    </section>
+
+    <!-- ПРАВАЯ ЧАСТЬ: задания + журнал -->
+    <section class="panel">
+      <h2>Свиток заданий</h2>
+      <div class="quest-maker">
+        <input type="text" id="questText" placeholder="Начертай задание…" maxlength="80" />
+        <div class="row">
+          <select id="questStat"></select>
+          <select id="questRarity">
+            <option value="regular">Регулярное — 10 опыта, 1 очко</option>
+            <option value="common">Обычное — 30 опыта, 3 очка</option>
+            <option value="legendary">Легендарное — 100 опыта, 10 очков</option>
+          </select>
+        </div>
+        <button class="forge-btn" id="addQuestBtn">✒ Вписать в свиток</button>
+      </div>
+      <div class="quest-list" id="questList"></div>
+
+      <div class="journal">
+        <h2>Журнал прогресса</h2>
+        <ul id="journalList"></ul>
+      </div>
     </section>
   </div>
 
   <script>
-    // ==== Конфигурация характеристик ====
-    const stats = [
-      { name: 'Сила',        cat: 'physical',       total: 0 },
-      { name: 'Выносливость',cat: 'physical',       total: 0 },
-      { name: 'Воля',        cat: 'psychological',  total: 0 },
-      { name: 'Мудрость',    cat: 'psychological',  total: 0 },
-      { name: 'Интеллект',   cat: 'mental',         total: 0 },
-      { name: 'Память',      cat: 'mental',         total: 0 }
+    'use strict';
+
+    // ===== Константы =====
+    const SAVE_KEY = 'rpgHeroSave_v1';
+    const CELLS = 10;        // ячеек в прогресс-баре характеристики
+    const XP_PER_LEVEL = 100;
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
+    const STATS = [
+      { nom: 'сила',         acc: 'силу' },
+      { nom: 'выносливость', acc: 'выносливость' },
+      { nom: 'интеллект',    acc: 'интеллект' },
+      { nom: 'ловкость',     acc: 'ловкость' },
+      { nom: 'харизма',      acc: 'харизму' },
+      { nom: 'телосложение', acc: 'телосложение' }
     ];
 
-    const CELLS = 10; // ячеек в прогресс-баре
+    const RARITIES = {
+      regular:   { adj: 'регулярное',   xp: 10,  pts: 1,  repeat: true,  floatClass: 'green'  },
+      common:    { adj: 'обычное',      xp: 30,  pts: 3,  repeat: false, floatClass: 'gold'   },
+      legendary: { adj: 'легендарное',  xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
+    };
+
+    // ===== Состояние =====
+    function defaultState() {
+      return {
+        heroName: 'Путник',
+        heroLevel: 1,
+        xp: 0,
+        stats: STATS.map(s => ({ nom: s.nom, acc: s.acc, total: 0 })),
+        quests: [],
+        journal: []
+      };
+    }
+
+    let state = defaultState();
+
+    function save() {
+      try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+    function load() {
+      try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.stats) && parsed.stats.length === STATS.length) {
+            state = parsed;
+            return true;
+          }
+        }
+      } catch (e) {}
+      return false;
+    }
 
     const levelOf = s => 1 + Math.floor(s.total / CELLS);
     const cellsOf = s => s.total % CELLS;
 
-    // ==== Отрисовка левой панели ====
+    function plural(n, one, few, many) {
+      const m = Math.abs(n) % 100, d = m % 10;
+      if (m > 10 && m < 20) return many;
+      if (d > 1 && d < 5) return few;
+      if (d === 1) return one;
+      return many;
+    }
+    const xpWord  = n => `${n} ${plural(n, 'очко', 'очка', 'очков')} опыта`;
+    const ptsWord = (n, acc) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${acc}`;
+
+    // ===== Звук (Web Audio API) =====
+    let audioCtx = null;
+    function ensureAudio() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      return audioCtx;
+    }
+    function note(freq, start, dur, vol) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(freq, start);
+      g.gain.setValueAtTime(0.0001, start);
+      g.gain.exponentialRampToValueAtTime(vol, start + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+      o.connect(g).connect(ctx.destination);
+      o.start(start);
+      o.stop(start + dur + 0.05);
+    }
+    // «Дзынь» при повышении уровня характеристики
+    function ding() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      note(880, t, 0.55, 0.35);
+      note(1320, t + 0.05, 0.5, 0.18);
+    }
+    // Аккорд при повышении уровня героя
+    function fanfare() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      note(659, t,        0.5, 0.3);
+      note(880, t + 0.12, 0.5, 0.3);
+      note(1108, t + 0.24, 0.7, 0.32);
+      note(1318, t + 0.36, 0.8, 0.3);
+    }
+
+    // ===== Журнал =====
+    function log(text) {
+      state.journal.unshift(text);
+      if (state.journal.length > 40) state.journal.length = 40;
+      renderJournal(true);
+    }
+    function renderJournal(isNew) {
+      const ul = document.getElementById('journalList');
+      ul.innerHTML = '';
+      state.journal.forEach((entry, i) => {
+        const li = document.createElement('li');
+        li.textContent = entry;
+        if (isNew && i === 0) li.classList.add('new');
+        ul.appendChild(li);
+      });
+    }
+
+    // ===== Парящие награды =====
+    function floatText(text, x, y, cls) {
+      const el = document.createElement('div');
+      el.className = 'float ' + cls;
+      el.textContent = text;
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1800);
+    }
+
+    // ===== Кузня характеристик =====
     function renderStats() {
       const container = document.getElementById('stats');
       container.innerHTML = '';
 
-      stats.forEach(s => {
+      state.stats.forEach(s => {
         const row = document.createElement('div');
         row.className = 'stat-row';
 
-        // Круг уровня
-        const orb = document.createElement('div');
-        orb.className = 'level-orb';
-        orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(s)}</span>`;
+        const name = document.createElement('div');
+        name.className = 'stat-name';
+        name.textContent = s.nom[0].toUpperCase() + s.nom.slice(1);
 
-        // Прогресс из квадратиков
+        const orb = document.createElement('div');
+        orb.className = 'level-orb' + (s._pulse ? ' pulse' : '');
+        orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(s)}</span>`;
+        s._pulse = false;
+
         const cells = document.createElement('div');
         cells.className = 'cells';
         const filled = cellsOf(s);
@@ -267,59 +583,64 @@
           cells.appendChild(c);
         }
 
-        // Стрелки вверх/вниз
         const arrows = document.createElement('div');
         arrows.className = 'arrows';
         const up = document.createElement('button');
         up.className = 'arrow-btn';
         up.textContent = '▲';
-        up.addEventListener('click', () => change(s, +1, cells));
+        up.addEventListener('click', () => addPoints(s, 1, cells, orb));
         const down = document.createElement('button');
         down.className = 'arrow-btn';
         down.textContent = '▼';
         down.disabled = s.total <= 0;
-        down.addEventListener('click', () => change(s, -1, cells));
+        down.addEventListener('click', () => addPoints(s, -1, cells, orb));
         arrows.append(up, down);
-
-        const name = document.createElement('div');
-        name.className = 'stat-name';
-        name.textContent = s.name;
 
         row.append(name, orb, cells, arrows);
         container.appendChild(row);
       });
-      drawRadar();
     }
 
-    function change(s, delta, cellsEl) {
+    function addPoints(s, delta, cellsEl, orbEl) {
+      const before = levelOf(s);
       s.total = Math.max(0, s.total + delta);
+      const after = levelOf(s);
 
-      // Момент кузни: уровень вырос — подсветим вспышкой
-      const grew = levelOf(s) > (s._prevLevel || 1);
-      s._prevLevel = levelOf(s);
-
-      if (grew && cellsEl) {
+      if (after > before) {
+        log(`${state.heroName} повысил ${s.nom} до ${after} уровня`);
+        ding();
+        if (orbEl) { orbEl.classList.add('pulse'); }
+      }
+      if (cellsEl) {
         const first = cellsEl.querySelector('.cell.filled');
         if (first) first.classList.add('burst');
       }
+      save();
       renderStats();
     }
 
-    // ==== Паутинка (radar chart) на canvas ====
+    // ===== Паутина (плавная анимация) =====
+    let disp = state.stats.map(() => 0); // отображаемые значения для интерполяции
+
+    function targetValue(s) {
+      const maxLevel = Math.max(5, ...state.stats.map(levelOf));
+      const v = levelOf(s) + cellsOf(s) / CELLS;
+      return v / maxLevel; // доля радиуса 0..1
+    }
+
     function drawRadar() {
       const canvas = document.getElementById('radar');
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height;
       const cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) / 2 - 60;
-      const n = stats.length;
+      const R = Math.min(W, H) / 2 - 62;
+      const n = state.stats.length;
 
       ctx.clearRect(0, 0, W, H);
 
-      // Максимум уровня для масштаба: растёт вместе с героем
-      const maxLevel = Math.max(5, ...stats.map(levelOf));
+      const maxLevel = Math.max(5, ...state.stats.map(levelOf));
 
-      // Паутинные кольца (уровни)
+      // Кольца-уровни
       ctx.strokeStyle = 'rgba(212,169,78,.25)';
       ctx.lineWidth = 1;
       for (let ring = 1; ring <= maxLevel; ring++) {
@@ -333,34 +654,31 @@
         ctx.stroke();
       }
 
-      // Лучи к вершинам
-      stats.forEach((s, i) => {
+      // Лучи к вершинам и подписи
+      ctx.strokeStyle = 'rgba(212,169,78,.35)';
+      state.stats.forEach((s, i) => {
         const a = i * (2 * Math.PI / n) - Math.PI / 2;
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
         ctx.stroke();
 
-        // Подписи характеристик
-        const lx = cx + (R + 26) * Math.cos(a);
-        const ly = cy + (R + 26) * Math.sin(a);
+        const lx = cx + (R + 30) * Math.cos(a);
+        const ly = cy + (R + 30) * Math.sin(a);
         ctx.fillStyle = '#e8d9b5';
-        ctx.font = '15px Cinzel, serif';
+        ctx.font = '15px "Bookman Old Style", Georgia, serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`${s.name} [${levelOf(s)}]`, lx, ly);
+        ctx.fillText(`${s.nom} [${levelOf(s)}]`, lx, ly);
       });
 
-      // Полигон значений — лучи соединены между собой
-      const poly = stats.map((s, i) => {
+      // Полигон значений (лучи соединены между собой)
+      const poly = state.stats.map((s, i) => {
         const a = i * (2 * Math.PI / n) - Math.PI / 2;
-        // радиус = уровень + заполнение текущей ячейки, для живости паутины
-        const v = levelOf(s) + cellsOf(s) / CELLS;
-        const r = R * v / maxLevel;
+        const r = R * disp[i];
         return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
       });
 
-      // Свечение под полигоном
       const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, R);
       grad.addColorStop(0, 'rgba(245,212,122,.45)');
       grad.addColorStop(1, 'rgba(163,59,46,.35)');
@@ -389,7 +707,262 @@
       });
     }
 
-    renderStats();
+    function animateRadar() {
+      let moving = false;
+      state.stats.forEach((s, i) => {
+        const target = targetValue(s);
+        const diff = target - disp[i];
+        if (Math.abs(diff) > 0.002) {
+          disp[i] += diff * 0.12;
+          moving = true;
+        } else {
+          disp[i] = target;
+        }
+      });
+      drawRadar();
+      requestAnimationFrame(animateRadar);
+    }
+
+    // ===== Центральный блок: уровень и опыт героя =====
+    function renderHero() {
+      document.getElementById('heroLevelValue').textContent = state.heroLevel;
+      document.getElementById('xpFill').style.width = (state.xp / XP_PER_LEVEL * 100) + '%';
+      document.getElementById('xpText').textContent =
+        `Опыт: ${state.xp} / ${XP_PER_LEVEL}`;
+    }
+
+    function gainXp(amount) {
+      state.xp += amount;
+      while (state.xp >= XP_PER_LEVEL) {
+        state.xp -= XP_PER_LEVEL;
+        state.heroLevel++;
+        log(`${state.heroName} повысил уровень до ${state.heroLevel}`);
+        fanfare();
+        const orb = document.getElementById('heroOrb');
+        orb.classList.remove('pulse');
+        void orb.offsetWidth; // перезапуск анимации
+        orb.classList.add('pulse');
+      }
+      renderHero();
+    }
+
+    function gainStatPoints(s, pts) {
+      const before = levelOf(s);
+      s.total += pts;
+      const after = levelOf(s);
+      if (after > before) {
+        log(`${state.heroName} повысил ${s.nom} до ${after} уровня`);
+        ding();
+        s._pulse = true;
+      }
+    }
+
+    // ===== Задания =====
+    function renderQuestMaker() {
+      const sel = document.getElementById('questStat');
+      sel.innerHTML = '';
+      state.stats.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.nom;
+        opt.textContent = s.nom[0].toUpperCase() + s.nom.slice(1);
+        sel.appendChild(opt);
+      });
+    }
+
+    function remainingTime(doneAt) {
+      const left = Math.max(0, DAY_MS - (Date.now() - doneAt));
+      const h = Math.floor(left / 3600000);
+      const m = Math.floor((left % 3600000) / 60000);
+      return `обновится через ${h} ч ${m} мин`;
+    }
+
+    function renderQuests() {
+      const container = document.getElementById('questList');
+      container.innerHTML = '';
+
+      if (!state.quests.length) {
+        container.innerHTML = '<div class="empty-note">Свиток пуст. Начертай первое задание!</div>';
+        return;
+      }
+
+      state.quests.forEach(q => {
+        const rar = RARITIES[q.rarity];
+        const row = document.createElement('div');
+        row.className = `quest r-${q.rarity}` + (q.done ? ' done' : '');
+
+        const checkWrap = document.createElement('label');
+        checkWrap.className = 'q-check';
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.checked = q.done;
+        if (q.done || (RARITIES[q.rarity].repeat && q.doneAt)) input.disabled = q.done;
+        input.addEventListener('change', () => completeQuest(q, row));
+        checkWrap.appendChild(input);
+        row.appendChild(checkWrap);
+
+        const body = document.createElement('div');
+        body.className = 'q-body';
+        const text = document.createElement('div');
+        text.className = 'q-text';
+        text.textContent = q.text;
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.innerHTML = `<span class="badge r-${q.rarity}">${rar.adj[0].toUpperCase() + rar.adj.slice(1)}</span>` +
+          `${xpWord(rar.xp)} · ${ptsWord(rar.pts, state.stats.find(s => s.nom === q.stat).acc)}`;
+        body.append(text, meta);
+
+        if (q.done && rar.repeat) {
+          const timer = document.createElement('div');
+          timer.className = 'q-timer';
+          timer.dataset.doneAt = q.doneAt;
+          timer.textContent = remainingTime(q.doneAt);
+          body.appendChild(timer);
+        } else if (q.done) {
+          const t = document.createElement('div');
+          t.className = 'q-timer';
+          t.textContent = 'выполнено';
+          body.appendChild(t);
+        }
+        row.appendChild(body);
+
+        const del = document.createElement('button');
+        del.className = 'q-del';
+        del.textContent = '✕';
+        del.title = 'Убрать задание из свитка';
+        del.addEventListener('click', () => {
+          state.quests = state.quests.filter(x => x.id !== q.id);
+          save();
+          renderQuests();
+        });
+        row.appendChild(del);
+
+        container.appendChild(row);
+      });
+    }
+
+    function completeQuest(q, row) {
+      if (q.done) return;
+      const rar = RARITIES[q.rarity];
+      q.done = true;
+      if (rar.repeat) q.doneAt = Date.now();
+
+      const stat = state.stats.find(s => s.nom === q.stat);
+
+      // Анимация вспышки и парящих наград
+      if (row) {
+        const rect = row.getBoundingClientRect();
+        row.classList.add('flash');
+        floatText(`+${rar.xp} опыта`, rect.left + 90, rect.top + 6, 'gold');
+        floatText(`+${rar.pts} к ${stat.nom}`, rect.left + 90, rect.top + 34, rar.floatClass);
+      }
+
+      // Награда
+      gainXp(rar.xp);
+      gainStatPoints(stat, rar.pts);
+
+      log(`${state.heroName} выполнил ${rar.adj} задание "${q.text}", получил ` +
+          `${xpWord(rar.xp)} и повысил ${stat.acc} на ${ptsWord(rar.pts, '')}`.replace('очков к ', 'очков') );
+
+      save();
+      setTimeout(() => { renderStats(); renderQuests(); renderJournal(false); }, 550);
+    }
+
+    function addQuest() {
+      const textInput = document.getElementById('questText');
+      const text = textInput.value.trim();
+      if (!text) { textInput.focus(); return; }
+
+      const q = {
+        id: Date.now() + Math.random().toString(36).slice(2, 7),
+        text,
+        stat: document.getElementById('questStat').value,
+        rarity: document.getElementById('questRarity').value,
+        done: false,
+        doneAt: null
+      };
+      const rar = RARITIES[q.rarity];
+      const stat = state.stats.find(s => s.nom === q.stat);
+      log(`${state.heroName} получил ${rar.adj} задание "${q.text}", ` +
+          `${xpWord(rar.xp)}, ${ptsWord(rar.pts, stat.acc)}.`);
+
+      state.quests.push(q);
+      textInput.value = '';
+      save();
+      renderQuests();
+    }
+
+    // Обновление таймеров и «оживление» регулярных заданий
+    function tick() {
+      let changed = false;
+      state.quests.forEach(q => {
+        if (q.done && RARITIES[q.rarity].repeat && Date.now() - q.doneAt >= DAY_MS) {
+          q.done = false;
+          q.doneAt = null;
+          changed = true;
+        }
+      });
+      document.querySelectorAll('.q-timer[data-done-at]').forEach(el => {
+        el.textContent = remainingTime(+el.dataset.doneAt);
+      });
+      if (changed) { save(); renderQuests(); }
+    }
+
+    // ===== Кнопка обнуления (двухшаговое подтверждение) =====
+    function setupReset() {
+      const btn = document.getElementById('resetBtn');
+      let armed = false, timer = null;
+      btn.addEventListener('click', () => {
+        if (!armed) {
+          armed = true;
+          btn.classList.add('armed');
+          btn.textContent = 'Точно?';
+          timer = setTimeout(() => {
+            armed = false;
+            btn.classList.remove('armed');
+            btn.textContent = '🗑';
+          }, 3000);
+        } else {
+          clearTimeout(timer);
+          armed = false;
+          btn.classList.remove('armed');
+          btn.textContent = '🗑';
+          state = defaultState();
+          disp = state.stats.map(() => 0);
+          try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+          document.getElementById('heroNameInput').value = state.heroName;
+          renderStats(); renderHero(); renderQuests(); renderJournal(false);
+        }
+      });
+    }
+
+    // ===== Инициализация =====
+    function init() {
+      const restored = load();
+
+      const nameInput = document.getElementById('heroNameInput');
+      nameInput.value = state.heroName;
+      nameInput.addEventListener('change', () => {
+        state.heroName = nameInput.value.trim() || 'Путник';
+        save();
+      });
+
+      document.getElementById('addQuestBtn').addEventListener('click', addQuest);
+      document.getElementById('questText').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addQuest();
+      });
+
+      setupReset();
+      renderQuestMaker();
+      renderStats();
+      renderHero();
+      renderQuests();
+      renderJournal(false);
+      animateRadar();
+      setInterval(tick, 1000);
+    }
+
+    init();
   </script>
 </body>
 </html>
+
