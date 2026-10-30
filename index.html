@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>RPG Stats Tracker</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #ef4444;
+      --bg: #f3f4f6;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --cell-bg: #e5e7eb;
+      --cell-fill: #3b82f6;
+    }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 { margin-top: 0; }
+    .section-title {
+      margin-top: 32px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 8px;
+    }
+    .stat-card {
+      background: var(--panel);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+    .level-display {
+      margin-top: 12px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    /* Progress bar as cells */
+    .progress-cells {
+      display: flex;
+      gap: 4px;
+      margin-top: 10px;
+      height: 24px;
+    }
+    .cell {
+      flex: 1;
+      background: var(--cell-bg);
+      border-radius: 4px;
+      position: relative;
+    }
+    .cell.filled {
+      background: var(--cell-fill);
+    }
+    .cell::after {
+      content: attr(data-points);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+      opacity: 0.8;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+    button:hover { background: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RPG Характеристики</h1>
+    <p>Вводи очки в поля. Каждые 10 очков — уровень +1 и сброс счётчика.</p>
+
+    <!-- Физические характеристики -->
+    <div class="section-title">Физические характеристики</div>
+    <div id="physical-stats"></div>
+
+    <!-- Психологические характеристики -->
+    <div class="section-title">Психологические характеристики</div>
+    <div id="psychological-stats"></div>
+
+    <!-- Умственные способности -->
+    <div class="section-title">Умственные способности</div>
+    <div id="mental-stats"></div>
+
+    <button onclick="saveStats()">Сохранить и обновить прогресс</button>
+  </div>
+
+  <script>
+    // Конфигурация характеристик
+    const statsConfig = [
+      { category: 'physical', name: 'Сила', points: 0, level: 1 },
+      { category: 'physical', name: 'Выносливость', points: 0, level: 1 },
+      { category: 'psychological', name: 'Воля', points: 0, level: 1 },
+      { category: 'psychological', name: 'Эмпатия', points: 0, level: 1 },
+      { category: 'mental', name: 'Интеллект', points: 0, level: 1 },
+      { category: 'mental', name: 'Память', points: 0, level: 1 }
+    ];
+
+    const MAX_CELLS = 10; // 10 ячеек = 1 уровень
+
+    function renderStats() {
+      document.getElementById('physical-stats').innerHTML = '';
+      document.getElementById('psychological-stats').innerHTML = '';
+      document.getElementById('mental-stats').innerHTML = '';
+
+      statsConfig.forEach(stat => {
+        const container = document.getElementById(`${stat.category}-stats`);
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+
+        // Ввод очков
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.min = '0';
+        input.placeholder = 'Очки';
+        input.value = stat.points;
+        input.dataset.name = stat.name;
+
+        // Отображение уровня
+        const levelDisplay = document.createElement('div');
+        levelDisplay.className = 'level-display';
+        levelDisplay.textContent = `Уровень: ${stat.level}`;
+
+        // Прогресс-бар из ячеек
+        const cellsContainer = document.createElement('div');
+        cellsContainer.className = 'progress-cells';
+        for (let i = 0; i < MAX_CELLS; i++) {
+          const cell = document.createElement('div');
+          cell.className = `cell ${i < stat.points ? 'filled' : ''}`;
+          cell.dataset.points = i + 1; // для подсказки
+          cellsContainer.appendChild(cell);
+        }
+
+        card.appendChild(document.createElement('label')).textContent = stat.name;
+        card.appendChild(input);
+        card.appendChild(levelDisplay);
+        card.appendChild(cellsContainer);
+        container.appendChild(card);
+      });
+    }
+
+    function saveStats() {
+      const inputs = document.querySelectorAll('input[type="number"]');
+      inputs.forEach(input => {
+        const name = input.dataset.name;
+        const stat = statsConfig.find(s => s.name === name);
+        if (stat) {
+          let points = parseInt(input.value, 10) || 0;
+          // Логика уровней: каждые 10 очков = +1 уровень, остаток — текущие очки
+          stat.level = 1 + Math.floor(points / MAX_CELLS);
+          stat.points = points % MAX_CELLS;
+        }
+      });
+      renderStats();
+    }
+
+    // Инициализация
+    renderStats();
+  </script>
+</body>
+</html>
