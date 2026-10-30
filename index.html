@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Летопись Героя</title>
   <style>
     :root {
@@ -16,7 +16,9 @@
       --purple: #c88ff5;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html { height: 100%; }
 
     body {
       margin: 0;
@@ -24,6 +26,7 @@
       font-family: 'Bookman Old Style', 'Bookman', Georgia, serif;
       color: var(--ink);
       background: radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
+      background-attachment: fixed;
     }
 
     h1 {
@@ -34,7 +37,7 @@
       text-shadow: 0 0 14px rgba(245, 212, 122, .45), 0 2px 2px #000;
       letter-spacing: 2px;
     }
-    .subtitle { text-align: center; font-size: .9rem; opacity: .7; margin: 0 0 20px; }
+    .subtitle { text-align: center; font-size: .9rem; opacity: .7; margin: 0 0 20px; padding: 0 14px; }
 
     header { position: relative; }
     .header-controls {
@@ -47,7 +50,7 @@
       border-radius: 8px;
       color: var(--ink);
       font-size: 1.1rem;
-      width: 40px; height: 40px;
+      width: 44px; height: 44px;   /* удобная зона касания */
       cursor: pointer;
       transition: all .2s;
     }
@@ -89,7 +92,7 @@
     }
     .hint { text-align: center; font-size: .7rem; opacity: .6; margin: 0 0 12px; }
 
-    /* ===== Портрет героя: большой, квадратная рамка ===== */
+    /* ===== Портрет героя ===== */
     .portrait-block {
       display: flex;
       flex-direction: column;
@@ -107,14 +110,12 @@
       cursor: pointer;
       transition: box-shadow .25s, transform .25s;
     }
-    .portrait-frame:hover {
-      box-shadow: 0 0 36px rgba(245,212,122,.7), inset 0 0 18px rgba(0,0,0,.7);
-      transform: scale(1.02);
-    }
+    .portrait-frame:active { transform: scale(.98); }
     .portrait-frame img {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
+      pointer-events: none;
     }
     .portrait-placeholder {
       position: absolute;
@@ -125,6 +126,7 @@
       justify-content: center;
       font-size: 3.4rem;
       opacity: .55;
+      pointer-events: none;
     }
     .portrait-placeholder .ph-hint {
       font-size: .6rem;
@@ -147,9 +149,14 @@
       text-align: center;
       padding: 6px;
     }
-    .portrait-frame:hover .portrait-overlay { opacity: 1; }
+    @media (hover: hover) {
+      .portrait-frame:hover {
+        box-shadow: 0 0 36px rgba(245,212,122,.7), inset 0 0 18px rgba(0,0,0,.7);
+        transform: scale(1.02);
+      }
+      .portrait-frame:hover .portrait-overlay { opacity: 1; }
+    }
 
-    /* Имя на главной — запечатано */
     .portrait-name {
       margin-top: 12px;
       font-size: 1.15rem;
@@ -164,8 +171,8 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    .name-sealed { font-size: .66rem; opacity: .55; font-style: italic; margin-top: 6px; }
 
-    /* Счётчик монет */
     .coins {
       margin-top: 10px;
       display: flex;
@@ -193,7 +200,7 @@
       100% { transform: scale(1); }
     }
 
-    /* ===== Характеристики и навыки (компактно) ===== */
+    /* ===== Характеристики и навыки ===== */
     .stat-row {
       display: flex;
       align-items: center;
@@ -237,6 +244,7 @@
       grid-template-columns: repeat(10, 1fr);
       gap: 3px;
       height: 20px;
+      min-width: 0;
     }
     .cell {
       border-radius: 3px;
@@ -259,12 +267,12 @@
     .row-del {
       background: none; border: none;
       color: rgba(232,217,181,.4);
-      font-size: .8rem; cursor: pointer;
-      padding: 2px;
+      font-size: .9rem; cursor: pointer;
+      padding: 8px;                /* крупнее для пальца */
     }
     .row-del:hover { color: #ff9b8a; }
 
-    /* ===== Формы (задания и навыки) ===== */
+    /* ===== Формы ===== */
     .maker {
       border: 1px solid rgba(212,169,78,.45);
       border-radius: 10px;
@@ -278,12 +286,12 @@
       border: 1px solid rgba(212,169,78,.5);
       border-radius: 6px;
       color: var(--ink);
-      padding: 6px 9px;
+      padding: 10px 10px;          /* просторнее под касание */
       font-family: inherit;
-      font-size: .82rem;
-      margin-bottom: 7px;
+      font-size: 16px;             /* 16px — чтобы iOS не зумил при фокусе */
+      margin-bottom: 8px;
     }
-    .maker .row { display: flex; gap: 7px; margin-bottom: 7px; }
+    .maker .row { display: flex; gap: 7px; margin-bottom: 8px; }
     .maker .row:last-child { margin-bottom: 0; }
     select {
       flex: 1;
@@ -291,9 +299,9 @@
       border: 1px solid rgba(212,169,78,.5);
       border-radius: 6px;
       color: var(--ink);
-      padding: 5px;
+      padding: 8px 6px;
       font-family: inherit;
-      font-size: .78rem;
+      font-size: 13px;
       min-width: 0;
     }
     .forge-btn {
@@ -302,14 +310,16 @@
       border: 1px solid var(--gold);
       border-radius: 8px;
       color: var(--gold-bright);
-      padding: 6px 12px;
+      padding: 10px 14px;
       font-family: inherit;
-      font-size: .82rem;
+      font-size: .85rem;
       letter-spacing: .5px;
       cursor: pointer;
       transition: box-shadow .2s;
       white-space: nowrap;
+      min-height: 42px;            /* зона касания */
     }
+    .forge-btn:active { transform: scale(.97); }
     .forge-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
 
     /* ===== Задания ===== */
@@ -317,12 +327,13 @@
       max-height: 300px;
       overflow-y: auto;
       padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
     }
     .quest {
       display: flex;
       align-items: flex-start;
       gap: 9px;
-      padding: 8px 10px;
+      padding: 9px 10px;
       border: 1px solid rgba(212,169,78,.3);
       border-left: 4px solid var(--gold);
       border-radius: 8px;
@@ -344,12 +355,17 @@
     @keyframes questVanish {
       to { opacity: 0; transform: translateX(46px) scale(.85); filter: blur(2px); }
     }
-    .q-check { margin-top: 2px; }
-    .q-check input { width: 15px; height: 15px; accent-color: #b8860b; cursor: pointer; }
-    .q-body { flex: 1; }
-    .q-text { font-size: .84rem; margin-bottom: 3px; }
+    .q-check { margin-top: 3px; flex: 0 0 auto; }
+    .q-check input {
+      width: 22px; height: 22px;   /* крупный чекбокс под палец */
+      accent-color: #b8860b;
+      cursor: pointer;
+      display: block;
+    }
+    .q-body { flex: 1; min-width: 0; }
+    .q-text { font-size: .84rem; margin-bottom: 3px; overflow-wrap: break-word; }
     .quest.done .q-text { text-decoration: line-through; opacity: .7; }
-    .q-meta { font-size: .68rem; opacity: .8; }
+    .q-meta { font-size: .68rem; opacity: .8; overflow-wrap: break-word; }
     .q-meta .q-skill { color: #a8c8f5; }
     .badge {
       display: inline-block;
@@ -366,8 +382,8 @@
     .q-del {
       background: none; border: none;
       color: rgba(232,217,181,.45);
-      font-size: .8rem; cursor: pointer;
-      padding: 2px 4px;
+      font-size: .9rem; cursor: pointer;
+      padding: 8px 4px;
     }
     .q-del:hover { color: #ff9b8a; }
 
@@ -380,11 +396,13 @@
       overflow-y: auto;
       font-size: .74rem;
       line-height: 1.45;
+      -webkit-overflow-scrolling: touch;
     }
     .journal li {
-      padding: 5px 8px;
+      padding: 7px 8px;
       border-bottom: 1px dashed rgba(212,169,78,.2);
       opacity: .9;
+      overflow-wrap: break-word;
     }
     .journal li.new { animation: journalIn .5s ease; }
     @keyframes journalIn {
@@ -414,7 +432,8 @@
     .hero-label { font-size: .85rem; letter-spacing: 1px; opacity: .85; }
 
     .xp-bar {
-      width: 240px; height: 14px;
+      width: 240px; max-width: 88%;
+      height: 14px;
       margin: 8px auto 4px;
       border: 1px solid var(--gold);
       border-radius: 8px;
@@ -430,7 +449,7 @@
     }
     .xp-text { font-size: .78rem; opacity: .8; }
 
-    canvas { display: block; margin: 0 auto; }
+    canvas { display: block; margin: 0 auto; max-width: 100%; }
 
     /* ===== Парящие награды ===== */
     .float {
@@ -441,6 +460,7 @@
       font-size: 1.1rem;
       text-shadow: 0 0 8px rgba(0,0,0,.9);
       animation: floatUp 1.7s ease-out forwards;
+      max-width: 60vw;
     }
     @keyframes floatUp {
       0%   { opacity: 0; transform: translateY(0) scale(.7); }
@@ -462,6 +482,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 16px;
       background: radial-gradient(ellipse at center, #2e2214 0%, #120d08 65%, #0a0705 100%);
     }
     #startScreen.hidden { display: none; }
@@ -471,6 +492,8 @@
       padding: 34px 40px;
       max-width: 460px;
       width: 92%;
+      max-height: 92vh;
+      overflow-y: auto;
       text-align: center;
       background:
         linear-gradient(160deg, rgba(212,169,78,.09), transparent 60%),
@@ -506,12 +529,10 @@
       cursor: pointer;
       position: relative;
       transition: box-shadow .25s, transform .25s;
+      flex: 0 0 auto;
     }
-    .start-frame:hover {
-      box-shadow: 0 0 34px rgba(245,212,122,.7), inset 0 0 14px rgba(0,0,0,.7);
-      transform: scale(1.03);
-    }
-    .start-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .start-frame:active { transform: scale(.98); }
+    .start-frame img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .start-frame .portrait-placeholder { font-size: 3rem; }
     .start-name-input {
       width: 100%;
@@ -519,9 +540,9 @@
       border: 1px solid var(--gold);
       border-radius: 8px;
       color: var(--gold-bright);
-      padding: 9px 12px;
+      padding: 11px 12px;
       font-family: inherit;
-      font-size: 1rem;
+      font-size: 16px;
       text-align: center;
       margin-bottom: 16px;
     }
@@ -532,20 +553,94 @@
       border: 1px solid var(--gold);
       border-radius: 10px;
       color: var(--gold-bright);
-      padding: 12px;
+      padding: 13px;
       font-family: inherit;
       font-size: 1.05rem;
       letter-spacing: 1px;
       cursor: pointer;
       transition: box-shadow .2s;
     }
+    .start-btn:active { transform: scale(.98); }
     .start-btn:hover { box-shadow: 0 0 18px rgba(245,212,122,.55); }
     .start-hint { font-size: .68rem; opacity: .55; margin-top: 14px; }
-    .name-sealed { font-size: .66rem; opacity: .55; font-style: italic; margin-top: 6px; }
 
+    /* ===== Планшеты и узкие экраны ===== */
     @media (max-width: 1150px) {
-      .app { grid-template-columns: 1fr; }
+      h1 { font-size: 1.5rem; }
+      .subtitle { font-size: .8rem; margin-bottom: 16px; }
+
+      .app {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        max-width: 640px;
+        padding: 0 12px;
+        margin-bottom: 32px;
+      }
+      /* На телефоне порядок Daily-first: облик+задания, потом паутина, потом кузня и гримуар */
+      .col-right { order: 1; }
+      .throne    { order: 2; }
+      .col-left  { order: 3; }
+
+      .panel { padding: 12px; }
+
       .header-controls { position: static; text-align: center; margin-bottom: 12px; }
+
+      .portrait-frame { width: 148px; height: 148px; }
+      .portrait-name { max-width: 190px; }
+
+      .stat-row { gap: 6px; padding: 8px 7px; }
+      .stat-name { flex: 0 0 84px; font-size: .74rem; }
+      .level-orb { flex: 0 0 38px; width: 38px; height: 38px; }
+      .lvl-value { font-size: .95rem; }
+      .cells { height: 18px; gap: 2px; }
+      .cell { border-width: 1px; }
+
+      .quest-list { max-height: 280px; }
+      .journal ul { max-height: 220px; }
+      .float { font-size: .95rem; }
+    }
+
+    /* ===== Телефоны ===== */
+    @media (max-width: 480px) {
+      h1 { font-size: 1.25rem; margin-top: 16px; letter-spacing: 1px; }
+      .subtitle { font-size: .74rem; }
+
+      .app { gap: 14px; padding: 0 8px; }
+      .panel { padding: 10px; border-width: 1.5px; border-radius: 12px; }
+      .panel h2 { font-size: .95rem; }
+      .hint { font-size: .66rem; }
+
+      .portrait-frame { width: 128px; height: 128px; }
+      .portrait-placeholder { font-size: 2.6rem; }
+      .portrait-name { font-size: 1.02rem; max-width: 170px; }
+      .coins { padding: 5px 14px; }
+      .coins .coin-value { font-size: .98rem; }
+
+      .stat-name { flex: 0 0 76px; font-size: .7rem; }
+      .level-orb { flex: 0 0 34px; width: 34px; height: 34px; }
+      .lvl-label { display: none; }           /* экономим место: только число */
+      .lvl-value { font-size: .95rem; }
+      .cells { height: 17px; gap: 2px; }
+
+      .maker input[type="text"] { font-size: 16px; padding: 10px; }
+      .maker .row { flex-wrap: wrap; }
+      .maker .row select { min-width: 120px; }
+      .forge-btn { flex: 1 1 auto; }
+
+      .quest-list { max-height: 300px; }
+      .q-check input { width: 24px; height: 24px; }
+      .q-text { font-size: .8rem; }
+      .q-meta { font-size: .64rem; }
+
+      .journal ul { max-height: 200px; font-size: .7rem; }
+
+      .hero-orb { width: 72px; height: 72px; }
+      .hero-orb .lvl-value { font-size: 1.6rem; }
+
+      .start-card { padding: 24px 18px; }
+      .start-card h2 { font-size: 1.35rem; }
+      .start-frame { width: 128px; height: 128px; }
+      .start-btn { font-size: .95rem; }
     }
   </style>
 </head>
@@ -575,7 +670,7 @@
 
   <header>
     <h1>⚔ Летопись Героя ⚔</h1>
-    <p class="subtitle">Кузня и гримуар слева, паутина судьбы в центре, свиток заданий справа</p>
+    <p class="subtitle">Кузня и гримуар, паутина судьбы, свиток заданий</p>
     <div class="header-controls">
       <button id="resetBtn" class="trash-btn" title="Обнулить прогресс">🗑</button>
     </div>
@@ -583,7 +678,7 @@
 
   <div class="app">
     <!-- ЛЕВАЯ ЧАСТЬ: характеристики + навыки -->
-    <div>
+    <div class="col-left">
       <section class="panel">
         <h2>Кузня характеристик</h2>
         <p class="hint">Каждые 10 очков куют новый уровень. Растут только от заданий.</p>
@@ -606,7 +701,7 @@
       <div class="hero-block">
         <div class="hero-orb" id="heroOrb">
           <span class="lvl-label">уровень</span>
-          <span class="lvl-value" id="heroLevelValue">1</span>
+          <span class="lvl-value" id="heroLevelValue">1</size></span>
         </div>
         <div class="hero-label">Уровень героя</div>
         <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
@@ -616,8 +711,7 @@
     </section>
 
     <!-- ПРАВАЯ ЧАСТЬ: портрет + монеты + задания + журнал -->
-    <section class="panel">
-      <!-- Облик героя: большой, квадратная рамка -->
+    <section class="panel col-right">
       <div class="portrait-block">
         <div class="portrait-frame" id="portraitFrame" title="Загрузить портрет">
           <img id="portraitImg" alt="" style="display:none" />
@@ -669,6 +763,7 @@
     const CELLS = 10;
     const XP_PER_LEVEL = 100;
     const DAY_MS = 24 * 60 * 60 * 1000;
+    const RADAR_MAX = 540;
 
     const STATS = [
       { nom: 'сила',         acc: 'силу' },
@@ -715,7 +810,6 @@
             if (!Array.isArray(parsed.skills)) parsed.skills = [];
             if (!Array.isArray(parsed.quests)) parsed.quests = [];
             if (!Array.isArray(parsed.journal)) parsed.journal = [];
-            // Прогресс из прошлых версий уже начат — стартовую страницу не показываем
             if (typeof parsed.firstLaunch !== 'boolean') parsed.firstLaunch = false;
             if (typeof parsed.coins !== 'number') parsed.coins = 0;
             state = parsed;
@@ -802,13 +896,13 @@
       const el = document.createElement('div');
       el.className = 'float ' + cls;
       el.textContent = text;
-      el.style.left = x + 'px';
+      el.style.left = Math.min(x, window.innerWidth - 130) + 'px';
       el.style.top = y + 'px';
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 1800);
     }
 
-    // ===== Сжатие изображения (общее для старта и смены облика) =====
+    // ===== Сжатие изображения =====
     function compressImage(file, cb) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -878,7 +972,6 @@
       }
 
       frame.addEventListener('click', () => input.click());
-      nameInput.focus();
 
       const begin = () => {
         const name = nameInput.value.trim();
@@ -888,7 +981,6 @@
         save();
         renderHeroName();
         screen.classList.add('hidden');
-        // Разрешаем звуки после первого клика пользователя
         ensureAudio();
       };
 
@@ -897,7 +989,6 @@
       bindPortrait('startPortraitInput', renderPortrait);
     }
 
-    // ===== Имя героя (на главной — только отображение) =====
     function renderHeroName() {
       document.getElementById('heroNameDisplay').textContent = state.heroName;
     }
@@ -913,7 +1004,7 @@
       }
     }
 
-    // ===== Кузня характеристик (только отображение) =====
+    // ===== Кузня характеристик =====
     function renderStats() {
       const container = document.getElementById('stats');
       container.innerHTML = '';
@@ -1030,7 +1121,7 @@
       renderQuestMaker();
     }
 
-    // ===== Паутина (плавная анимация) =====
+    // ===== Паутина (плавная анимация, адаптивный размер) =====
     let disp = state.stats.map(() => 0);
 
     function targetValue(s) {
@@ -1039,13 +1130,25 @@
       return v / maxLevel;
     }
 
+    function sizeCanvas() {
+      const canvas = document.getElementById('radar');
+      const panel = canvas.parentElement;
+      const size = Math.max(280, Math.min(RADAR_MAX, panel.clientWidth - 8));
+      if (canvas.width !== size) {
+        canvas.width = size;
+        canvas.height = size;
+      }
+    }
+
     function drawRadar() {
       const canvas = document.getElementById('radar');
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height;
       const cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) / 2 - 62;
+      const R = Math.min(W, H) / 2 - Math.max(34, W * 0.12); // запас под подписи
       const n = state.stats.length;
+      const labelR = R + Math.max(20, W * 0.055);
+      const fontSize = Math.max(11, Math.round(W * 0.028));
 
       ctx.clearRect(0, 0, W, H);
 
@@ -1072,10 +1175,10 @@
         ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
         ctx.stroke();
 
-        const lx = cx + (R + 30) * Math.cos(a);
-        const ly = cy + (R + 30) * Math.sin(a);
+        const lx = cx + labelR * Math.cos(a);
+        const ly = cy + labelR * Math.sin(a);
         ctx.fillStyle = '#e8d9b5';
-        ctx.font = '15px "Bookman Old Style", Georgia, serif';
+        ctx.font = `${fontSize}px "Bookman Old Style", Georgia, serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(`${s.nom} [${levelOf(s)}]`, lx, ly);
@@ -1115,6 +1218,7 @@
     }
 
     function animateRadar() {
+      sizeCanvas();
       state.stats.forEach((s, i) => {
         const target = targetValue(s);
         const diff = target - disp[i];
@@ -1256,7 +1360,6 @@
       const stat = state.stats.find(s => s.nom === q.stat);
       const skill = q.skill ? state.skills.find(sk => sk.name === q.skill) : null;
 
-      // Вспышка и парящие награды
       if (row) {
         const rect = row.getBoundingClientRect();
         row.classList.add('flash');
@@ -1266,7 +1369,6 @@
         if (skill) floatText(`+1 к «${skill.name}»`, rect.left + 90, rect.top + 82, 'blue');
       }
 
-      // Награда: опыт, монеты (в том же количестве), очки характеристики и навыка
       gainXp(rar.xp);
       state.coins += rar.xp;
       renderCoins(true);
@@ -1284,7 +1386,6 @@
       if (rar.repeat) {
         setTimeout(() => { renderStats(); renderSkills(); renderQuests(); renderJournal(false); }, 550);
       } else {
-        // Одноразовые задания сами исчезают из свитка
         setTimeout(() => {
           if (row) row.classList.add('vanish');
         }, 500);
@@ -1322,7 +1423,6 @@
       renderQuests();
     }
 
-    // Обновление таймеров и «оживление» регулярных заданий
     function tick() {
       let changed = false;
       state.quests.forEach(q => {
@@ -1338,7 +1438,7 @@
       if (changed) { save(); renderQuests(); }
     }
 
-    // ===== Кнопка обнуления (двухшаговое подтверждение) =====
+    // ===== Кнопка обнуления =====
     function setupReset() {
       const btn = document.getElementById('resetBtn');
       let armed = false, timer = null;
@@ -1360,7 +1460,6 @@
           const oldName = state.heroName;
           const oldPortrait = state.portrait;
           state = defaultState();
-          // Имя и облик переживают обнуление — они запечатаны
           state.heroName = oldName;
           state.portrait = oldPortrait;
           state.firstLaunch = false;
@@ -1403,6 +1502,10 @@
       renderJournal(false);
       animateRadar();
       setInterval(tick, 1000);
+
+      // Перестраиваем паутину при повороте экрана и изменении окна
+      window.addEventListener('resize', sizeCanvas);
+      window.addEventListener('orientationchange', sizeCanvas);
     }
 
     init();
