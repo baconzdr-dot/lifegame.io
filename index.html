@@ -42,100 +42,262 @@
     }
 
     /* ===== Купленные фоны ===== */
-    body.bg-embers::before {
-      background:
-        repeating-linear-gradient(45deg, rgba(200,70,40,.06) 0 14px, transparent 14px 28px),
-        radial-gradient(ellipse at top, #401610 0%, #170a08 60%, #0a0505 100%);
+body.bg-gold::before {
+      background: radial-gradient(ellipse at top, #f4d878 0%, #c8960c 48%, #6a4a08 100%);
     }
-    body.bg-frost::before {
+    body.bg-violet::before {
+      background: radial-gradient(ellipse at top, #8a56c8 0%, #3a1a60 55%, #140828 100%);
+    }
+    body.bg-gray::before {
+      background: #38383c;
+    }
+    body.bg-blue-check::before {
       background:
-        radial-gradient(circle at 25% 25%, rgba(150,200,240,.10) 1.6px, transparent 2.6px) 0 0/30px 30px,
-        radial-gradient(circle at 75% 75%, rgba(150,200,240,.08) 1.6px, transparent 2.6px) 15px 15px/30px 30px,
-        radial-gradient(ellipse at top, #1a2432 0%, #0c1220 60%, #060910 100%);
+        linear-gradient(90deg, rgba(110,165,230,.28) 1px, transparent 1px) 0 0/28px 28px,
+        linear-gradient(rgba(110,165,230,.28) 1px, transparent 1px) 0 0/28px 28px,
+        #f4f8fd;
+    }
+    body.bg-chess::before {
+      background: repeating-conic-gradient(#2c2c30 0% 25%, #46464a 0% 50%) 0 0/56px 56px;
     }
 
-    /* ===== Тема «Пергамент»: повышенный контраст ===== */
-    body.theme-white {
-      --panel: #faf4e4;
-      --ink: #2a1c0e;
-      --gold: #7a5c22;
-      --gold-bright: #5d4312;
-      --cell-empty: #e4d6b4;
-      --cell-fill: linear-gradient(180deg, #a3762a, #5d4312);
-      --btn-top: #e8d8b4;
-      --btn-bot: #c9b383;
-      --icon-top: #efe6d2;
-      --icon-bot: #d2bf94;
-      --row-bg: rgba(120,90,40,.16);
-      --input-bg: #fffdf6;
-      --shadow-dark: rgba(90,65,20,.28);
-      --head-shadow: 0 1px 1px rgba(255,255,255,.8);
+   /* ===== Тема «Лесной шёпот» (природная) ===== */
+    body.theme-nature {
+      --panel: #1c2416;
+      --ink: #dce8cc;
+      --gold: #8aa858;
+      --gold-bright: #c0dc84;
+      --cell-empty: #26321c;
+      --cell-fill: linear-gradient(180deg, #c8e890, #6a9838);
+      --btn-top: #3a4a24;
+      --btn-bot: #26321c;
+      --icon-top: #324020;
+      --icon-bot: #1c2416;
+      --row-bg: rgba(20,40,10,.35);
+      --input-bg: rgba(10,20,5,.55);
+      --shadow-dark: rgba(10,20,5,.7);
+      --head-shadow: 0 0 10px rgba(192,220,132,.35);
     }
-    /* Светлые тексты на светлом фоне читаются плохо — гасим золотые свечения
-       и уплотняем границы, чтобы элементы не сливались */
-    body.theme-white h1,
-    body.theme-white .panel h2,
-    body.theme-white .portrait-name,
-    body.theme-white .lvl-value,
-    body.theme-white .coin-value,
-    body.theme-white .si-name,
-    body.theme-white .q-group-title,
-    body.theme-white .shop-group-title,
-    body.theme-white .modal-head h2,
-    body.theme-white .hero-orb .lvl-value {
+
+    /* ===== Тема «Готический собор» ===== */
+    body.theme-gothic {
+      --panel: #191322;
+      --ink: #d8cce8;
+      --gold: #7e68a8;
+      --gold-bright: #b49ae0;
+      --cell-empty: #241a34;
+      --cell-fill: linear-gradient(180deg, #c8b0f0, #6a48a0);
+      --btn-top: #382a52;
+      --btn-bot: #241a34;
+      --icon-top: #2e2244;
+      --icon-bot: #191322;
+      --row-bg: rgba(30,15,55,.4);
+      --input-bg: rgba(15,8,25,.6);
+      --shadow-dark: rgba(10,5,20,.75);
+      --head-shadow: 0 0 10px rgba(180,154,224,.4);
+    }
+
+    /* ===== Тема «Ангельский свет» (светлая) ===== */
+    body.theme-angelic {
+      --panel: #fbf8ee;
+      --ink: #3e3850;
+      --gold: #8a86b8;
+      --gold-bright: #565088;
+      --cell-empty: #ece8d8;
+      --cell-fill: linear-gradient(180deg, #b8bce0, #6a6aa8);
+      --btn-top: #ece6d4;
+      --btn-bot: #cfc8b0;
+      --icon-top: #f2eee0;
+      --icon-bot: #d8d2bc;
+      --row-bg: rgba(120,116,180,.14);
+      --input-bg: #fffefa;
+      --shadow-dark: rgba(90,84,136,.25);
+      --head-shadow: 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    /* ===== Тема «Розовые сны» (светлая) ===== */
+    body.theme-pink {
+      --panel: #ffeef4;
+      --ink: #5e2036;
+      --gold: #c2718e;
+      --gold-bright: #9e3a5e;
+      --cell-empty: #f6d8e2;
+      --cell-fill: linear-gradient(180deg, #f0a8c0, #c05a80);
+      --btn-top: #fcd8e4;
+      --btn-bot: #eab0c4;
+      --icon-top: #fde4ec;
+      --icon-bot: #eec2d2;
+      --row-bg: rgba(200,110,140,.14);
+      --input-bg: #fffafb;
+      --shadow-dark: rgba(160,60,95,.25);
+      --head-shadow: 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    /* ===== Тема «Небесная дымка» (светлая) ===== */
+    body.theme-blue {
+      --panel: #eaf3fc;
+      --ink: #24406a;
+      --gold: #5e8ac8;
+      --gold-bright: #34619e;
+      --cell-empty: #d4e4f4;
+      --cell-fill: linear-gradient(180deg, #88b0e0, #3a68a8);
+      --btn-top: #d8e8f8;
+      --btn-bot: #b0cce8;
+      --icon-top: #e0eefc;
+      --icon-bot: #c2d8f0;
+      --row-bg: rgba(60,110,180,.13);
+      --input-bg: #f8fbff;
+      --shadow-dark: rgba(40,80,150,.25);
+      --head-shadow: 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    /* Контраст для светлых тем: как у «Пергамента» — гасим свечения,
+       уплотняем границы, темнее бейджи и особые записи журнала */
+    body.theme-angelic h1,
+    body.theme-pink h1,
+    body.theme-blue h1,
+    body.theme-angelic .panel h2,
+    body.theme-pink .panel h2,
+    body.theme-blue .panel h2,
+    body.theme-angelic .portrait-name,
+    body.theme-pink .portrait-name,
+    body.theme-blue .portrait-name,
+    body.theme-angelic .lvl-value,
+    body.theme-pink .lvl-value,
+    body.theme-blue .lvl-value,
+    body.theme-angelic .coin-value,
+    body.theme-pink .coin-value,
+    body.theme-blue .coin-value,
+    body.theme-angelic .si-name,
+    body.theme-pink .si-name,
+    body.theme-blue .si-name,
+    body.theme-angelic .q-group-title,
+    body.theme-pink .q-group-title,
+    body.theme-blue .q-group-title,
+    body.theme-angelic .shop-group-title,
+    body.theme-pink .shop-group-title,
+    body.theme-blue .shop-group-title,
+    body.theme-angelic .modal-head h2,
+    body.theme-pink .modal-head h2,
+    body.theme-blue .modal-head h2,
+    body.theme-angelic .hero-orb .lvl-value,
+    body.theme-pink .hero-orb .lvl-value,
+    body.theme-blue .hero-orb .lvl-value {
       text-shadow: 0 1px 0 rgba(255,255,255,.85);
     }
-    body.theme-white .panel {
-      border-color: #7a5c22;
-      box-shadow: inset 0 0 30px rgba(120,90,40,.14), 0 0 18px rgba(120,90,40,.28);
+    body.theme-angelic .coins .coin-value,
+    body.theme-pink .coins .coin-value,
+    body.theme-blue .coins .coin-value { text-shadow: none; }
+    body.theme-angelic .panel,
+    body.theme-pink .panel,
+    body.theme-blue .panel {
+      border-color: var(--gold);
+      box-shadow: inset 0 0 30px rgba(90,70,30,.14), 0 0 18px rgba(90,70,30,.25);
     }
-    body.theme-white .stat-row,
-    body.theme-white .quest,
-    body.theme-white .maker,
-    body.theme-white .shop-item {
-      border-color: rgba(120,90,40,.5);
+    body.theme-angelic .stat-row,
+    body.theme-pink .stat-row,
+    body.theme-blue .stat-row,
+    body.theme-angelic .quest,
+    body.theme-pink .quest,
+    body.theme-blue .quest,
+    body.theme-angelic .maker,
+    body.theme-pink .maker,
+    body.theme-blue .maker,
+    body.theme-angelic .shop-item,
+    body.theme-pink .shop-item,
+    body.theme-blue .shop-item {
+      border-color: rgba(100,70,90,.45);
     }
-    body.theme-white .q-meta,
-    body.theme-white .hint,
-    body.theme-white .si-desc { opacity: .95; }
-    body.theme-white .journal li { color: #3a2a16; }
-    body.theme-white .journal li.j-gold,
-    body.theme-white .journal li.j-legend,
-    body.theme-white .journal li.j-stat,
-    body.theme-white .journal li.j-ach { color: #3a2a16; font-weight: bold; }
-    body.theme-white .badge.r-regular   { color: #3d7a2e; }
-    body.theme-white .badge.r-common    { color: #7a5c22; }
-    body.theme-white .badge.r-legendary { color: #7a2ea3; }
-    body.theme-white .q-skill { color: #2e5a8a; }
-    body.theme-white .quest.r-regular   { border-left-color: #3d7a2e; }
-    body.theme-white .quest.r-common    { border-left-color: #7a5c22; }
-    body.theme-white .quest.r-legendary { border-left-color: #7a2ea3; }
-    body.theme-white .row-del,
-    body.theme-white .q-del { color: rgba(60,40,15,.55); }
-    body.theme-white .cell {
-      border-color: rgba(122,92,34,.7);
-      box-shadow: inset 0 2px 4px rgba(90,65,20,.35);
+    body.theme-angelic .q-meta,
+    body.theme-pink .q-meta,
+    body.theme-blue .q-meta,
+    body.theme-angelic .hint,
+    body.theme-pink .hint,
+    body.theme-blue .hint,
+    body.theme-angelic .si-desc,
+    body.theme-pink .si-desc,
+    body.theme-blue .si-desc { opacity: .95; }
+    body.theme-angelic .journal li,
+    body.theme-pink .journal li,
+    body.theme-blue .journal li { color: var(--ink); }
+    body.theme-angelic .journal li.j-gold,
+    body.theme-pink .journal li.j-gold,
+    body.theme-blue .journal li.j-gold,
+    body.theme-angelic .journal li.j-legend,
+    body.theme-pink .journal li.j-legend,
+    body.theme-blue .journal li.j-legend,
+    body.theme-angelic .journal li.j-stat,
+    body.theme-pink .journal li.j-stat,
+    body.theme-blue .journal li.j-stat,
+    body.theme-angelic .journal li.j-ach,
+    body.theme-pink .journal li.j-ach,
+    body.theme-blue .journal li.j-ach {
+      color: var(--gold-bright);
+      font-weight: bold;
     }
-    body.theme-white .q-timer { color: #3d7a2e; }
-
-    /* ===== Тема «Кровавая полночь» ===== */
-    body.theme-red {
-      --panel: #2e0d0d;
-      --ink: #f5d5c4;
-      --gold: #d97e5e;
-      --gold-bright: #ffab8f;
-      --cell-empty: #3a1512;
-      --cell-fill: linear-gradient(180deg, #ffb3a0, #c94b2e);
-      --btn-top: #5a2018;
-      --btn-bot: #3a1512;
-      --icon-top: #4a1a14;
-      --icon-bot: #2e0d0d;
-      --row-bg: rgba(80,20,10,.4);
-      --input-bg: rgba(20,5,5,.6);
-      --shadow-dark: rgba(30,5,5,.7);
-      --head-shadow: 0 0 10px rgba(255,171,143,.4);
+    body.theme-angelic .badge.r-regular,
+    body.theme-pink .badge.r-regular,
+    body.theme-blue .badge.r-regular { color: #2e6a24; }
+    body.theme-angelic .badge.r-common,
+    body.theme-pink .badge.r-common,
+    body.theme-blue .badge.r-common { color: #7a5c22; }
+    body.theme-angelic .badge.r-legendary,
+    body.theme-pink .badge.r-legendary,
+    body.theme-blue .badge.r-legendary { color: #6a2e8e; }
+    body.theme-angelic .q-skill,
+    body.theme-pink .q-skill,
+    body.theme-blue .q-skill { color: #2e5a8a; }
+    body.theme-angelic .quest.r-regular,
+    body.theme-pink .quest.r-regular,
+    body.theme-blue .quest.r-regular { border-left-color: #3d7a2e; }
+    body.theme-angelic .quest.r-common,
+    body.theme-pink .quest.r-common,
+    body.theme-blue .quest.r-common { border-left-color: #7a5c22; }
+    body.theme-angelic .quest.r-legendary,
+    body.theme-pink .quest.r-legendary,
+    body.theme-blue .quest.r-legendary { border-left-color: #7a2ea3; }
+    body.theme-angelic .row-del,
+    body.theme-pink .row-del,
+    body.theme-blue .row-del,
+    body.theme-angelic .q-del,
+    body.theme-pink .q-del,
+    body.theme-blue .q-del { color: rgba(60,40,15,.55); }
+    body.theme-angelic .cell,
+    body.theme-pink .cell,
+    body.theme-blue .cell {
+      border-color: rgba(90,60,30,.55);
+      box-shadow: inset 0 2px 4px rgba(90,65,20,.3);
     }
-
+    body.theme-angelic .q-timer,
+    body.theme-pink .q-timer,
+    body.theme-blue .q-timer { color: #2e6a24; }
+    body.theme-angelic .journal li.j-gold,
+    body.theme-pink .journal li.j-gold,
+    body.theme-blue .journal li.j-gold {
+      background: linear-gradient(90deg, rgba(170,125,40,.2), transparent 70%);
+      border-bottom-color: rgba(170,125,40,.55);
+    }
+    body.theme-angelic .journal li.j-legend,
+    body.theme-pink .journal li.j-legend,
+    body.theme-blue .journal li.j-legend {
+      background: linear-gradient(90deg, rgba(122,46,163,.14), transparent 70%);
+      border-bottom-color: rgba(122,46,163,.5);
+      box-shadow: inset 3px 0 0 #7a2ea3;
+    }
+    body.theme-angelic .journal li.j-stat,
+    body.theme-pink .journal li.j-stat,
+    body.theme-blue .journal li.j-stat {
+      background: linear-gradient(90deg, rgba(61,122,46,.14), transparent 70%);
+      border-bottom-color: rgba(61,122,46,.45);
+      box-shadow: inset 3px 0 0 #3d7a2e;
+    }
+    body.theme-angelic .journal li.j-ach,
+    body.theme-pink .journal li.j-ach,
+    body.theme-blue .journal li.j-ach {
+      background: linear-gradient(90deg, rgba(170,125,40,.3), rgba(122,46,163,.1) 60%, transparent);
+      border-bottom-color: rgba(170,125,40,.6);
+      box-shadow: inset 3px 0 0 #7a5c22;
+    }
     h1 {
       text-align: center;
       font-size: 2rem;
@@ -225,13 +387,26 @@
       padding: 0;
       flex: 0 0 auto;
     }
-    .portrait-frame.frame-red, .start-frame.frame-red {
-      border-color: #e05555;
-      box-shadow: 0 0 26px rgba(224,85,85,.55), inset 0 0 18px rgba(0,0,0,.7);
+    .portrait-frame.frame-white, .start-frame.frame-white {
+      border-color: #ffffff;
+      border-style: solid;
+      box-shadow: inset 0 0 18px rgba(0,0,0,.7);
     }
-    .portrait-frame.frame-green, .start-frame.frame-green {
-      border-color: #8fd47a;
-      box-shadow: 0 0 26px rgba(143,212,122,.55), inset 0 0 18px rgba(0,0,0,.7);
+    .portrait-frame.frame-black, .start-frame.frame-black {
+      border-color: #161616;
+      border-style: solid;
+      box-shadow: inset 0 0 18px rgba(0,0,0,.7), 0 0 14px rgba(0,0,0,.55);
+    }
+    .portrait-frame.frame-black-dash, .start-frame.frame-black-dash {
+      border-color: #161616;
+      border-style: dashed;
+      box-shadow: inset 0 0 18px rgba(0,0,0,.7);
+    }
+    .portrait-frame.frame-black-dot, .start-frame.frame-black-dot {
+      border-color: #161616;
+      border-style: dotted;
+      border-width: 4px;
+      box-shadow: inset 0 0 18px rgba(0,0,0,.7);
     }
     .portrait-frame:active { transform: scale(.98); }
     .portrait-frame:focus-visible,
@@ -1240,14 +1415,31 @@
       { key: 'regular',   title: 'Регулярные — обновляются после 00:00' }
     ];
 
-    const SHOP_ITEMS = {
-      'frame-red':    { type: 'frame',       name: 'Алые оковы',        desc: 'Алая рамка для портрета героя',   price: 50  },
-      'frame-green':  { type: 'frame',       name: 'Изумрудный оберег', desc: 'Зелёная рамка для портрета героя', price: 50  },
-      'bg-embers':    { type: 'background',  name: 'Угольная бездна',   desc: 'Тёмный фон с алым узором',         price: 100 },
-      'bg-frost':     { type: 'background',  name: 'Морозные кружева',  desc: 'Холодный фон в звёздную крапинку', price: 100 },
-      'theme-white':  { type: 'theme',       name: 'Пергамент',         desc: 'Светлая тема всей страницы',       price: 150 },
-      'theme-red':    { type: 'theme',       name: 'Кровавая полночь',  desc: 'Алая тема всей страницы',          price: 150 }
+       const SHOP_ITEMS = {
+      'frame-red':       { type: 'frame',      name: 'Алые оковы',        desc: 'Алая рамка для портрета героя',    price: 50  },
+      'frame-green':     { type: 'frame',      name: 'Изумрудный оберег', desc: 'Зелёная рамка для портрета героя', price: 50  },
+      'frame-white':     { type: 'frame',      name: 'Белоснежная оправа', desc: 'Простая белая рамка без украшений', price: 50 },
+      'frame-black':     { type: 'frame',      name: 'Угольная оправа',   desc: 'Простая чёрная рамка без украшений', price: 50 },
+      'frame-black-dash':{ type: 'frame',      name: 'Пунктирный след',   desc: 'Чёрная рамка пунктиром',           price: 50  },
+      'frame-black-dot': { type: 'frame',      name: 'Крапчатая тень',    desc: 'Чёрная рамка в крапинку',          price: 50  },
+
+      'bg-embers':    { type: 'background', name: 'Угольная бездна',   desc: 'Тёмный фон с алым узором',           price: 100 },
+      'bg-frost':     { type: 'background', name: 'Морозные кружева',  desc: 'Холодный фон в звёздную крапинку',   price: 100 },
+      'bg-gold':      { type: 'background', name: 'Золотой рассвет',   desc: 'Чистый золотой фон с градиентом',    price: 100 },
+      'bg-violet':    { type: 'background', name: 'Фиалковый сумрак',  desc: 'Чистый фиолетовый фон с градиентом', price: 100 },
+      'bg-gray':      { type: 'background', name: 'Пепельный свод',    desc: 'Однотонный тёмно-серый фон',         price: 100 },
+      'bg-blue-check':{ type: 'background', name: 'Облачная клетка',   desc: 'Белый фон в светло-синюю клетку',    price: 100 },
+      'bg-chess':     { type: 'background', name: 'Турнирный зал',     desc: 'Шахматная клетка',                   price: 100 },
+
+      'theme-white':  { type: 'theme', name: 'Пергамент',          desc: 'Светлая тема всей страницы', price: 150 },
+      'theme-red':    { type: 'theme', name: 'Кровавая полночь',   desc: 'Алая тема всей страницы',    price: 150 },
+      'theme-nature': { type: 'theme', name: 'Лесной шёпот',       desc: 'Тема в природных тонах',     price: 150 },
+      'theme-gothic': { type: 'theme', name: 'Готический собор',   desc: 'Мрачная фиолетовая тема',    price: 150 },
+      'theme-angelic':{ type: 'theme', name: 'Ангельский свет',    desc: 'Светлая небесная тема',      price: 150 },
+      'theme-pink':   { type: 'theme', name: 'Розовые сны',        desc: 'Милая розовая тема',         price: 150 },
+      'theme-blue':   { type: 'theme', name: 'Небесная дымка',     desc: 'Милая голубая тема',         price: 150 }
     };
+
     const SHOP_GROUPS = [
       { type: 'frame',      title: 'Рамки для портрета' },
       { type: 'background', title: 'Фоны основного экрана' },
@@ -1536,15 +1728,19 @@
     function openAchievements() { renderAchievements(); openModal('achModal'); }
 
     // ===== Косметика =====
-    function applyCosmetics() {
+   function applyCosmetics() {
       const body = document.body;
-      ['bg-embers', 'bg-frost', 'theme-white', 'theme-red'].forEach(c => body.classList.remove(c));
+      const BG_CLASSES = ['bg-embers', 'bg-frost', 'bg-gold', 'bg-violet', 'bg-gray', 'bg-blue-check', 'bg-chess'];
+      const THEME_CLASSES = ['theme-white', 'theme-red', 'theme-nature', 'theme-gothic', 'theme-angelic', 'theme-pink', 'theme-blue'];
+      BG_CLASSES.forEach(c => body.classList.remove(c));
+      THEME_CLASSES.forEach(c => body.classList.remove(c));
       if (state.equipped.background) body.classList.add(state.equipped.background);
       if (state.equipped.theme) body.classList.add(state.equipped.theme);
 
       const pf = document.getElementById('portraitFrame');
       const sf = document.getElementById('startFrame');
-      ['frame-red', 'frame-green'].forEach(c => { pf.classList.remove(c); sf.classList.remove(c); });
+      const FRAME_CLASSES = ['frame-red', 'frame-green', 'frame-white', 'frame-black', 'frame-black-dash', 'frame-black-dot'];
+      FRAME_CLASSES.forEach(c => { pf.classList.remove(c); sf.classList.remove(c); });
       if (state.equipped.frame) {
         pf.classList.add(state.equipped.frame);
         sf.classList.add(state.equipped.frame);
