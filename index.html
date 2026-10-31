@@ -14,6 +14,14 @@
       --cell-fill: linear-gradient(180deg, #ffe9a8, #e0a92c);
       --green: #8fd47a;
       --purple: #c88ff5;
+      /* Тематические переменные: их перекрывают классы тем на body */
+      --btn-top: #57431f;
+      --btn-bot: #332514;
+      --icon-top: #3a2c1c;
+      --icon-bot: #241a12;
+      --row-bg: rgba(0,0,0,.35);
+      --input-bg: rgba(0,0,0,.5);
+      --shadow-dark: rgba(0,0,0,.7);
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -34,6 +42,51 @@
       background: radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
     }
 
+    /* ===== Купленные фоны (перекрывают базовый фон) ===== */
+    body.bg-embers::before {
+      background:
+        repeating-linear-gradient(45deg, rgba(200,70,40,.06) 0 14px, transparent 14px 28px),
+        radial-gradient(ellipse at top, #401610 0%, #170a08 60%, #0a0505 100%);
+    }
+    body.bg-frost::before {
+      background:
+        radial-gradient(circle at 25% 25%, rgba(150,200,240,.10) 1.6px, transparent 2.6px) 0 0/30px 30px,
+        radial-gradient(circle at 75% 75%, rgba(150,200,240,.08) 1.6px, transparent 2.6px) 15px 15px/30px 30px,
+        radial-gradient(ellipse at top, #1a2432 0%, #0c1220 60%, #060910 100%);
+    }
+
+    /* ===== Купленные темы (не трогают фон и рамку портрета) ===== */
+    body.theme-white {
+      --panel: #f7f1e3;
+      --ink: #33261a;
+      --gold: #9a7b3c;
+      --gold-bright: #7c5a1e;
+      --cell-empty: #ece3cd;
+      --cell-fill: linear-gradient(180deg, #a3762a, #7c5a1e);
+      --btn-top: #e9dcc0;
+      --btn-bot: #cdb98d;
+      --icon-top: #efe6d2;
+      --icon-bot: #d6c69f;
+      --row-bg: rgba(120,90,40,.12);
+      --input-bg: rgba(255,255,255,.75);
+      --shadow-dark: rgba(60,40,10,.35);
+    }
+    body.theme-red {
+      --panel: #2e0d0d;
+      --ink: #f2cfc0;
+      --gold: #c96a4e;
+      --gold-bright: #f2a08a;
+      --cell-empty: #3a1512;
+      --cell-fill: linear-gradient(180deg, #ffb3a0, #c94b2e);
+      --btn-top: #5a2018;
+      --btn-bot: #3a1512;
+      --icon-top: #4a1a14;
+      --icon-bot: #2e0d0d;
+      --row-bg: rgba(80,20,10,.4);
+      --input-bg: rgba(20,5,5,.6);
+      --shadow-dark: rgba(30,5,5,.7);
+    }
+
     h1 {
       text-align: center;
       font-size: 2rem;
@@ -49,7 +102,7 @@
       top: 14px; right: 18px;
     }
     .trash-btn {
-      background: linear-gradient(180deg, #3a2c1c, #241a12);
+      background: linear-gradient(180deg, var(--icon-top), var(--icon-bot));
       border: 1px solid var(--gold);
       border-radius: 8px;
       color: var(--ink);
@@ -84,7 +137,7 @@
       background:
         linear-gradient(160deg, rgba(212,169,78,.07), transparent 55%),
         var(--panel);
-      box-shadow: inset 0 0 30px rgba(0,0,0,.7), 0 0 22px rgba(212,169,78,.22);
+      box-shadow: inset 0 0 30px var(--shadow-dark), 0 0 22px rgba(212,169,78,.22);
     }
     .panel h2 {
       margin: 0 0 4px;
@@ -121,6 +174,15 @@
       transition: box-shadow .25s, transform .25s;
       padding: 0;
       flex: 0 0 auto;
+    }
+    /* Купленные рамки — перекрывают базовую */
+    .portrait-frame.frame-red, .start-frame.frame-red {
+      border-color: #e05555;
+      box-shadow: 0 0 26px rgba(224,85,85,.55), inset 0 0 18px rgba(0,0,0,.7);
+    }
+    .portrait-frame.frame-green, .start-frame.frame-green {
+      border-color: #8fd47a;
+      box-shadow: 0 0 26px rgba(143,212,122,.55), inset 0 0 18px rgba(0,0,0,.7);
     }
     .portrait-frame:active { transform: scale(.98); }
     .portrait-frame:focus-visible,
@@ -172,15 +234,43 @@
       .portrait-frame:hover .portrait-overlay { opacity: 1; }
     }
 
-    .portrait-name {
+    /* Имя в ряду с иконками лавки и инвентаря */
+    .portrait-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       margin-top: 12px;
+      width: 100%;
+    }
+    .icon-btn {
+      flex: 0 0 auto;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: radial-gradient(circle at 35% 30%, var(--icon-top), var(--icon-bot) 70%);
+      color: var(--gold-bright);
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: box-shadow .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .icon-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
+    .icon-btn:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+    .portrait-name {
+      flex: 0 1 auto;
+      min-width: 0;
       font-size: 1.15rem;
       color: var(--gold-bright);
       text-shadow: 0 0 10px rgba(245,212,122,.4);
       letter-spacing: 1px;
       text-align: center;
       border-bottom: 1px dashed rgba(212,169,78,.5);
-      padding: 0 12px 4px;
+      padding: 0 8px 4px;
       max-width: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -195,7 +285,7 @@
       border: 1px solid var(--gold);
       border-radius: 22px;
       padding: 6px 18px;
-      background: radial-gradient(circle at 35% 30%, #3a2c1c, #1a1208 80%);
+      background: radial-gradient(circle at 35% 30%, var(--icon-top), var(--icon-bot) 80%);
       box-shadow: 0 0 12px rgba(245,212,122,.3), inset 0 0 8px rgba(0,0,0,.7);
       flex: 0 0 auto;
     }
@@ -224,10 +314,8 @@
       border: 1px solid rgba(212,169,78,.35);
       border-radius: 8px;
       margin-bottom: 8px;
-      background: rgba(0,0,0,.35);
+      background: var(--row-bg);
     }
-    /* Имя зафиксировано по ширине: не раздвигает соседей и не даёт строке
-       «плыть». Если слово не влезает — переносится внутри своей ячейки. */
     .stat-name {
       flex: 0 0 96px;
       min-width: 0;
@@ -245,7 +333,7 @@
       border-radius: 50%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: radial-gradient(circle at 35% 30%, #6b4f1d, #241a12 70%);
+      background: radial-gradient(circle at 35% 30%, var(--btn-top), var(--icon-bot) 70%);
       border: 2px solid var(--gold);
       box-shadow: 0 0 14px rgba(245,212,122,.35), inset 0 0 10px rgba(0,0,0,.8);
       user-select: none;
@@ -276,7 +364,7 @@
       border-radius: 3px;
       border: 1px solid rgba(212,169,78,.55);
       background: var(--cell-empty);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,.9);
+      box-shadow: inset 0 2px 4px var(--shadow-dark);
       transition: background .25s, box-shadow .25s;
       min-width: 0;
     }
@@ -306,11 +394,11 @@
       border-radius: 10px;
       padding: 10px;
       margin-bottom: 12px;
-      background: rgba(0,0,0,.35);
+      background: var(--row-bg);
     }
     .maker input[type="text"] {
       width: 100%;
-      background: rgba(0,0,0,.5);
+      background: var(--input-bg);
       border: 1px solid rgba(212,169,78,.5);
       border-radius: 6px;
       color: var(--ink);
@@ -324,7 +412,7 @@
     select {
       flex: 1;
       min-width: 0;
-      background: #332514;
+      background: var(--btn-bot);
       border: 1px solid rgba(212,169,78,.5);
       border-radius: 6px;
       color: var(--ink);
@@ -334,7 +422,7 @@
     }
     .forge-btn {
       flex: 0 0 auto;
-      background: linear-gradient(180deg, #57431f, #332514);
+      background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
       border: 1px solid var(--gold);
       border-radius: 8px;
       color: var(--gold-bright);
@@ -357,7 +445,6 @@
       padding-right: 4px;
       -webkit-overflow-scrolling: touch;
     }
-    /* Заголовок блока внутри свитка */
     .q-group-title {
       font-size: .68rem;
       letter-spacing: 1px;
@@ -379,7 +466,7 @@
       border-left: 4px solid var(--gold);
       border-radius: 8px;
       margin-bottom: 8px;
-      background: rgba(0,0,0,.35);
+      background: var(--row-bg);
       transition: box-shadow .3s, transform .3s;
     }
     .quest.r-regular   { border-left-color: var(--green); }
@@ -399,7 +486,7 @@
     .q-check { margin-top: 3px; flex: 0 0 auto; }
     .q-check input {
       width: 22px; height: 22px;
-      accent-color: #b8860b;
+      accent-color: var(--gold);
       cursor: pointer;
       display: block;
     }
@@ -451,15 +538,15 @@
       from { opacity: 0; transform: translateX(14px); }
       to   { opacity: .9; transform: none; }
     }
-    .quest-list::-webkit-scrollbar, .journal ul::-webkit-scrollbar { width: 6px; }
-    .quest-list::-webkit-scrollbar-thumb, .journal ul::-webkit-scrollbar-thumb { background: #57431f; border-radius: 3px; }
+    .quest-list::-webkit-scrollbar, .journal ul::-webkit-scrollbar, .modal-card::-webkit-scrollbar { width: 6px; }
+    .quest-list::-webkit-scrollbar-thumb, .journal ul::-webkit-scrollbar-thumb, .modal-card::-webkit-scrollbar-thumb { background: var(--btn-bot); border-radius: 3px; }
 
     /* ===== Центр: уровень героя и паутина ===== */
     .throne {
       text-align: center;
       display: flex;
       flex-direction: column;
-      align-self: start;
+      align-self: start; /* панель не тянется под соседние колонки */
     }
     .hero-block { margin-bottom: 12px; }
     .hero-orb {
@@ -468,7 +555,7 @@
       border-radius: 50%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: radial-gradient(circle at 35% 30%, #7a5a20, #241a12 70%);
+      background: radial-gradient(circle at 35% 30%, var(--btn-top), var(--icon-bot) 70%);
       border: 3px solid var(--gold-bright);
       box-shadow: 0 0 24px rgba(245,212,122,.5), inset 0 0 14px rgba(0,0,0,.8);
       transition: box-shadow .3s;
@@ -529,6 +616,116 @@
 
     .empty-note { text-align: center; font-size: .74rem; opacity: .5; font-style: italic; padding: 8px; }
 
+    /* ===== Модальные окна (лавка и инвентарь) ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(5,3,2,.78);
+    }
+    .modal.hidden { display: none; }
+    .modal-card {
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 20px 22px;
+      max-width: 480px;
+      width: 94%;
+      max-height: 86vh;
+      overflow-y: auto;
+      background:
+        linear-gradient(160deg, rgba(212,169,78,.09), transparent 60%),
+        var(--panel);
+      box-shadow: inset 0 0 40px var(--shadow-dark), 0 0 34px rgba(212,169,78,.3);
+      animation: startIn .4s ease;
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .modal-head h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--gold-bright);
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(245,212,122,.4);
+    }
+    .shop-coins {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .95rem;
+      color: var(--gold-bright);
+      white-space: nowrap;
+    }
+    .modal-close {
+      flex: 0 0 auto;
+      background: linear-gradient(180deg, var(--icon-top), var(--icon-bot));
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: 1rem;
+      width: 36px; height: 36px;
+      cursor: pointer;
+    }
+    .modal-close:hover { box-shadow: 0 0 12px rgba(163,59,46,.7); border-color: #a33b2e; }
+
+    .shop-group-title {
+      font-size: .68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--gold-bright);
+      opacity: .75;
+      margin: 12px 0 6px;
+      border-bottom: 1px dashed rgba(212,169,78,.3);
+      padding-bottom: 3px;
+    }
+    .shop-group-title:first-child { margin-top: 0; }
+    .shop-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border: 1px solid rgba(212,169,78,.3);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: var(--row-bg);
+    }
+    .si-info { flex: 1 1 0; min-width: 0; }
+    .si-name { font-size: .86rem; color: var(--gold-bright); overflow-wrap: break-word; }
+    .si-desc { font-size: .68rem; opacity: .75; overflow-wrap: break-word; }
+    .si-price {
+      flex: 0 0 auto;
+      font-size: .78rem;
+      color: var(--gold-bright);
+      white-space: nowrap;
+    }
+    .buy-btn {
+      flex: 0 0 auto;
+      background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      color: var(--gold-bright);
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: .78rem;
+      letter-spacing: .5px;
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 36px;
+      transition: box-shadow .2s;
+    }
+    .buy-btn:hover { box-shadow: 0 0 12px rgba(245,212,122,.5); }
+    .buy-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+    .buy-btn.owned { border-color: var(--green); color: var(--green); }
+
     /* ===== Стартовая страница ===== */
     #startScreen {
       position: fixed;
@@ -553,7 +750,7 @@
       background:
         linear-gradient(160deg, rgba(212,169,78,.09), transparent 60%),
         var(--panel);
-      box-shadow: inset 0 0 40px rgba(0,0,0,.75), 0 0 34px rgba(212,169,78,.3);
+      box-shadow: inset 0 0 40px var(--shadow-dark), 0 0 34px rgba(212,169,78,.3);
       animation: startIn .8s ease;
     }
     @keyframes startIn {
@@ -592,7 +789,7 @@
     .start-frame .portrait-placeholder { font-size: 3rem; }
     .start-name-input {
       width: 100%;
-      background: rgba(0,0,0,.5);
+      background: var(--input-bg);
       border: 1px solid var(--gold);
       border-radius: 8px;
       color: var(--gold-bright);
@@ -605,7 +802,7 @@
     .start-name-input:focus { outline: none; box-shadow: 0 0 12px rgba(245,212,122,.4); }
     .start-btn {
       width: 100%;
-      background: linear-gradient(180deg, #57431f, #332514);
+      background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
       border: 1px solid var(--gold);
       border-radius: 10px;
       color: var(--gold-bright);
@@ -668,6 +865,7 @@
       .portrait-frame { width: 128px; height: 128px; }
       .portrait-placeholder { font-size: 2.6rem; }
       .portrait-name { font-size: 1.02rem; max-width: 170px; }
+      .icon-btn { width: 36px; height: 36px; font-size: 1rem; }
       .coins { padding: 5px 14px; }
       .coins .coin-value { font-size: .98rem; }
 
@@ -695,6 +893,10 @@
 
       .hero-orb { width: 72px; height: 72px; }
       .hero-orb .lvl-value { font-size: 1.6rem; }
+
+      .modal-card { padding: 16px 14px; }
+      .shop-item { flex-wrap: wrap; }
+      .buy-btn { flex: 1 1 auto; }
 
       .start-card { padding: 24px 18px; }
       .start-card h2 { font-size: 1.35rem; }
@@ -782,7 +984,14 @@
           <div class="portrait-overlay">Сменить облик</div>
         </div>
         <input type="file" id="portraitInput" accept="image/*" style="display:none" />
-        <div class="portrait-name" id="heroNameDisplay"></div>
+
+        <!-- Имя и иконки лавки/инвентаря в один ряд -->
+        <div class="portrait-actions">
+          <button id="invBtn" class="icon-btn" title="Инвентарь" aria-label="Открыть инвентарь">🎒</button>
+          <div class="portrait-name" id="heroNameDisplay"></div>
+          <button id="shopBtn" class="icon-btn" title="Лавка чудес" aria-label="Открыть лавку">🛒</button>
+        </div>
+
         <div class="coins" id="coinsBox">
           <span class="coin-icon">🪙</span>
           <span class="coin-value" id="coinsValue">0</span>
@@ -812,6 +1021,29 @@
         <ul id="journalList" aria-live="polite"></ul>
       </div>
     </section>
+  </div>
+
+  <!-- ЛАВКА ЧУДЕС -->
+  <div id="shopModal" class="modal hidden" role="dialog" aria-label="Лавка чудес">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2>🛒 Лавка чудес</h2>
+        <div class="shop-coins"><span>🪙</span><span id="shopCoins">0</span></div>
+        <button class="modal-close" id="shopClose" aria-label="Закрыть лавку">✕</button>
+      </div>
+      <div id="shopList"></div>
+    </div>
+  </div>
+
+  <!-- ИНВЕНТАРЬ -->
+  <div id="invModal" class="modal hidden" role="dialog" aria-label="Инвентарь">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2>🎒 Инвентарь</h2>
+        <button class="modal-close" id="invClose" aria-label="Закрыть инвентарь">✕</button>
+      </div>
+      <div id="invList"></div>
+    </div>
   </div>
 
   <script>
@@ -846,6 +1078,21 @@
       { key: 'regular',   title: 'Регулярные — повторяются каждый день' }
     ];
 
+    // ===== Лавка: каталог товаров =====
+    const SHOP_ITEMS = {
+      'frame-red':    { type: 'frame',       name: 'Алые оковы',        desc: 'Алая рамка для портрета героя',   price: 50  },
+      'frame-green':  { type: 'frame',       name: 'Изумрудный оберег', desc: 'Зелёная рамка для портрета героя', price: 50  },
+      'bg-embers':    { type: 'background',  name: 'Угольная бездна',   desc: 'Тёмный фон с алым узором',         price: 100 },
+      'bg-frost':     { type: 'background',  name: 'Морозные кружева',  desc: 'Холодный фон в звёздную крапинку', price: 100 },
+      'theme-white':  { type: 'theme',       name: 'Пергамент',         desc: 'Светлая тема всей страницы',       price: 150 },
+      'theme-red':    { type: 'theme',       name: 'Кровавая полночь',  desc: 'Алая тема всей страницы',          price: 150 }
+    };
+    const SHOP_GROUPS = [
+      { type: 'frame',      title: 'Рамки для портрета' },
+      { type: 'background', title: 'Фоны основного экрана' },
+      { type: 'theme',      title: 'Темы страницы' }
+    ];
+
     const uid = () =>
       (window.crypto && crypto.randomUUID)
         ? crypto.randomUUID()
@@ -864,7 +1111,9 @@
         skills: [],
         quests: [],
         journal: [],
-        journalDay: null
+        journalDay: null,
+        owned: [],
+        equipped: { frame: null, background: null, theme: null }
       };
     }
 
@@ -887,6 +1136,17 @@
             if (!Array.isArray(parsed.journal)) parsed.journal = [];
             if (typeof parsed.firstLaunch !== 'boolean') parsed.firstLaunch = false;
             if (typeof parsed.coins !== 'number') parsed.coins = 0;
+            if (!Array.isArray(parsed.owned)) parsed.owned = [];
+            if (!parsed.equipped || typeof parsed.equipped !== 'object') {
+              parsed.equipped = { frame: null, background: null, theme: null };
+            }
+            // Чистим надетые предметы, которых нет в каталоге
+            ['frame', 'background', 'theme'].forEach(slot => {
+              const id = parsed.equipped[slot];
+              const item = id ? SHOP_ITEMS[id] : null;
+              if (!item || item.type !== slot) parsed.equipped[slot] = null;
+            });
+            parsed.owned = parsed.owned.filter(id => !!SHOP_ITEMS[id]);
             parsed.stats = parsed.stats.map(s => {
               const src = STATS.find(t => t.nom === s.nom);
               return { nom: s.nom, acc: s.acc || s.nom, dat: s.dat || (src ? src.dat : s.nom), total: s.total || 0 };
@@ -956,7 +1216,6 @@
     }
 
     // ===== Журнал =====
-    // Ключ текущего дня: при смене суток журнал обнуляется
     function todayKey() {
       const d = new Date();
       return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
@@ -1078,6 +1337,160 @@
       }
     }
 
+    // ===== Модальные окна =====
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+    function bindModal(modalId, closeBtnId, onOpen) {
+      const modal = document.getElementById(modalId);
+      document.getElementById(closeBtnId).addEventListener('click', () => closeModal(modalId));
+      modal.addEventListener('click', e => { if (e.target === modal) closeModal(modalId); });
+      if (onOpen) onOpen();
+    }
+
+    function openShop() {
+      renderShop();
+      openModal('shopModal');
+    }
+    function openInventory() {
+      renderInventory();
+      openModal('invModal');
+    }
+
+    // ===== Применение косметики =====
+    function applyCosmetics() {
+      const body = document.body;
+      ['bg-embers', 'bg-frost', 'theme-white', 'theme-red'].forEach(c => body.classList.remove(c));
+      if (state.equipped.background) body.classList.add(state.equipped.background);
+      if (state.equipped.theme) body.classList.add(state.equipped.theme);
+
+      const pf = document.getElementById('portraitFrame');
+      const sf = document.getElementById('startFrame');
+      ['frame-red', 'frame-green'].forEach(c => { pf.classList.remove(c); sf.classList.remove(c); });
+      if (state.equipped.frame) {
+        pf.classList.add(state.equipped.frame);
+        sf.classList.add(state.equipped.frame);
+      }
+    }
+
+    // ===== Лавка =====
+    function buyItem(id) {
+      const item = SHOP_ITEMS[id];
+      if (!item || state.owned.includes(id)) return;
+      if (state.coins < item.price) return;
+      state.coins -= item.price;
+      state.owned.push(id);
+      log(`${state.heroName} купил «${item.name}» за ${item.price} монет`);
+      renderCoins(true);
+      save();
+      renderShop();
+      renderInventory();
+      ding();
+    }
+
+    function equipItem(id) {
+      const item = SHOP_ITEMS[id];
+      if (!item || !state.owned.includes(id)) return;
+      const slot = item.type;
+      const takingOff = state.equipped[slot] === id;
+      state.equipped[slot] = takingOff ? null : id;
+      log(`${state.heroName} ${takingOff ? 'снял' : 'надел'} «${item.name}»`);
+      save();
+      applyCosmetics();
+      renderShop();
+      renderInventory();
+    }
+
+    function renderShop() {
+      const container = document.getElementById('shopList');
+      document.getElementById('shopCoins').textContent = state.coins;
+      container.innerHTML = '';
+
+      SHOP_GROUPS.forEach(gr => {
+        const title = document.createElement('div');
+        title.className = 'shop-group-title';
+        title.textContent = gr.title;
+        container.appendChild(title);
+
+        Object.keys(SHOP_ITEMS).filter(id => SHOP_ITEMS[id].type === gr.type).forEach(id => {
+          const item = SHOP_ITEMS[id];
+          const owned = state.owned.includes(id);
+          const equipped = state.equipped[item.type] === id;
+
+          const row = document.createElement('div');
+          row.className = 'shop-item';
+
+          const info = document.createElement('div');
+          info.className = 'si-info';
+          const nm = document.createElement('div');
+          nm.className = 'si-name';
+          nm.textContent = item.name;
+          const ds = document.createElement('div');
+          ds.className = 'si-desc';
+          ds.textContent = item.desc;
+          info.append(nm, ds);
+          row.appendChild(info);
+
+          const btn = document.createElement('button');
+          btn.className = 'buy-btn';
+          if (owned) {
+            btn.classList.add('owned');
+            btn.textContent = equipped ? 'Надето ✓' : 'Надеть';
+            btn.addEventListener('click', () => equipItem(id));
+          } else {
+            btn.textContent = `Купить · ${item.price} 🪙`;
+            btn.disabled = state.coins < item.price;
+            btn.title = state.coins < item.price ? 'Не хватает монет' : 'Купить';
+            btn.addEventListener('click', () => buyItem(id));
+          }
+          row.appendChild(btn);
+
+          container.appendChild(row);
+        });
+      });
+    }
+
+    // ===== Инвентарь =====
+    function renderInventory() {
+      const container = document.getElementById('invList');
+      container.innerHTML = '';
+
+      if (!state.owned.length) {
+        container.innerHTML = '<div class="empty-note">Сундук пуст. Заглянь в лавку чудес!</div>';
+        return;
+      }
+
+      state.owned.forEach(id => {
+        const item = SHOP_ITEMS[id];
+        const equipped = state.equipped[item.type] === id;
+
+        const row = document.createElement('div');
+        row.className = 'shop-item';
+
+        const info = document.createElement('div');
+        info.className = 'si-info';
+        const nm = document.createElement('div');
+        nm.className = 'si-name';
+        nm.textContent = item.name;
+        const ds = document.createElement('div');
+        ds.className = 'si-desc';
+        ds.textContent = item.desc;
+        info.append(nm, ds);
+        row.appendChild(info);
+
+        const btn = document.createElement('button');
+        btn.className = 'buy-btn' + (equipped ? ' owned' : '');
+        btn.textContent = equipped ? 'Снять' : 'Надеть';
+        btn.addEventListener('click', () => equipItem(id));
+        row.appendChild(btn);
+
+        container.appendChild(row);
+      });
+    }
+
     // ===== Стартовая страница =====
     function showStartScreen() {
       const screen = document.getElementById('startScreen');
@@ -1123,6 +1536,7 @@
     // ===== Монеты =====
     function renderCoins(bump) {
       document.getElementById('coinsValue').textContent = state.coins;
+      document.getElementById('shopCoins').textContent = state.coins;
       if (bump) {
         const box = document.getElementById('coinsBox');
         box.classList.remove('bump');
@@ -1242,9 +1656,6 @@
       return v / maxLevel;
     }
 
-    // Размер меряем по обёртке и окну, а не по самой панели:
-    // иначе высота canvas сама влияет на высоту панели — и на мобильной
-    // раскладке получаем цикл «ресайз → рефлоу → ресайз» на каждом кадре.
     function sizeCanvas() {
       const canvas = document.getElementById('radar');
       const wrap = document.getElementById('radarWrap');
@@ -1413,7 +1824,6 @@
       return `обновится через ${h} ч ${m} мин`;
     }
 
-    // Одна карточка задания (общая для всех блоков)
     function buildQuestRow(q) {
       const rar = RARITIES[q.rarity];
       const row = document.createElement('div');
@@ -1495,9 +1905,6 @@
         return;
       }
 
-      // Свиток делится на блоки по редкости. Внутри блока невыполненные
-      // задания идут первыми, среди них — старые сверху, чтобы давно
-      // висящие одноразовые не терялись за свежими.
       QUEST_GROUPS.forEach(gr => {
         const list = state.quests
           .filter(q => q.rarity === gr.key)
@@ -1600,11 +2007,10 @@
       });
       if (changed) { save(); renderQuests(); }
 
-      // Раз в сутки — очистка журнала
       checkJournalDay();
     }
 
-    // ===== Кнопка обнуления: полный сброс до стартовой страницы =====
+    // ===== Кнопка обнуления =====
     function setupReset() {
       const btn = document.getElementById('resetBtn');
       let armed = false, timer = null;
@@ -1630,6 +2036,7 @@
           renderPortrait();
           renderHeroName();
           renderCoins(false);
+          applyCosmetics();
           renderStats();
           renderSkills();
           renderHero();
@@ -1658,10 +2065,20 @@
         if (e.key === 'Enter') addSkill();
       });
 
+      // Лавка и инвентарь
+      document.getElementById('shopBtn').addEventListener('click', openShop);
+      document.getElementById('invBtn').addEventListener('click', openInventory);
+      bindModal('shopModal', 'shopClose');
+      bindModal('invModal', 'invClose');
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closeModal('shopModal'); closeModal('invModal'); }
+      });
+
       setupReset();
       renderPortrait();
       renderHeroName();
       renderCoins(false);
+      applyCosmetics();
       renderQuestMaker();
       renderStats();
       renderSkills();
