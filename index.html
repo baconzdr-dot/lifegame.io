@@ -42,7 +42,18 @@
     }
 
     /* ===== Купленные фоны ===== */
-body.bg-gold::before {
+    body.bg-embers::before {
+      background:
+        repeating-linear-gradient(45deg, rgba(200,70,40,.06) 0 14px, transparent 14px 28px),
+        radial-gradient(ellipse at top, #401610 0%, #170a08 60%, #0a0505 100%);
+    }
+    body.bg-frost::before {
+      background:
+        radial-gradient(circle at 25% 25%, rgba(150,200,240,.10) 1.6px, transparent 2.6px) 0 0/30px 30px,
+        radial-gradient(circle at 75% 75%, rgba(150,200,240,.08) 1.6px, transparent 2.6px) 15px 15px/30px 30px,
+        radial-gradient(ellipse at top, #1a2432 0%, #0c1220 60%, #060910 100%);
+    }
+    body.bg-gold::before {
       background: radial-gradient(ellipse at top, #f4d878 0%, #c8960c 48%, #6a4a08 100%);
     }
     body.bg-violet::before {
@@ -61,7 +72,87 @@ body.bg-gold::before {
       background: repeating-conic-gradient(#2c2c30 0% 25%, #46464a 0% 50%) 0 0/56px 56px;
     }
 
-   /* ===== Тема «Лесной шёпот» (природная) ===== */
+    /* ===== Тема «Пергамент»: повышенный контраст ===== */
+    body.theme-white {
+      --panel: #faf4e4;
+      --ink: #2a1c0e;
+      --gold: #7a5c22;
+      --gold-bright: #5d4312;
+      --cell-empty: #e4d6b4;
+      --cell-fill: linear-gradient(180deg, #a3762a, #5d4312);
+      --btn-top: #e8d8b4;
+      --btn-bot: #c9b383;
+      --icon-top: #efe6d2;
+      --icon-bot: #d2bf94;
+      --row-bg: rgba(120,90,40,.16);
+      --input-bg: #fffdf6;
+      --shadow-dark: rgba(90,65,20,.28);
+      --head-shadow: 0 1px 1px rgba(255,255,255,.8);
+    }
+    body.theme-white h1,
+    body.theme-white .panel h2,
+    body.theme-white .portrait-name,
+    body.theme-white .lvl-value,
+    body.theme-white .coin-value,
+    body.theme-white .si-name,
+    body.theme-white .q-group-title,
+    body.theme-white .shop-group-title,
+    body.theme-white .modal-head h2,
+    body.theme-white .hero-orb .lvl-value {
+      text-shadow: 0 1px 0 rgba(255,255,255,.85);
+    }
+    body.theme-white .panel {
+      border-color: #7a5c22;
+      box-shadow: inset 0 0 30px rgba(120,90,40,.14), 0 0 18px rgba(120,90,40,.28);
+    }
+    body.theme-white .stat-row,
+    body.theme-white .quest,
+    body.theme-white .maker,
+    body.theme-white .shop-item {
+      border-color: rgba(120,90,40,.5);
+    }
+    body.theme-white .q-meta,
+    body.theme-white .hint,
+    body.theme-white .si-desc { opacity: .95; }
+    body.theme-white .journal li { color: #3a2a16; }
+    body.theme-white .journal li.j-gold,
+    body.theme-white .journal li.j-legend,
+    body.theme-white .journal li.j-stat,
+    body.theme-white .journal li.j-ach { color: #3a2a16; font-weight: bold; }
+    body.theme-white .badge.r-regular   { color: #3d7a2e; }
+    body.theme-white .badge.r-common    { color: #7a5c22; }
+    body.theme-white .badge.r-legendary { color: #7a2ea3; }
+    body.theme-white .q-skill { color: #2e5a8a; }
+    body.theme-white .quest.r-regular   { border-left-color: #3d7a2e; }
+    body.theme-white .quest.r-common    { border-left-color: #7a5c22; }
+    body.theme-white .quest.r-legendary { border-left-color: #7a2ea3; }
+    body.theme-white .row-del,
+    body.theme-white .q-del { color: rgba(60,40,15,.55); }
+    body.theme-white .cell {
+      border-color: rgba(122,92,34,.7);
+      box-shadow: inset 0 2px 4px rgba(90,65,20,.35);
+    }
+    body.theme-white .q-timer { color: #3d7a2e; }
+
+    /* ===== Тема «Кровавая полночь» ===== */
+    body.theme-red {
+      --panel: #2e0d0d;
+      --ink: #f5d5c4;
+      --gold: #d97e5e;
+      --gold-bright: #ffab8f;
+      --cell-empty: #3a1512;
+      --cell-fill: linear-gradient(180deg, #ffb3a0, #c94b2e);
+      --btn-top: #5a2018;
+      --btn-bot: #3a1512;
+      --icon-top: #4a1a14;
+      --icon-bot: #2e0d0d;
+      --row-bg: rgba(80,20,10,.4);
+      --input-bg: rgba(20,5,5,.6);
+      --shadow-dark: rgba(30,5,5,.7);
+      --head-shadow: 0 0 10px rgba(255,171,143,.4);
+    }
+
+    /* ===== Тема «Лесной шёпот» (природная) ===== */
     body.theme-nature {
       --panel: #1c2416;
       --ink: #dce8cc;
@@ -151,8 +242,8 @@ body.bg-gold::before {
       --head-shadow: 0 1px 0 rgba(255,255,255,.9);
     }
 
-    /* Контраст для светлых тем: как у «Пергамента» — гасим свечения,
-       уплотняем границы, темнее бейджи и особые записи журнала */
+    /* Контраст светлых тем: гасим свечения, уплотняем границы,
+       темнее бейджи и особые записи журнала */
     body.theme-angelic h1,
     body.theme-pink h1,
     body.theme-blue h1,
@@ -298,6 +389,7 @@ body.bg-gold::before {
       border-bottom-color: rgba(170,125,40,.6);
       box-shadow: inset 3px 0 0 #7a5c22;
     }
+
     h1 {
       text-align: center;
       font-size: 2rem;
@@ -306,7 +398,10 @@ body.bg-gold::before {
       text-shadow: 0 0 14px rgba(245, 212, 122, .45), 0 2px 2px #000;
       letter-spacing: 2px;
     }
-    body.theme-white h1 { text-shadow: 0 1px 0 rgba(255,255,255,.85); }
+    body.theme-white h1,
+    body.theme-angelic h1,
+    body.theme-pink h1,
+    body.theme-blue h1 { text-shadow: 0 1px 0 rgba(255,255,255,.85); }
 
     header { position: relative; }
     .header-controls {
@@ -386,6 +481,15 @@ body.bg-gold::before {
       transition: box-shadow .25s, transform .25s;
       padding: 0;
       flex: 0 0 auto;
+    }
+    /* Купленные рамки */
+    .portrait-frame.frame-red, .start-frame.frame-red {
+      border-color: #e05555;
+      box-shadow: 0 0 26px rgba(224,85,85,.55), inset 0 0 18px rgba(0,0,0,.7);
+    }
+    .portrait-frame.frame-green, .start-frame.frame-green {
+      border-color: #8fd47a;
+      box-shadow: 0 0 26px rgba(143,212,122,.55), inset 0 0 18px rgba(0,0,0,.7);
     }
     .portrait-frame.frame-white, .start-frame.frame-white {
       border-color: #ffffff;
@@ -521,7 +625,10 @@ body.bg-gold::before {
       color: var(--gold-bright);
       text-shadow: 0 0 8px rgba(245,212,122,.5);
     }
-    body.theme-white .coins .coin-value { text-shadow: none; }
+    body.theme-white .coins .coin-value,
+    body.theme-angelic .coins .coin-value,
+    body.theme-pink .coins .coin-value,
+    body.theme-blue .coins .coin-value { text-shadow: none; }
     .coins.bump { animation: coinBump .5s ease; }
     @keyframes coinBump {
       0%   { transform: scale(1); }
@@ -754,7 +861,6 @@ body.bg-gold::before {
       transition: background .3s;
     }
     .journal li.new { animation: journalIn .5s ease; }
-    /* Особые события: цвет + подсветка строки */
     .journal li.j-gold {
       color: var(--gold-bright);
       font-weight: bold;
@@ -780,10 +886,6 @@ body.bg-gold::before {
       border-bottom-color: rgba(245,212,122,.7);
       box-shadow: inset 3px 0 0 var(--gold-bright);
     }
-    body.theme-white .journal li.j-gold { background: linear-gradient(90deg, rgba(170,125,40,.2), transparent 70%); }
-    body.theme-white .journal li.j-legend { background: linear-gradient(90deg, rgba(122,46,163,.14), transparent 70%); box-shadow: inset 3px 0 0 #7a2ea3; }
-    body.theme-white .journal li.j-stat { background: linear-gradient(90deg, rgba(61,122,46,.14), transparent 70%); box-shadow: inset 3px 0 0 #3d7a2e; }
-    body.theme-white .journal li.j-ach { background: linear-gradient(90deg, rgba(170,125,40,.3), rgba(122,46,163,.1) 60%, transparent); box-shadow: inset 3px 0 0 #7a5c22; }
     @keyframes journalIn {
       from { opacity: 0; transform: translateX(14px); }
       to   { opacity: .9; transform: none; }
@@ -996,7 +1098,6 @@ body.bg-gold::before {
       justify-content: center;
       font-size: 1.6rem;
     }
-    /* Пока условие не достигнуто — иконка затемнена */
     .ach-item.locked .ach-icon {
       filter: grayscale(1) brightness(.45);
       opacity: .55;
@@ -1007,7 +1108,6 @@ body.bg-gold::before {
       box-shadow: 0 0 16px rgba(245,212,122,.5);
     }
 
-    /* Всплывающая плашка достижения поверх основного экрана */
     .ach-toast {
       position: fixed;
       left: 50%;
@@ -1415,13 +1515,14 @@ body.bg-gold::before {
       { key: 'regular',   title: 'Регулярные — обновляются после 00:00' }
     ];
 
-       const SHOP_ITEMS = {
-      'frame-red':       { type: 'frame',      name: 'Алые оковы',        desc: 'Алая рамка для портрета героя',    price: 50  },
-      'frame-green':     { type: 'frame',      name: 'Изумрудный оберег', desc: 'Зелёная рамка для портрета героя', price: 50  },
-      'frame-white':     { type: 'frame',      name: 'Белоснежная оправа', desc: 'Простая белая рамка без украшений', price: 50 },
-      'frame-black':     { type: 'frame',      name: 'Угольная оправа',   desc: 'Простая чёрная рамка без украшений', price: 50 },
-      'frame-black-dash':{ type: 'frame',      name: 'Пунктирный след',   desc: 'Чёрная рамка пунктиром',           price: 50  },
-      'frame-black-dot': { type: 'frame',      name: 'Крапчатая тень',    desc: 'Чёрная рамка в крапинку',          price: 50  },
+    // ===== Лавка: каталог товаров =====
+    const SHOP_ITEMS = {
+      'frame-red':       { type: 'frame',      name: 'Алые оковы',         desc: 'Алая рамка для портрета героя',     price: 50  },
+      'frame-green':     { type: 'frame',      name: 'Изумрудный оберег',  desc: 'Зелёная рамка для портрета героя',  price: 50  },
+      'frame-white':     { type: 'frame',      name: 'Белоснежная оправа', desc: 'Простая белая рамка без украшений', price: 50  },
+      'frame-black':     { type: 'frame',      name: 'Угольная оправа',    desc: 'Простая чёрная рамка без украшений', price: 50 },
+      'frame-black-dash':{ type: 'frame',      name: 'Пунктирный след',    desc: 'Чёрная рамка пунктиром',            price: 50  },
+      'frame-black-dot': { type: 'frame',      name: 'Крапчатая тень',     desc: 'Чёрная рамка в крапинку',           price: 50  },
 
       'bg-embers':    { type: 'background', name: 'Угольная бездна',   desc: 'Тёмный фон с алым узором',           price: 100 },
       'bg-frost':     { type: 'background', name: 'Морозные кружева',  desc: 'Холодный фон в звёздную крапинку',   price: 100 },
@@ -1431,15 +1532,14 @@ body.bg-gold::before {
       'bg-blue-check':{ type: 'background', name: 'Облачная клетка',   desc: 'Белый фон в светло-синюю клетку',    price: 100 },
       'bg-chess':     { type: 'background', name: 'Турнирный зал',     desc: 'Шахматная клетка',                   price: 100 },
 
-      'theme-white':  { type: 'theme', name: 'Пергамент',          desc: 'Светлая тема всей страницы', price: 150 },
-      'theme-red':    { type: 'theme', name: 'Кровавая полночь',   desc: 'Алая тема всей страницы',    price: 150 },
-      'theme-nature': { type: 'theme', name: 'Лесной шёпот',       desc: 'Тема в природных тонах',     price: 150 },
-      'theme-gothic': { type: 'theme', name: 'Готический собор',   desc: 'Мрачная фиолетовая тема',    price: 150 },
-      'theme-angelic':{ type: 'theme', name: 'Ангельский свет',    desc: 'Светлая небесная тема',      price: 150 },
-      'theme-pink':   { type: 'theme', name: 'Розовые сны',        desc: 'Милая розовая тема',         price: 150 },
-      'theme-blue':   { type: 'theme', name: 'Небесная дымка',     desc: 'Милая голубая тема',         price: 150 }
+      'theme-white':  { type: 'theme', name: 'Пергамент',         desc: 'Светлая тема всей страницы', price: 150 },
+      'theme-red':    { type: 'theme', name: 'Кровавая полночь',  desc: 'Алая тема всей страницы',    price: 150 },
+      'theme-nature': { type: 'theme', name: 'Лесной шёпот',      desc: 'Тема в природных тонах',     price: 150 },
+      'theme-gothic': { type: 'theme', name: 'Готический собор',  desc: 'Мрачная фиолетовая тема',    price: 150 },
+      'theme-angelic':{ type: 'theme', name: 'Ангельский свет',   desc: 'Светлая небесная тема',      price: 150 },
+      'theme-pink':   { type: 'theme', name: 'Розовые сны',       desc: 'Милая розовая тема',         price: 150 },
+      'theme-blue':   { type: 'theme', name: 'Небесная дымка',    desc: 'Милая голубая тема',         price: 150 }
     };
-
     const SHOP_GROUPS = [
       { type: 'frame',      title: 'Рамки для портрета' },
       { type: 'background', title: 'Фоны основного экрана' },
@@ -1505,7 +1605,6 @@ body.bg-gold::before {
             });
             parsed.owned = parsed.owned.filter(id => !!SHOP_ITEMS[id]);
             parsed.achievements = parsed.achievements.filter(id => ACHIEVEMENTS.some(a => a.id === id));
-            // Миграция журнала: строки → объекты {t, c}
             parsed.journal = parsed.journal.map(e =>
               typeof e === 'string' ? { t: e, c: '' } : { t: String(e.t || ''), c: e.c || '' }
             );
@@ -1576,7 +1675,6 @@ body.bg-gold::before {
       note(1108, t + 0.24, 0.7, 0.32);
       note(1318, t + 0.36, 0.8, 0.3);
     }
-    // Победный аккорд для достижения
     function achSound() {
       const ctx = ensureAudio();
       if (!ctx) return;
@@ -1602,7 +1700,6 @@ body.bg-gold::before {
       renderJournal(false);
     }
 
-    // cls — класс особого события: 'gold' | 'legend' | 'stat' | 'ach'
     function log(text, cls) {
       state.journal.unshift({ t: text, c: cls || '' });
       if (state.journal.length > 40) state.journal.length = 40;
@@ -1727,8 +1824,8 @@ body.bg-gold::before {
     function openInventory() { renderInventory(); openModal('invModal'); }
     function openAchievements() { renderAchievements(); openModal('achModal'); }
 
-    // ===== Косметика =====
-   function applyCosmetics() {
+    // ===== Применение косметики =====
+    function applyCosmetics() {
       const body = document.body;
       const BG_CLASSES = ['bg-embers', 'bg-frost', 'bg-gold', 'bg-violet', 'bg-gray', 'bg-blue-check', 'bg-chess'];
       const THEME_CLASSES = ['theme-white', 'theme-red', 'theme-nature', 'theme-gothic', 'theme-angelic', 'theme-pink', 'theme-blue'];
@@ -1775,7 +1872,7 @@ body.bg-gold::before {
       renderInventory();
     }
 
-function renderShop() {
+    function renderShop() {
       const container = document.getElementById('shopList');
       document.getElementById('shopCoins').textContent = state.coins;
       container.innerHTML = '';
@@ -2256,8 +2353,7 @@ function renderShop() {
       if ([...skillSel.options].some(o => o.value === prev)) skillSel.value = prev;
     }
 
-    // Ближайшая полуночь ПОСЛЕ момента ts — момент обнуления по локальным
-    // часам устройства. setHours(24,...) сам перекатывается на следующий день.
+    // Ближайшая полуночь ПОСЛЕ момента ts — по локальным часам устройства
     function nextMidnight(ts) {
       const d = new Date(ts);
       d.setHours(24, 0, 0, 0);
@@ -2393,7 +2489,6 @@ function renderShop() {
       if (stat) gainStatPoints(stat, rar.pts);
       if (skill) gainSkillPoints(skill, 1);
 
-      // Легендарное задание — особая запись в журнале
       let msg = `${state.heroName} выполнил ${rar.adj} задание "${q.text}", получил ${xpWord(rar.xp)}`;
       if (stat) msg += ` и повысил ${stat.acc} на ${plural(rar.pts, 'очко', 'очка', 'очков')}`;
       if (skill) msg += (stat ? ' и навык' : ' и повысил навык') + ` «${skill.name}» на ${plural(1, 'очко', 'очка', 'очков')}`;
