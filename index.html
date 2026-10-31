@@ -14,7 +14,6 @@
       --cell-fill: linear-gradient(180deg, #ffe9a8, #e0a92c);
       --green: #8fd47a;
       --purple: #c88ff5;
-      /* Тематические переменные: их перекрывают классы тем на body */
       --btn-top: #57431f;
       --btn-bot: #332514;
       --icon-top: #3a2c1c;
@@ -22,6 +21,7 @@
       --row-bg: rgba(0,0,0,.35);
       --input-bg: rgba(0,0,0,.5);
       --shadow-dark: rgba(0,0,0,.7);
+      --head-shadow: 0 0 10px rgba(245,212,122,.4);
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -33,7 +33,6 @@
       color: var(--ink);
       background: #0a0705;
     }
-    /* Фон фиксируем отдельным слоем: background-attachment: fixed дёргается в iOS Safari */
     body::before {
       content: '';
       position: fixed;
@@ -42,7 +41,7 @@
       background: radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
     }
 
-    /* ===== Купленные фоны (перекрывают базовый фон) ===== */
+    /* ===== Купленные фоны ===== */
     body.bg-embers::before {
       background:
         repeating-linear-gradient(45deg, rgba(200,70,40,.06) 0 14px, transparent 14px 28px),
@@ -55,27 +54,76 @@
         radial-gradient(ellipse at top, #1a2432 0%, #0c1220 60%, #060910 100%);
     }
 
-    /* ===== Купленные темы (не трогают фон и рамку портрета) ===== */
+    /* ===== Тема «Пергамент»: повышенный контраст ===== */
     body.theme-white {
-      --panel: #f7f1e3;
-      --ink: #33261a;
-      --gold: #9a7b3c;
-      --gold-bright: #7c5a1e;
-      --cell-empty: #ece3cd;
-      --cell-fill: linear-gradient(180deg, #a3762a, #7c5a1e);
-      --btn-top: #e9dcc0;
-      --btn-bot: #cdb98d;
+      --panel: #faf4e4;
+      --ink: #2a1c0e;
+      --gold: #7a5c22;
+      --gold-bright: #5d4312;
+      --cell-empty: #e4d6b4;
+      --cell-fill: linear-gradient(180deg, #a3762a, #5d4312);
+      --btn-top: #e8d8b4;
+      --btn-bot: #c9b383;
       --icon-top: #efe6d2;
-      --icon-bot: #d6c69f;
-      --row-bg: rgba(120,90,40,.12);
-      --input-bg: rgba(255,255,255,.75);
-      --shadow-dark: rgba(60,40,10,.35);
+      --icon-bot: #d2bf94;
+      --row-bg: rgba(120,90,40,.16);
+      --input-bg: #fffdf6;
+      --shadow-dark: rgba(90,65,20,.28);
+      --head-shadow: 0 1px 1px rgba(255,255,255,.8);
     }
+    /* Светлые тексты на светлом фоне читаются плохо — гасим золотые свечения
+       и уплотняем границы, чтобы элементы не сливались */
+    body.theme-white h1,
+    body.theme-white .panel h2,
+    body.theme-white .portrait-name,
+    body.theme-white .lvl-value,
+    body.theme-white .coin-value,
+    body.theme-white .si-name,
+    body.theme-white .q-group-title,
+    body.theme-white .shop-group-title,
+    body.theme-white .modal-head h2,
+    body.theme-white .hero-orb .lvl-value {
+      text-shadow: 0 1px 0 rgba(255,255,255,.85);
+    }
+    body.theme-white .panel {
+      border-color: #7a5c22;
+      box-shadow: inset 0 0 30px rgba(120,90,40,.14), 0 0 18px rgba(120,90,40,.28);
+    }
+    body.theme-white .stat-row,
+    body.theme-white .quest,
+    body.theme-white .maker,
+    body.theme-white .shop-item {
+      border-color: rgba(120,90,40,.5);
+    }
+    body.theme-white .q-meta,
+    body.theme-white .hint,
+    body.theme-white .si-desc { opacity: .95; }
+    body.theme-white .journal li { color: #3a2a16; }
+    body.theme-white .journal li.j-gold,
+    body.theme-white .journal li.j-legend,
+    body.theme-white .journal li.j-stat,
+    body.theme-white .journal li.j-ach { color: #3a2a16; font-weight: bold; }
+    body.theme-white .badge.r-regular   { color: #3d7a2e; }
+    body.theme-white .badge.r-common    { color: #7a5c22; }
+    body.theme-white .badge.r-legendary { color: #7a2ea3; }
+    body.theme-white .q-skill { color: #2e5a8a; }
+    body.theme-white .quest.r-regular   { border-left-color: #3d7a2e; }
+    body.theme-white .quest.r-common    { border-left-color: #7a5c22; }
+    body.theme-white .quest.r-legendary { border-left-color: #7a2ea3; }
+    body.theme-white .row-del,
+    body.theme-white .q-del { color: rgba(60,40,15,.55); }
+    body.theme-white .cell {
+      border-color: rgba(122,92,34,.7);
+      box-shadow: inset 0 2px 4px rgba(90,65,20,.35);
+    }
+    body.theme-white .q-timer { color: #3d7a2e; }
+
+    /* ===== Тема «Кровавая полночь» ===== */
     body.theme-red {
       --panel: #2e0d0d;
-      --ink: #f2cfc0;
-      --gold: #c96a4e;
-      --gold-bright: #f2a08a;
+      --ink: #f5d5c4;
+      --gold: #d97e5e;
+      --gold-bright: #ffab8f;
       --cell-empty: #3a1512;
       --cell-fill: linear-gradient(180deg, #ffb3a0, #c94b2e);
       --btn-top: #5a2018;
@@ -85,6 +133,7 @@
       --row-bg: rgba(80,20,10,.4);
       --input-bg: rgba(20,5,5,.6);
       --shadow-dark: rgba(30,5,5,.7);
+      --head-shadow: 0 0 10px rgba(255,171,143,.4);
     }
 
     h1 {
@@ -95,6 +144,7 @@
       text-shadow: 0 0 14px rgba(245, 212, 122, .45), 0 2px 2px #000;
       letter-spacing: 2px;
     }
+    body.theme-white h1 { text-shadow: 0 1px 0 rgba(255,255,255,.85); }
 
     header { position: relative; }
     .header-controls {
@@ -145,7 +195,7 @@
       font-size: 1.05rem;
       text-align: center;
       letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(245,212,122,.4);
+      text-shadow: var(--head-shadow);
     }
     .hint { text-align: center; font-size: .7rem; opacity: .6; margin: 0 0 12px; }
 
@@ -175,7 +225,6 @@
       padding: 0;
       flex: 0 0 auto;
     }
-    /* Купленные рамки — перекрывают базовую */
     .portrait-frame.frame-red, .start-frame.frame-red {
       border-color: #e05555;
       box-shadow: 0 0 26px rgba(224,85,85,.55), inset 0 0 18px rgba(0,0,0,.7);
@@ -234,14 +283,30 @@
       .portrait-frame:hover .portrait-overlay { opacity: 1; }
     }
 
-    /* Имя в ряду с иконками лавки и инвентаря */
+    .portrait-name {
+      margin-top: 12px;
+      font-size: 1.15rem;
+      color: var(--gold-bright);
+      text-shadow: var(--head-shadow);
+      letter-spacing: 1px;
+      text-align: center;
+      border-bottom: 1px dashed rgba(212,169,78,.5);
+      padding: 0 12px 4px;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Ряд: достижения — монеты — лавка — инвентарь */
     .portrait-actions {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 8px;
+      margin-top: 10px;
       width: 100%;
+      flex-wrap: wrap;
     }
     .icon-btn {
       flex: 0 0 auto;
@@ -261,24 +326,7 @@
     .icon-btn:hover { box-shadow: 0 0 14px rgba(245,212,122,.5); }
     .icon-btn:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
 
-    .portrait-name {
-      flex: 0 1 auto;
-      min-width: 0;
-      font-size: 1.15rem;
-      color: var(--gold-bright);
-      text-shadow: 0 0 10px rgba(245,212,122,.4);
-      letter-spacing: 1px;
-      text-align: center;
-      border-bottom: 1px dashed rgba(212,169,78,.5);
-      padding: 0 8px 4px;
-      max-width: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
     .coins {
-      margin-top: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -298,6 +346,7 @@
       color: var(--gold-bright);
       text-shadow: 0 0 8px rgba(245,212,122,.5);
     }
+    body.theme-white .coins .coin-value { text-shadow: none; }
     .coins.bump { animation: coinBump .5s ease; }
     @keyframes coinBump {
       0%   { transform: scale(1); }
@@ -373,12 +422,6 @@
       border-color: #ffe9a8;
       box-shadow: 0 0 10px rgba(255,226,138,.85), inset 0 1px 1px rgba(255,255,255,.6);
     }
-    .cell.burst { animation: burst .45s ease; }
-    @keyframes burst {
-      0% { transform: scale(1.7); box-shadow: 0 0 26px rgba(255,226,138,1); }
-      100% { transform: scale(1); }
-    }
-
     .row-del {
       background: none; border: none;
       color: rgba(232,217,181,.4);
@@ -532,8 +575,40 @@
       border-bottom: 1px dashed rgba(212,169,78,.2);
       opacity: .9;
       overflow-wrap: break-word;
+      border-radius: 6px;
+      transition: background .3s;
     }
     .journal li.new { animation: journalIn .5s ease; }
+    /* Особые события: цвет + подсветка строки */
+    .journal li.j-gold {
+      color: var(--gold-bright);
+      font-weight: bold;
+      background: linear-gradient(90deg, rgba(245,212,122,.16), transparent 70%);
+      border-bottom-color: rgba(245,212,122,.55);
+    }
+    .journal li.j-legend {
+      color: var(--purple);
+      font-weight: bold;
+      background: linear-gradient(90deg, rgba(200,143,245,.18), transparent 70%);
+      border-bottom-color: rgba(200,143,245,.55);
+      box-shadow: inset 3px 0 0 var(--purple);
+    }
+    .journal li.j-stat {
+      color: var(--green);
+      background: linear-gradient(90deg, rgba(143,212,122,.14), transparent 70%);
+      border-bottom-color: rgba(143,212,122,.5);
+    }
+    .journal li.j-ach {
+      color: var(--gold-bright);
+      font-weight: bold;
+      background: linear-gradient(90deg, rgba(245,212,122,.28), rgba(200,143,245,.14) 60%, transparent);
+      border-bottom-color: rgba(245,212,122,.7);
+      box-shadow: inset 3px 0 0 var(--gold-bright);
+    }
+    body.theme-white .journal li.j-gold { background: linear-gradient(90deg, rgba(170,125,40,.2), transparent 70%); }
+    body.theme-white .journal li.j-legend { background: linear-gradient(90deg, rgba(122,46,163,.14), transparent 70%); box-shadow: inset 3px 0 0 #7a2ea3; }
+    body.theme-white .journal li.j-stat { background: linear-gradient(90deg, rgba(61,122,46,.14), transparent 70%); box-shadow: inset 3px 0 0 #3d7a2e; }
+    body.theme-white .journal li.j-ach { background: linear-gradient(90deg, rgba(170,125,40,.3), rgba(122,46,163,.1) 60%, transparent); box-shadow: inset 3px 0 0 #7a5c22; }
     @keyframes journalIn {
       from { opacity: 0; transform: translateX(14px); }
       to   { opacity: .9; transform: none; }
@@ -546,7 +621,7 @@
       text-align: center;
       display: flex;
       flex-direction: column;
-      align-self: start; /* панель не тянется под соседние колонки */
+      align-self: start;
     }
     .hero-block { margin-bottom: 12px; }
     .hero-orb {
@@ -616,7 +691,7 @@
 
     .empty-note { text-align: center; font-size: .74rem; opacity: .5; font-style: italic; padding: 8px; }
 
-    /* ===== Модальные окна (лавка и инвентарь) ===== */
+    /* ===== Модальные окна ===== */
     .modal {
       position: fixed;
       inset: 0;
@@ -654,7 +729,7 @@
       font-size: 1.2rem;
       color: var(--gold-bright);
       letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(245,212,122,.4);
+      text-shadow: var(--head-shadow);
     }
     .shop-coins {
       display: flex;
@@ -701,12 +776,6 @@
     .si-info { flex: 1 1 0; min-width: 0; }
     .si-name { font-size: .86rem; color: var(--gold-bright); overflow-wrap: break-word; }
     .si-desc { font-size: .68rem; opacity: .75; overflow-wrap: break-word; }
-    .si-price {
-      flex: 0 0 auto;
-      font-size: .78rem;
-      color: var(--gold-bright);
-      white-space: nowrap;
-    }
     .buy-btn {
       flex: 0 0 auto;
       background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
@@ -725,6 +794,91 @@
     .buy-btn:hover { box-shadow: 0 0 12px rgba(245,212,122,.5); }
     .buy-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
     .buy-btn.owned { border-color: var(--green); color: var(--green); }
+
+    /* ===== Достижения ===== */
+    .ach-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid rgba(212,169,78,.3);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      background: var(--row-bg);
+    }
+    .ach-item.unlocked {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 14px rgba(245,212,122,.35);
+    }
+    .ach-icon {
+      flex: 0 0 auto;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: radial-gradient(circle at 35% 30%, var(--btn-top), var(--icon-bot) 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+    /* Пока условие не достигнуто — иконка затемнена */
+    .ach-item.locked .ach-icon {
+      filter: grayscale(1) brightness(.45);
+      opacity: .55;
+    }
+    .ach-item.locked .si-name { color: var(--ink); opacity: .6; }
+    .ach-item.unlocked .ach-icon {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 16px rgba(245,212,122,.5);
+    }
+
+    /* Всплывающая плашка достижения поверх основного экрана */
+    .ach-toast {
+      position: fixed;
+      left: 50%;
+      top: -130px;
+      transform: translateX(-50%);
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      max-width: min(92vw, 440px);
+      border: 2px solid var(--gold-bright);
+      border-radius: 14px;
+      background:
+        linear-gradient(160deg, rgba(212,169,78,.14), transparent 60%),
+        var(--panel);
+      box-shadow: inset 0 0 30px var(--shadow-dark), 0 0 30px rgba(245,212,122,.5);
+      animation: achToast 4.6s ease forwards;
+      pointer-events: none;
+    }
+    .ach-toast .ach-icon {
+      width: 46px; height: 46px;
+      font-size: 1.5rem;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 14px rgba(245,212,122,.6);
+    }
+    .ach-toast .ach-title {
+      font-size: .95rem;
+      font-weight: bold;
+      color: var(--gold-bright);
+      letter-spacing: .5px;
+      text-shadow: var(--head-shadow);
+    }
+    .ach-toast .ach-desc { font-size: .74rem; opacity: .85; overflow-wrap: break-word; }
+    .ach-toast .ach-cap {
+      font-size: .6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: .7;
+    }
+    @keyframes achToast {
+      0%   { top: -130px; opacity: 0; }
+      12%  { top: 18px;  opacity: 1; }
+      85%  { top: 18px;  opacity: 1; }
+      100% { top: -130px; opacity: 0; }
+    }
 
     /* ===== Стартовая страница ===== */
     #startScreen {
@@ -907,7 +1061,7 @@
 </head>
 <body>
 
-  <!-- СТАРТОВАЯ СТРАНИЦА (только при первом визите) -->
+  <!-- СТАРТОВАЯ СТРАНИЦА -->
   <div id="startScreen" class="hidden">
     <div class="start-card">
       <h2>⚔ Летопись Героя ⚔</h2>
@@ -972,7 +1126,7 @@
       </div>
     </section>
 
-    <!-- ПРАВАЯ ЧАСТЬ: портрет + монеты + задания + журнал -->
+    <!-- ПРАВАЯ ЧАСТЬ: портрет + иконки + задания + журнал -->
     <section class="panel col-right">
       <div class="portrait-block">
         <div class="portrait-frame" id="portraitFrame" role="button" tabindex="0" title="Загрузить портрет" aria-label="Загрузить портрет героя">
@@ -984,17 +1138,17 @@
           <div class="portrait-overlay">Сменить облик</div>
         </div>
         <input type="file" id="portraitInput" accept="image/*" style="display:none" />
+        <div class="portrait-name" id="heroNameDisplay"></div>
 
-        <!-- Имя и иконки лавки/инвентаря в один ряд -->
+        <!-- Ряд: достижения, монеты, лавка, инвентарь -->
         <div class="portrait-actions">
-          <button id="invBtn" class="icon-btn" title="Инвентарь" aria-label="Открыть инвентарь">🎒</button>
-          <div class="portrait-name" id="heroNameDisplay"></div>
+          <button id="achBtn" class="icon-btn" title="Достижения" aria-label="Открыть достижения">🏆</button>
+          <div class="coins" id="coinsBox">
+            <span class="coin-icon">🪙</span>
+            <span class="coin-value" id="coinsValue">0</span>
+          </div>
           <button id="shopBtn" class="icon-btn" title="Лавка чудес" aria-label="Открыть лавку">🛒</button>
-        </div>
-
-        <div class="coins" id="coinsBox">
-          <span class="coin-icon">🪙</span>
-          <span class="coin-value" id="coinsValue">0</span>
+          <button id="invBtn" class="icon-btn" title="Инвентарь" aria-label="Открыть инвентарь">🎒</button>
         </div>
       </div>
 
@@ -1023,7 +1177,7 @@
     </section>
   </div>
 
-  <!-- ЛАВКА ЧУДЕС -->
+  <!-- ЛАВКА -->
   <div id="shopModal" class="modal hidden" role="dialog" aria-label="Лавка чудес">
     <div class="modal-card">
       <div class="modal-head">
@@ -1046,6 +1200,17 @@
     </div>
   </div>
 
+  <!-- ДОСТИЖЕНИЯ -->
+  <div id="achModal" class="modal hidden" role="dialog" aria-label="Достижения">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2>🏆 Достижения</h2>
+        <button class="modal-close" id="achClose" aria-label="Закрыть достижения">✕</button>
+      </div>
+      <div id="achList"></div>
+    </div>
+  </div>
+
   <script>
     'use strict';
 
@@ -1053,9 +1218,7 @@
     const SAVE_KEY = 'rpgHeroSave_v3';
     const CELLS = 10;
     const XP_PER_LEVEL = 100;
-    const DAY_MS = 24 * 60 * 60 * 1000;
 
-    // dat — дательный падеж (для конструкции «к силе», «к харизме»)
     const STATS = [
       { nom: 'сила',         acc: 'силу',         dat: 'силе' },
       { nom: 'выносливость', acc: 'выносливость', dat: 'выносливости' },
@@ -1071,14 +1234,12 @@
       legendary: { adj: 'легендарное', xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
     };
 
-    // Порядок блоков в свитке: одноразовые сверху, регулярные снизу
     const QUEST_GROUPS = [
       { key: 'legendary', title: 'Легендарные — одноразовые' },
       { key: 'common',    title: 'Обычные — одноразовые' },
-      { key: 'regular',   title: 'Регулярные — повторяются каждый день' }
+      { key: 'regular',   title: 'Регулярные — обновляются после 00:00' }
     ];
 
-    // ===== Лавка: каталог товаров =====
     const SHOP_ITEMS = {
       'frame-red':    { type: 'frame',       name: 'Алые оковы',        desc: 'Алая рамка для портрета героя',   price: 50  },
       'frame-green':  { type: 'frame',       name: 'Изумрудный оберег', desc: 'Зелёная рамка для портрета героя', price: 50  },
@@ -1091,6 +1252,11 @@
       { type: 'frame',      title: 'Рамки для портрета' },
       { type: 'background', title: 'Фоны основного экрана' },
       { type: 'theme',      title: 'Темы страницы' }
+    ];
+
+    // ===== Достижения =====
+    const ACHIEVEMENTS = [
+      { id: 'big-start', icon: '🌟', name: 'Большое начало', desc: 'Повысьте уровень один раз' }
     ];
 
     const uid = () =>
@@ -1113,13 +1279,12 @@
         journal: [],
         journalDay: null,
         owned: [],
-        equipped: { frame: null, background: null, theme: null }
+        equipped: { frame: null, background: null, theme: null },
+        achievements: []
       };
     }
 
     let state = defaultState();
-
-    // Временные UI-флаги (анимации) — вне state, чтобы не попадали в localStorage
     const pulses = new Set();
 
     function save() {
@@ -1140,13 +1305,18 @@
             if (!parsed.equipped || typeof parsed.equipped !== 'object') {
               parsed.equipped = { frame: null, background: null, theme: null };
             }
-            // Чистим надетые предметы, которых нет в каталоге
+            if (!Array.isArray(parsed.achievements)) parsed.achievements = [];
             ['frame', 'background', 'theme'].forEach(slot => {
               const id = parsed.equipped[slot];
               const item = id ? SHOP_ITEMS[id] : null;
               if (!item || item.type !== slot) parsed.equipped[slot] = null;
             });
             parsed.owned = parsed.owned.filter(id => !!SHOP_ITEMS[id]);
+            parsed.achievements = parsed.achievements.filter(id => ACHIEVEMENTS.some(a => a.id === id));
+            // Миграция журнала: строки → объекты {t, c}
+            parsed.journal = parsed.journal.map(e =>
+              typeof e === 'string' ? { t: e, c: '' } : { t: String(e.t || ''), c: e.c || '' }
+            );
             parsed.stats = parsed.stats.map(s => {
               const src = STATS.find(t => t.nom === s.nom);
               return { nom: s.nom, acc: s.acc || s.nom, dat: s.dat || (src ? src.dat : s.nom), total: s.total || 0 };
@@ -1175,7 +1345,7 @@
     const ptsWord = (n, dat) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${dat}`;
     const cap = s => s[0].toUpperCase() + s.slice(1);
 
-    // ===== Звук (Web Audio API) =====
+    // ===== Звук =====
     let audioCtx = null;
     function ensureAudio() {
       if (!audioCtx) {
@@ -1214,6 +1384,16 @@
       note(1108, t + 0.24, 0.7, 0.32);
       note(1318, t + 0.36, 0.8, 0.3);
     }
+    // Победный аккорд для достижения
+    function achSound() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      note(523, t, 0.4, 0.28);
+      note(659, t + 0.1, 0.4, 0.28);
+      note(784, t + 0.2, 0.5, 0.3);
+      note(1047, t + 0.32, 0.8, 0.3);
+    }
 
     // ===== Журнал =====
     function todayKey() {
@@ -1230,8 +1410,9 @@
       renderJournal(false);
     }
 
-    function log(text) {
-      state.journal.unshift(text);
+    // cls — класс особого события: 'gold' | 'legend' | 'stat' | 'ach'
+    function log(text, cls) {
+      state.journal.unshift({ t: text, c: cls || '' });
       if (state.journal.length > 40) state.journal.length = 40;
       renderJournal(true);
     }
@@ -1248,7 +1429,8 @@
       }
       state.journal.forEach((entry, i) => {
         const li = document.createElement('li');
-        li.textContent = entry;
+        if (entry.c) li.classList.add('j-' + entry.c);
+        li.textContent = entry.t;
         if (isNew && i === 0) li.classList.add('new');
         ul.appendChild(li);
       });
@@ -1265,7 +1447,7 @@
       setTimeout(() => el.remove(), 1800);
     }
 
-    // ===== Сжатие изображения =====
+    // ===== Изображения =====
     function compressImage(file, cb) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -1304,7 +1486,6 @@
       });
     }
 
-    // Рамки-кнопки портрета: клик мышью + клавиатура (Enter/Space)
     function bindFrame(frameId, inputId) {
       const frame = document.getElementById(frameId);
       const input = document.getElementById(inputId);
@@ -1344,23 +1525,17 @@
     function closeModal(id) {
       document.getElementById(id).classList.add('hidden');
     }
-    function bindModal(modalId, closeBtnId, onOpen) {
+    function bindModal(modalId, closeBtnId) {
       const modal = document.getElementById(modalId);
       document.getElementById(closeBtnId).addEventListener('click', () => closeModal(modalId));
       modal.addEventListener('click', e => { if (e.target === modal) closeModal(modalId); });
-      if (onOpen) onOpen();
     }
 
-    function openShop() {
-      renderShop();
-      openModal('shopModal');
-    }
-    function openInventory() {
-      renderInventory();
-      openModal('invModal');
-    }
+    function openShop() { renderShop(); openModal('shopModal'); }
+    function openInventory() { renderInventory(); openModal('invModal'); }
+    function openAchievements() { renderAchievements(); openModal('achModal'); }
 
-    // ===== Применение косметики =====
+    // ===== Косметика =====
     function applyCosmetics() {
       const body = document.body;
       ['bg-embers', 'bg-frost', 'theme-white', 'theme-red'].forEach(c => body.classList.remove(c));
@@ -1391,13 +1566,13 @@
       ding();
     }
 
+    // Смена косметики в журнал не пишется
     function equipItem(id) {
       const item = SHOP_ITEMS[id];
       if (!item || !state.owned.includes(id)) return;
       const slot = item.type;
       const takingOff = state.equipped[slot] === id;
       state.equipped[slot] = takingOff ? null : id;
-      log(`${state.heroName} ${takingOff ? 'снял' : 'надел'} «${item.name}»`);
       save();
       applyCosmetics();
       renderShop();
@@ -1491,6 +1666,74 @@
       });
     }
 
+    // ===== Достижения =====
+    function renderAchievements() {
+      const container = document.getElementById('achList');
+      container.innerHTML = '';
+
+      ACHIEVEMENTS.forEach(a => {
+        const unlocked = state.achievements.includes(a.id);
+        const row = document.createElement('div');
+        row.className = 'ach-item ' + (unlocked ? 'unlocked' : 'locked');
+
+        const icon = document.createElement('div');
+        icon.className = 'ach-icon';
+        icon.textContent = a.icon;
+        row.appendChild(icon);
+
+        const info = document.createElement('div');
+        info.className = 'si-info';
+        const nm = document.createElement('div');
+        nm.className = 'si-name';
+        nm.textContent = a.name;
+        const ds = document.createElement('div');
+        ds.className = 'si-desc';
+        ds.textContent = unlocked ? a.desc : 'Условие: ' + a.desc;
+        info.append(nm, ds);
+        row.appendChild(info);
+
+        container.appendChild(row);
+      });
+    }
+
+    function showToast(ach) {
+      const el = document.createElement('div');
+      el.className = 'ach-toast';
+      el.setAttribute('role', 'status');
+
+      const icon = document.createElement('div');
+      icon.className = 'ach-icon';
+      icon.textContent = ach.icon;
+
+      const info = document.createElement('div');
+      const capEl = document.createElement('div');
+      capEl.className = 'ach-cap';
+      capEl.textContent = 'Достижение получено';
+      const title = document.createElement('div');
+      title.className = 'ach-title';
+      title.textContent = ach.name;
+      const desc = document.createElement('div');
+      desc.className = 'ach-desc';
+      desc.textContent = ach.desc;
+      info.append(capEl, title, desc);
+
+      el.append(icon, info);
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4800);
+    }
+
+    function unlockAchievement(id) {
+      if (state.achievements.includes(id)) return;
+      const ach = ACHIEVEMENTS.find(a => a.id === id);
+      if (!ach) return;
+      state.achievements.push(id);
+      save();
+      showToast(ach);
+      achSound();
+      log(`${state.heroName} получил достижение «${ach.name}»!`, 'ach');
+      renderAchievements();
+    }
+
     // ===== Стартовая страница =====
     function showStartScreen() {
       const screen = document.getElementById('startScreen');
@@ -1545,7 +1788,7 @@
       }
     }
 
-    // ===== Строка характеристики/навыка (общая для обоих списков) =====
+    // ===== Строка характеристики/навыка =====
     function buildStatRow(item, pulseKey, onDelete) {
       const row = document.createElement('div');
       row.className = 'stat-row';
@@ -1576,7 +1819,6 @@
     function renderStats() {
       const container = document.getElementById('stats');
       container.innerHTML = '';
-
       state.stats.forEach(s => {
         container.appendChild(buildStatRow(s, 'stat:' + s.nom));
       });
@@ -1588,7 +1830,7 @@
       s.total += pts;
       const after = levelOf(s);
       if (after > before) {
-        log(`${state.heroName} повысил ${s.nom} до ${after} уровня`);
+        log(`${state.heroName} повысил ${s.nom} до ${after} уровня`, 'stat');
         ding();
         pulses.add('stat:' + s.nom);
       }
@@ -1627,7 +1869,7 @@
       sk.total += pts;
       const after = levelOf(sk);
       if (after > before) {
-        log(`${state.heroName} повысил навык «${sk.name}» до ${after} уровня`);
+        log(`${state.heroName} повысил навык «${sk.name}» до ${after} уровня`, 'stat');
         ding();
         pulses.add('skill:' + sk.id);
       }
@@ -1647,7 +1889,7 @@
       renderQuestMaker();
     }
 
-    // ===== Паутина (рисуем только при изменениях) =====
+    // ===== Паутина =====
     let disp = state.stats.map(() => 0);
 
     function targetValue(s) {
@@ -1762,7 +2004,7 @@
       requestAnimationFrame(animateRadar);
     }
 
-    // ===== Центральный блок: уровень и опыт героя =====
+    // ===== Уровень и опыт героя =====
     function renderHero() {
       document.getElementById('heroLevelValue').textContent = state.heroLevel;
       document.getElementById('xpFill').style.width = (state.xp / XP_PER_LEVEL * 100) + '%';
@@ -1774,9 +2016,10 @@
       while (state.xp >= XP_PER_LEVEL) {
         state.xp -= XP_PER_LEVEL;
         state.heroLevel++;
-        log(`${state.heroName} повысил уровень до ${state.heroLevel}`);
+        log(`${state.heroName} повысил уровень до ${state.heroLevel}`, 'gold');
         fanfare();
         pulses.add('hero');
+        unlockAchievement('big-start');
       }
       renderHero();
       if (pulses.has('hero')) {
@@ -1815,13 +2058,21 @@
       if ([...skillSel.options].some(o => o.value === prev)) skillSel.value = prev;
     }
 
+    // Ближайшая полуночь ПОСЛЕ момента ts — момент обнуления по локальным
+    // часам устройства. setHours(24,...) сам перекатывается на следующий день.
+    function nextMidnight(ts) {
+      const d = new Date(ts);
+      d.setHours(24, 0, 0, 0);
+      return d.getTime();
+    }
+
     function remainingTime(doneAt) {
-      const left = Math.max(0, DAY_MS - (Date.now() - doneAt));
+      const left = Math.max(0, nextMidnight(doneAt) - Date.now());
       if (left <= 0) return 'обновится сейчас';
       const h = Math.floor(left / 3600000);
       const m = Math.floor((left % 3600000) / 60000);
       if (h === 0 && m === 0) return 'обновится меньше чем через минуту';
-      return `обновится через ${h} ч ${m} мин`;
+      return `обновится в 00:00 через ${h} ч ${m} мин`;
     }
 
     function buildQuestRow(q) {
@@ -1944,11 +2195,12 @@
       if (stat) gainStatPoints(stat, rar.pts);
       if (skill) gainSkillPoints(skill, 1);
 
+      // Легендарное задание — особая запись в журнале
       let msg = `${state.heroName} выполнил ${rar.adj} задание "${q.text}", получил ${xpWord(rar.xp)}`;
       if (stat) msg += ` и повысил ${stat.acc} на ${plural(rar.pts, 'очко', 'очка', 'очков')}`;
       if (skill) msg += (stat ? ' и навык' : ' и повысил навык') + ` «${skill.name}» на ${plural(1, 'очко', 'очка', 'очков')}`;
       msg += '.';
-      log(msg);
+      log(msg, q.rarity === 'legendary' ? 'legend' : '');
 
       save();
 
@@ -1995,8 +2247,10 @@
 
     function tick() {
       let changed = false;
+      const now = Date.now();
       state.quests.forEach(q => {
-        if (q.done && RARITIES[q.rarity].repeat && Date.now() - q.doneAt >= DAY_MS) {
+        // Обнуление регулярных заданий — после полуночи по часам устройства
+        if (q.done && RARITIES[q.rarity].repeat && now >= nextMidnight(q.doneAt)) {
           q.done = false;
           q.doneAt = null;
           changed = true;
@@ -2065,13 +2319,18 @@
         if (e.key === 'Enter') addSkill();
       });
 
-      // Лавка и инвентарь
       document.getElementById('shopBtn').addEventListener('click', openShop);
       document.getElementById('invBtn').addEventListener('click', openInventory);
+      document.getElementById('achBtn').addEventListener('click', openAchievements);
       bindModal('shopModal', 'shopClose');
       bindModal('invModal', 'invClose');
+      bindModal('achModal', 'achClose');
       document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { closeModal('shopModal'); closeModal('invModal'); }
+        if (e.key === 'Escape') {
+          closeModal('shopModal');
+          closeModal('invModal');
+          closeModal('achModal');
+        }
       });
 
       setupReset();
