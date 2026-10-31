@@ -57,6 +57,7 @@
       width: 44px; height: 44px;
       cursor: pointer;
       transition: all .2s;
+      flex: 0 0 auto;
     }
     .trash-btn:hover { box-shadow: 0 0 12px rgba(163,59,46,.7); border-color: #a33b2e; }
     .trash-btn.armed {
@@ -119,6 +120,7 @@
       cursor: pointer;
       transition: box-shadow .25s, transform .25s;
       padding: 0;
+      flex: 0 0 auto;
     }
     .portrait-frame:active { transform: scale(.98); }
     .portrait-frame:focus-visible,
@@ -195,6 +197,7 @@
       padding: 6px 18px;
       background: radial-gradient(circle at 35% 30%, #3a2c1c, #1a1208 80%);
       box-shadow: 0 0 12px rgba(245,212,122,.3), inset 0 0 8px rgba(0,0,0,.7);
+      flex: 0 0 auto;
     }
     .coins .coin-icon {
       font-size: 1.2rem;
@@ -223,7 +226,18 @@
       margin-bottom: 8px;
       background: rgba(0,0,0,.35);
     }
-    .stat-name { flex: 0 0 96px; font-size: .76rem; }
+    /* Имя зафиксировано по ширине: не раздвигает соседей и не даёт строке
+       «плыть». Если слово не влезает — переносится внутри своей ячейки. */
+    .stat-name {
+      flex: 0 0 96px;
+      min-width: 0;
+      font-size: .76rem;
+      line-height: 1.2;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
 
     .level-orb {
       flex: 0 0 40px;
@@ -251,12 +265,12 @@
     }
 
     .cells {
-      flex: 1;
+      flex: 1 1 0;
+      min-width: 0;
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 3px;
       height: 20px;
-      min-width: 0;
     }
     .cell {
       border-radius: 3px;
@@ -264,6 +278,7 @@
       background: var(--cell-empty);
       box-shadow: inset 0 2px 4px rgba(0,0,0,.9);
       transition: background .25s, box-shadow .25s;
+      min-width: 0;
     }
     .cell.filled {
       background: var(--cell-fill);
@@ -281,6 +296,7 @@
       color: rgba(232,217,181,.4);
       font-size: .9rem; cursor: pointer;
       padding: 8px;
+      flex: 0 0 auto;
     }
     .row-del:hover { color: #ff9b8a; }
 
@@ -307,6 +323,7 @@
     .maker .row:last-child { margin-bottom: 0; }
     select {
       flex: 1;
+      min-width: 0;
       background: #332514;
       border: 1px solid rgba(212,169,78,.5);
       border-radius: 6px;
@@ -314,7 +331,6 @@
       padding: 8px 6px;
       font-family: inherit;
       font-size: 13px;
-      min-width: 0;
     }
     .forge-btn {
       flex: 0 0 auto;
@@ -341,6 +357,19 @@
       padding-right: 4px;
       -webkit-overflow-scrolling: touch;
     }
+    /* Заголовок блока внутри свитка */
+    .q-group-title {
+      font-size: .68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--gold-bright);
+      opacity: .75;
+      margin: 10px 0 6px;
+      border-bottom: 1px dashed rgba(212,169,78,.3);
+      padding-bottom: 3px;
+    }
+    .q-group-title:first-child { margin-top: 0; }
     .quest {
       display: flex;
       align-items: flex-start;
@@ -374,7 +403,7 @@
       cursor: pointer;
       display: block;
     }
-    .q-body { flex: 1; min-width: 0; cursor: pointer; }
+    .q-body { flex: 1 1 0; min-width: 0; cursor: pointer; }
     .q-text { font-size: .84rem; margin-bottom: 3px; overflow-wrap: break-word; }
     .quest.done .q-text { text-decoration: line-through; opacity: .7; }
     .q-meta { font-size: .68rem; opacity: .8; overflow-wrap: break-word; }
@@ -396,6 +425,7 @@
       color: rgba(232,217,181,.45);
       font-size: .9rem; cursor: pointer;
       padding: 8px 4px;
+      flex: 0 0 auto;
     }
     .q-del:hover { color: #ff9b8a; }
 
@@ -441,6 +471,7 @@
       border: 3px solid var(--gold-bright);
       box-shadow: 0 0 24px rgba(245,212,122,.5), inset 0 0 14px rgba(0,0,0,.8);
       transition: box-shadow .3s;
+      flex: 0 0 auto;
     }
     .hero-orb.pulse { animation: orbPulse .9s ease; }
     .hero-orb .lvl-label { font-size: .55rem; }
@@ -639,7 +670,11 @@
       .coins { padding: 5px 14px; }
       .coins .coin-value { font-size: .98rem; }
 
-      .stat-name { flex: 0 0 76px; font-size: .7rem; }
+      .stat-name {
+        flex: 0 0 76px;
+        font-size: .7rem;
+        line-height: 1.15;
+      }
       .level-orb { flex: 0 0 34px; width: 34px; height: 34px; }
       .lvl-label { display: none; }
       .lvl-value { font-size: .95rem; }
@@ -669,9 +704,7 @@
 </head>
 <body>
 
-  <!-- СТАРТОВАЯ СТРАНИЦА (только при первом визите).
-       Класс hidden стоит в разметке сразу — чтобы у вернувшихся игроков
-       стартовый экран не вспыхивал на секунду до срабатывания скрипта. -->
+  <!-- СТАРТОВАЯ СТРАНИЦА (только при первом визите) -->
   <div id="startScreen" class="hidden">
     <div class="start-card">
       <h2>⚔ Летопись Героя ⚔</h2>
@@ -805,6 +838,13 @@
       legendary: { adj: 'легендарное', xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
     };
 
+    // Порядок блоков в свитке: одноразовые сверху, регулярные снизу
+    const QUEST_GROUPS = [
+      { key: 'legendary', title: 'Легендарные — одноразовые' },
+      { key: 'common',    title: 'Обычные — одноразовые' },
+      { key: 'regular',   title: 'Регулярные — повторяются каждый день' }
+    ];
+
     const uid = () =>
       (window.crypto && crypto.randomUUID)
         ? crypto.randomUUID()
@@ -822,7 +862,8 @@
         stats: STATS.map(s => ({ nom: s.nom, acc: s.acc, dat: s.dat, total: 0 })),
         skills: [],
         quests: [],
-        journal: []
+        journal: [],
+        journalDay: null
       };
     }
 
@@ -845,7 +886,6 @@
             if (!Array.isArray(parsed.journal)) parsed.journal = [];
             if (typeof parsed.firstLaunch !== 'boolean') parsed.firstLaunch = false;
             if (typeof parsed.coins !== 'number') parsed.coins = 0;
-            // досистраиваем dat и чистим устаревшие флаги из старых сохранений
             parsed.stats = parsed.stats.map(s => {
               const src = STATS.find(t => t.nom === s.nom);
               return { nom: s.nom, acc: s.acc || s.nom, dat: s.dat || (src ? src.dat : s.nom), total: s.total || 0 };
@@ -915,6 +955,21 @@
     }
 
     // ===== Журнал =====
+    // Ключ текущего дня: при смене суток журнал обнуляется
+    function todayKey() {
+      const d = new Date();
+      return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+
+    function checkJournalDay() {
+      const key = todayKey();
+      if (state.journalDay === key) return;
+      state.journalDay = key;
+      state.journal = [];
+      save();
+      renderJournal(false);
+    }
+
     function log(text) {
       state.journal.unshift(text);
       if (state.journal.length > 40) state.journal.length = 40;
@@ -923,6 +978,14 @@
     function renderJournal(isNew) {
       const ul = document.getElementById('journalList');
       ul.innerHTML = '';
+      if (!state.journal.length) {
+        const li = document.createElement('li');
+        li.textContent = 'Летопись ждёт первого деяния этого дня…';
+        li.style.opacity = '.5';
+        li.style.fontStyle = 'italic';
+        ul.appendChild(li);
+        return;
+      }
       state.journal.forEach((entry, i) => {
         const li = document.createElement('li');
         li.textContent = entry;
@@ -959,7 +1022,7 @@
           );
           cb(c.toDataURL('image/jpeg', 0.85));
         };
-        tmp.onerror = () => cb(null); // битый файл не оставляем молчание
+        tmp.onerror = () => cb(null);
         tmp.src = reader.result;
       };
       reader.onerror = () => cb(null);
@@ -1067,34 +1130,40 @@
       }
     }
 
+    // ===== Строка характеристики/навыка (общая для обоих списков) =====
+    function buildStatRow(item, pulseKey, onDelete) {
+      const row = document.createElement('div');
+      row.className = 'stat-row';
+
+      const name = document.createElement('div');
+      name.className = 'stat-name';
+      name.textContent = item.nom ? cap(item.nom) : item.name;
+
+      const orb = document.createElement('div');
+      orb.className = 'level-orb' + (pulses.has(pulseKey) ? ' pulse' : '');
+      orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(item)}</span>`;
+
+      const cells = document.createElement('div');
+      cells.className = 'cells';
+      const filled = cellsOf(item);
+      for (let i = 0; i < CELLS; i++) {
+        const c = document.createElement('div');
+        c.className = 'cell' + (i < filled ? ' filled' : '');
+        cells.appendChild(c);
+      }
+
+      row.append(name, orb, cells);
+      if (onDelete) row.appendChild(onDelete);
+      return row;
+    }
+
     // ===== Кузня характеристик =====
     function renderStats() {
       const container = document.getElementById('stats');
       container.innerHTML = '';
 
       state.stats.forEach(s => {
-        const row = document.createElement('div');
-        row.className = 'stat-row';
-
-        const name = document.createElement('div');
-        name.className = 'stat-name';
-        name.textContent = cap(s.nom);
-
-        const orb = document.createElement('div');
-        orb.className = 'level-orb' + (pulses.has('stat:' + s.nom) ? ' pulse' : '');
-        orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(s)}</span>`;
-
-        const cells = document.createElement('div');
-        cells.className = 'cells';
-        const filled = cellsOf(s);
-        for (let i = 0; i < CELLS; i++) {
-          const c = document.createElement('div');
-          c.className = 'cell' + (i < filled ? ' filled' : '');
-          cells.appendChild(c);
-        }
-
-        row.append(name, orb, cells);
-        container.appendChild(row);
+        container.appendChild(buildStatRow(s, 'stat:' + s.nom));
       });
       pulses.clear();
     }
@@ -1121,26 +1190,6 @@
       }
 
       state.skills.forEach(sk => {
-        const row = document.createElement('div');
-        row.className = 'stat-row';
-
-        const name = document.createElement('div');
-        name.className = 'stat-name';
-        name.textContent = sk.name;
-
-        const orb = document.createElement('div');
-        orb.className = 'level-orb' + (pulses.has('skill:' + sk.id) ? ' pulse' : '');
-        orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(sk)}</span>`;
-
-        const cells = document.createElement('div');
-        cells.className = 'cells';
-        const filled = cellsOf(sk);
-        for (let i = 0; i < CELLS; i++) {
-          const c = document.createElement('div');
-          c.className = 'cell' + (i < filled ? ' filled' : '');
-          cells.appendChild(c);
-        }
-
         const del = document.createElement('button');
         del.className = 'row-del';
         del.textContent = '✕';
@@ -1154,8 +1203,7 @@
           renderQuestMaker();
         });
 
-        row.append(name, orb, cells, del);
-        container.appendChild(row);
+        container.appendChild(buildStatRow(sk, 'skill:' + sk.id, del));
       });
     }
 
@@ -1298,7 +1346,6 @@
           disp[i] = target;
         }
       });
-      // Перерисовка только когда есть движение — экономит батарею на мобильных
       if (moving) drawRadar();
       requestAnimationFrame(animateRadar);
     }
@@ -1349,7 +1396,7 @@
       skillSel.appendChild(none);
       state.skills.forEach(sk => {
         const opt = document.createElement('option');
-        opt.value = sk.id; // храним id, а не имя — имя может измениться
+        opt.value = sk.id;
         opt.textContent = 'Навык: ' + sk.name;
         skillSel.appendChild(opt);
       });
@@ -1365,6 +1412,79 @@
       return `обновится через ${h} ч ${m} мин`;
     }
 
+    // Одна карточка задания (общая для всех блоков)
+    function buildQuestRow(q) {
+      const rar = RARITIES[q.rarity];
+      const row = document.createElement('div');
+      row.className = `quest r-${q.rarity}` + (q.done ? ' done' : '');
+
+      const checkWrap = document.createElement('label');
+      checkWrap.className = 'q-check';
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.id = 'chk-' + q.id;
+      input.checked = q.done;
+      input.disabled = q.done;
+      input.addEventListener('change', () => completeQuest(q, row));
+      checkWrap.appendChild(input);
+      row.appendChild(checkWrap);
+
+      const body = document.createElement('label');
+      body.className = 'q-body';
+      body.htmlFor = 'chk-' + q.id;
+      const text = document.createElement('div');
+      text.className = 'q-text';
+      text.textContent = q.text;
+      const stat = state.stats.find(s => s.nom === q.stat);
+      const skill = q.skill ? state.skills.find(sk => sk.id === q.skill) : null;
+
+      const meta = document.createElement('div');
+      meta.className = 'q-meta';
+      const badge = document.createElement('span');
+      badge.className = 'badge r-' + q.rarity;
+      badge.textContent = cap(rar.adj);
+      meta.appendChild(badge);
+      meta.appendChild(document.createTextNode(
+        `${xpWord(rar.xp)} · ${ptsWord(rar.pts, stat ? stat.dat : '')}`
+      ));
+      if (q.skill && skill) {
+        meta.appendChild(document.createTextNode(' · '));
+        const skillSpan = document.createElement('span');
+        skillSpan.className = 'q-skill';
+        skillSpan.textContent = `+1 к навыку «${skill.name}»`;
+        meta.appendChild(skillSpan);
+      }
+      body.append(text, meta);
+
+      if (q.done && rar.repeat) {
+        const timer = document.createElement('div');
+        timer.className = 'q-timer';
+        timer.dataset.doneAt = q.doneAt;
+        timer.textContent = remainingTime(q.doneAt);
+        body.appendChild(timer);
+      } else if (q.done) {
+        const t = document.createElement('div');
+        t.className = 'q-timer';
+        t.textContent = 'выполнено';
+        body.appendChild(t);
+      }
+      row.appendChild(body);
+
+      const del = document.createElement('button');
+      del.className = 'q-del';
+      del.textContent = '✕';
+      del.title = 'Убрать задание из свитка';
+      del.setAttribute('aria-label', 'Убрать задание: ' + q.text);
+      del.addEventListener('click', () => {
+        state.quests = state.quests.filter(x => x.id !== q.id);
+        save();
+        renderQuests();
+      });
+      row.appendChild(del);
+
+      return row;
+    }
+
     function renderQuests() {
       const container = document.getElementById('questList');
       container.innerHTML = '';
@@ -1374,79 +1494,21 @@
         return;
       }
 
-      state.quests.forEach(q => {
-        const rar = RARITIES[q.rarity];
-        const row = document.createElement('div');
-        row.className = `quest r-${q.rarity}` + (q.done ? ' done' : '');
+      // Свиток делится на блоки по редкости. Внутри блока невыполненные
+      // задания идут первыми, среди них — старые сверху, чтобы давно
+      // висящие одноразовые не терялись за свежими.
+      QUEST_GROUPS.forEach(gr => {
+        const list = state.quests
+          .filter(q => q.rarity === gr.key)
+          .sort((a, b) => (a.done === b.done) ? 0 : (a.done ? 1 : -1));
+        if (!list.length) return;
 
-        const checkWrap = document.createElement('label');
-        checkWrap.className = 'q-check';
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.id = 'chk-' + q.id;
-        input.checked = q.done;
-        input.disabled = q.done;
-        input.addEventListener('change', () => completeQuest(q, row));
-        checkWrap.appendChild(input);
-        row.appendChild(checkWrap);
+        const title = document.createElement('div');
+        title.className = 'q-group-title';
+        title.textContent = gr.title;
+        container.appendChild(title);
 
-        // Тело задания — тоже label: клик по тексту переключает чекбокс,
-        // заодно растёт область нажатия на телефоне
-        const body = document.createElement('label');
-        body.className = 'q-body';
-        body.htmlFor = 'chk-' + q.id;
-        const text = document.createElement('div');
-        text.className = 'q-text';
-        text.textContent = q.text;
-        const stat = state.stats.find(s => s.nom === q.stat);
-        const skill = q.skill ? state.skills.find(sk => sk.id === q.skill) : null;
-
-        // Мету собираем через DOM — пользовательский ввод не попадает в innerHTML
-        const meta = document.createElement('div');
-        meta.className = 'q-meta';
-        const badge = document.createElement('span');
-        badge.className = 'badge r-' + q.rarity;
-        badge.textContent = cap(rar.adj);
-        meta.appendChild(badge);
-        meta.appendChild(document.createTextNode(
-          `${xpWord(rar.xp)} · ${ptsWord(rar.pts, stat ? stat.dat : '')}`
-        ));
-        if (q.skill && skill) {
-          meta.appendChild(document.createTextNode(' · '));
-          const skillSpan = document.createElement('span');
-          skillSpan.className = 'q-skill';
-          skillSpan.textContent = `+1 к навыку «${skill.name}»`;
-          meta.appendChild(skillSpan);
-        }
-        body.append(text, meta);
-
-        if (q.done && rar.repeat) {
-          const timer = document.createElement('div');
-          timer.className = 'q-timer';
-          timer.dataset.doneAt = q.doneAt;
-          timer.textContent = remainingTime(q.doneAt);
-          body.appendChild(timer);
-        } else if (q.done) {
-          const t = document.createElement('div');
-          t.className = 'q-timer';
-          t.textContent = 'выполнено';
-          body.appendChild(t);
-        }
-        row.appendChild(body);
-
-        const del = document.createElement('button');
-        del.className = 'q-del';
-        del.textContent = '✕';
-        del.title = 'Убрать задание из свитка';
-        del.setAttribute('aria-label', 'Убрать задание: ' + q.text);
-        del.addEventListener('click', () => {
-          state.quests = state.quests.filter(x => x.id !== q.id);
-          save();
-          renderQuests();
-        });
-        row.appendChild(del);
-
-        container.appendChild(row);
+        list.forEach(q => container.appendChild(buildQuestRow(q)));
       });
     }
 
@@ -1536,6 +1598,9 @@
         el.textContent = remainingTime(+el.dataset.doneAt);
       });
       if (changed) { save(); renderQuests(); }
+
+      // Раз в сутки — очистка журнала
+      checkJournalDay();
     }
 
     // ===== Кнопка обнуления: полный сброс до стартовой страницы =====
