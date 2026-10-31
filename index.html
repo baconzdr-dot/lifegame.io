@@ -18,15 +18,20 @@
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    html { height: 100%; }
-
     body {
       margin: 0;
       min-height: 100vh;
       font-family: 'Bookman Old Style', 'Bookman', Georgia, serif;
       color: var(--ink);
+      background: #0a0705;
+    }
+    /* Фон фиксируем отдельным слоем: background-attachment: fixed дёргается в iOS Safari */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
       background: radial-gradient(ellipse at top, #2e2214 0%, #120d08 60%, #0a0705 100%);
-      background-attachment: fixed;
     }
 
     h1 {
@@ -68,7 +73,7 @@
       max-width: 1500px;
       margin: 0 auto 40px;
       padding: 0 20px;
-      align-items: stretch;   /* колонки вытягиваются по самой высокой */
+      align-items: stretch;
     }
 
     .panel {
@@ -90,7 +95,6 @@
     }
     .hint { text-align: center; font-size: .7rem; opacity: .6; margin: 0 0 12px; }
 
-    /* Левая колонка: две панели делят высоту колонки поровну */
     .col-left {
       display: flex;
       flex-direction: column;
@@ -114,8 +118,11 @@
       overflow: hidden;
       cursor: pointer;
       transition: box-shadow .25s, transform .25s;
+      padding: 0;
     }
     .portrait-frame:active { transform: scale(.98); }
+    .portrait-frame:focus-visible,
+    .start-frame:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
     .portrait-frame img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -153,6 +160,7 @@
       text-transform: uppercase;
       text-align: center;
       padding: 6px;
+      pointer-events: none;
     }
     @media (hover: hover) {
       .portrait-frame:hover {
@@ -366,7 +374,7 @@
       cursor: pointer;
       display: block;
     }
-    .q-body { flex: 1; min-width: 0; }
+    .q-body { flex: 1; min-width: 0; cursor: pointer; }
     .q-text { font-size: .84rem; margin-bottom: 3px; overflow-wrap: break-word; }
     .quest.done .q-text { text-decoration: line-through; opacity: .7; }
     .q-meta { font-size: .68rem; opacity: .8; overflow-wrap: break-word; }
@@ -545,6 +553,7 @@
       position: relative;
       transition: box-shadow .25s, transform .25s;
       flex: 0 0 auto;
+      padding: 0;
     }
     .start-frame:active { transform: scale(.98); }
     .start-frame img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
@@ -660,19 +669,21 @@
 </head>
 <body>
 
-  <!-- СТАРТОВАЯ СТРАНИЦА (только при первом визите) -->
-  <div id="startScreen">
+  <!-- СТАРТОВАЯ СТРАНИЦА (только при первом визите).
+       Класс hidden стоит в разметке сразу — чтобы у вернувшихся игроков
+       стартовый экран не вспыхивал на секунду до срабатывания скрипта. -->
+  <div id="startScreen" class="hidden">
     <div class="start-card">
       <h2>⚔ Летопись Героя ⚔</h2>
       <p class="greeting">
         Приветствуем тебя, странник! Впереди — путь из деяний и свершений.
         Выбирай облик, запечатлей имя — и летопись начнёт писать сама себя.
       </p>
-      <div class="start-frame" id="startFrame" title="Выбрать облик">
-        <img id="startImg" alt="" style="display:none" />
+      <div class="start-frame" id="startFrame" role="button" tabindex="0" title="Выбрать облик" aria-label="Выбрать облик героя">
+        <img id="startImg" alt="Портрет героя" style="display:none" />
         <div class="portrait-placeholder" id="startPlaceholder">
           <span>🧝</span>
-          <div class="ph-hint" style="font-size:.6rem;letter-spacing:1px;margin-top:8px;">Облик героя</div>
+          <div class="ph-hint">Облик героя</div>
         </div>
       </div>
       <input type="file" id="startPortraitInput" accept="image/*" style="display:none" />
@@ -685,7 +696,7 @@
   <header>
     <h1>⚔ Летопись Героя ⚔</h1>
     <div class="header-controls">
-      <button id="resetBtn" class="trash-btn" title="Обнулить весь прогресс">🗑</button>
+      <button id="resetBtn" class="trash-btn" title="Обнулить весь прогресс" aria-label="Обнулить весь прогресс">🗑</button>
     </div>
   </header>
 
@@ -721,15 +732,15 @@
         <div class="xp-text" id="xpText">Опыт: 0 / 100</div>
       </div>
       <div class="radar-wrap" id="radarWrap">
-        <canvas id="radar" width="540" height="540"></canvas>
+        <canvas id="radar" width="540" height="540" role="img" aria-label="Паутина характеристик героя"></canvas>
       </div>
     </section>
 
     <!-- ПРАВАЯ ЧАСТЬ: портрет + монеты + задания + журнал -->
     <section class="panel col-right">
       <div class="portrait-block">
-        <div class="portrait-frame" id="portraitFrame" title="Загрузить портрет">
-          <img id="portraitImg" alt="" style="display:none" />
+        <div class="portrait-frame" id="portraitFrame" role="button" tabindex="0" title="Загрузить портрет" aria-label="Загрузить портрет героя">
+          <img id="portraitImg" alt="Портрет героя" style="display:none" />
           <div class="portrait-placeholder" id="portraitPlaceholder">
             <span>🧝</span>
             <span class="ph-hint">Облик героя</span>
@@ -748,15 +759,15 @@
       <div class="maker">
         <input type="text" id="questText" placeholder="Начертай задание…" maxlength="80" />
         <div class="row">
-          <select id="questStat"></select>
-          <select id="questRarity">
+          <select id="questStat" aria-label="Характеристика задания"></select>
+          <select id="questRarity" aria-label="Редкость задания">
             <option value="regular">Регулярное — 10 опыта, 1 очко</option>
             <option value="common">Обычное — 30 опыта, 3 очка</option>
             <option value="legendary">Легендарное — 100 опыта, 10 очков</option>
           </select>
         </div>
         <div class="row">
-          <select id="questSkill"></select>
+          <select id="questSkill" aria-label="Связанный навык"></select>
           <button class="forge-btn" id="addQuestBtn">✒ Вписать в свиток</button>
         </div>
       </div>
@@ -764,7 +775,7 @@
 
       <div class="journal">
         <h2>Журнал прогресса</h2>
-        <ul id="journalList"></ul>
+        <ul id="journalList" aria-live="polite"></ul>
       </div>
     </section>
   </div>
@@ -778,13 +789,14 @@
     const XP_PER_LEVEL = 100;
     const DAY_MS = 24 * 60 * 60 * 1000;
 
+    // dat — дательный падеж (для конструкции «к силе», «к харизме»)
     const STATS = [
-      { nom: 'сила',         acc: 'силу' },
-      { nom: 'выносливость', acc: 'выносливость' },
-      { nom: 'интеллект',    acc: 'интеллект' },
-      { nom: 'ловкость',     acc: 'ловкость' },
-      { nom: 'харизма',      acc: 'харизму' },
-      { nom: 'телосложение', acc: 'телосложение' }
+      { nom: 'сила',         acc: 'силу',         dat: 'силе' },
+      { nom: 'выносливость', acc: 'выносливость', dat: 'выносливости' },
+      { nom: 'интеллект',    acc: 'интеллект',    dat: 'интеллекту' },
+      { nom: 'ловкость',     acc: 'ловкость',     dat: 'ловкости' },
+      { nom: 'харизма',      acc: 'харизму',      dat: 'харизме' },
+      { nom: 'телосложение', acc: 'телосложение', dat: 'телосложению' }
     ];
 
     const RARITIES = {
@@ -792,6 +804,11 @@
       common:    { adj: 'обычное',     xp: 30,  pts: 3,  repeat: false, floatClass: 'gold'   },
       legendary: { adj: 'легендарное', xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
     };
+
+    const uid = () =>
+      (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : Date.now() + '-' + Math.random().toString(36).slice(2, 9);
 
     // ===== Состояние =====
     function defaultState() {
@@ -802,7 +819,7 @@
         firstLaunch: true,
         heroLevel: 1,
         xp: 0,
-        stats: STATS.map(s => ({ nom: s.nom, acc: s.acc, total: 0 })),
+        stats: STATS.map(s => ({ nom: s.nom, acc: s.acc, dat: s.dat, total: 0 })),
         skills: [],
         quests: [],
         journal: []
@@ -810,6 +827,9 @@
     }
 
     let state = defaultState();
+
+    // Временные UI-флаги (анимации) — вне state, чтобы не попадали в localStorage
+    const pulses = new Set();
 
     function save() {
       try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -825,6 +845,13 @@
             if (!Array.isArray(parsed.journal)) parsed.journal = [];
             if (typeof parsed.firstLaunch !== 'boolean') parsed.firstLaunch = false;
             if (typeof parsed.coins !== 'number') parsed.coins = 0;
+            // досистраиваем dat и чистим устаревшие флаги из старых сохранений
+            parsed.stats = parsed.stats.map(s => {
+              const src = STATS.find(t => t.nom === s.nom);
+              return { nom: s.nom, acc: s.acc || s.nom, dat: s.dat || (src ? src.dat : s.nom), total: s.total || 0 };
+            });
+            parsed.stats.forEach(s => delete s._pulse);
+            parsed.skills.forEach(s => delete s._pulse);
             state = parsed;
             return true;
           }
@@ -844,7 +871,7 @@
       return many;
     }
     const xpWord  = n => `${n} ${plural(n, 'очко', 'очка', 'очков')} опыта`;
-    const ptsWord = (n, acc) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${acc}`;
+    const ptsWord = (n, dat) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${dat}`;
     const cap = s => s[0].toUpperCase() + s.slice(1);
 
     // ===== Звук (Web Audio API) =====
@@ -932,8 +959,10 @@
           );
           cb(c.toDataURL('image/jpeg', 0.85));
         };
+        tmp.onerror = () => cb(null); // битый файл не оставляем молчание
         tmp.src = reader.result;
       };
+      reader.onerror = () => cb(null);
       reader.readAsDataURL(file);
     }
 
@@ -943,11 +972,25 @@
         const file = input.files && input.files[0];
         if (!file) return;
         compressImage(file, (data) => {
+          if (!data) return;
           state.portrait = data;
           apply();
           save();
         });
         input.value = '';
+      });
+    }
+
+    // Рамки-кнопки портрета: клик мышью + клавиатура (Enter/Space)
+    function bindFrame(frameId, inputId) {
+      const frame = document.getElementById(frameId);
+      const input = document.getElementById(inputId);
+      frame.addEventListener('click', () => input.click());
+      frame.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          input.click();
+        }
       });
     }
 
@@ -982,8 +1025,6 @@
 
     function setupStartScreen() {
       const screen = document.getElementById('startScreen');
-      const frame = document.getElementById('startFrame');
-      const input = document.getElementById('startPortraitInput');
       const nameInput = document.getElementById('startNameInput');
       const btn = document.getElementById('startBtn');
 
@@ -991,8 +1032,9 @@
         screen.classList.add('hidden');
         return;
       }
+      screen.classList.remove('hidden');
 
-      frame.addEventListener('click', () => input.click());
+      bindFrame('startFrame', 'startPortraitInput');
 
       const begin = () => {
         const name = nameInput.value.trim();
@@ -1039,9 +1081,8 @@
         name.textContent = cap(s.nom);
 
         const orb = document.createElement('div');
-        orb.className = 'level-orb' + (s._pulse ? ' pulse' : '');
+        orb.className = 'level-orb' + (pulses.has('stat:' + s.nom) ? ' pulse' : '');
         orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(s)}</span>`;
-        s._pulse = false;
 
         const cells = document.createElement('div');
         cells.className = 'cells';
@@ -1055,6 +1096,7 @@
         row.append(name, orb, cells);
         container.appendChild(row);
       });
+      pulses.clear();
     }
 
     function gainStatPoints(s, pts) {
@@ -1064,7 +1106,7 @@
       if (after > before) {
         log(`${state.heroName} повысил ${s.nom} до ${after} уровня`);
         ding();
-        s._pulse = true;
+        pulses.add('stat:' + s.nom);
       }
     }
 
@@ -1087,9 +1129,8 @@
         name.textContent = sk.name;
 
         const orb = document.createElement('div');
-        orb.className = 'level-orb' + (sk._pulse ? ' pulse' : '');
+        orb.className = 'level-orb' + (pulses.has('skill:' + sk.id) ? ' pulse' : '');
         orb.innerHTML = `<span class="lvl-label">ур.</span><span class="lvl-value">${levelOf(sk)}</span>`;
-        sk._pulse = false;
 
         const cells = document.createElement('div');
         cells.className = 'cells';
@@ -1104,9 +1145,10 @@
         del.className = 'row-del';
         del.textContent = '✕';
         del.title = 'Вычеркнуть навык';
+        del.setAttribute('aria-label', 'Вычеркнуть навык ' + sk.name);
         del.addEventListener('click', () => {
           state.skills = state.skills.filter(x => x.id !== sk.id);
-          state.quests.forEach(q => { if (q.skill === sk.name) q.skill = null; });
+          state.quests.forEach(q => { if (q.skill === sk.id) q.skill = null; });
           save();
           renderSkills();
           renderQuestMaker();
@@ -1124,7 +1166,7 @@
       if (after > before) {
         log(`${state.heroName} повысил навык «${sk.name}» до ${after} уровня`);
         ding();
-        sk._pulse = true;
+        pulses.add('skill:' + sk.id);
       }
     }
 
@@ -1135,14 +1177,14 @@
       if (state.skills.some(sk => sk.name.toLowerCase() === name.toLowerCase())) {
         input.focus(); return;
       }
-      state.skills.push({ id: Date.now() + Math.random().toString(36).slice(2, 7), name, total: 0 });
+      state.skills.push({ id: uid(), name, total: 0 });
       input.value = '';
       save();
       renderSkills();
       renderQuestMaker();
     }
 
-    // ===== Паутина (плавная анимация, адаптивный размер) =====
+    // ===== Паутина (рисуем только при изменениях) =====
     let disp = state.stats.map(() => 0);
 
     function targetValue(s) {
@@ -1151,16 +1193,15 @@
       return v / maxLevel;
     }
 
+    // Размер меряем по обёртке и окну, а не по самой панели:
+    // иначе высота canvas сама влияет на высоту панели — и на мобильной
+    // раскладке получаем цикл «ресайз → рефлоу → ресайз» на каждом кадре.
     function sizeCanvas() {
       const canvas = document.getElementById('radar');
-      const throne = canvas.closest('.throne');
-      const heroBlock = document.getElementById('heroBlock');
-
-      // Паутина заполняет всё свободное место центральной панели
-      const width = throne.clientWidth - 8;
-      const height = throne.clientHeight - heroBlock.offsetHeight - 18;
-      const size = Math.round(Math.max(280, Math.min(width, height, 760)));
-
+      const wrap = document.getElementById('radarWrap');
+      const size = Math.round(
+        Math.max(280, Math.min(wrap.clientWidth - 8, window.innerHeight * 0.55, 760))
+      );
       if (canvas.width !== size) {
         canvas.width = size;
         canvas.height = size;
@@ -1246,13 +1287,19 @@
 
     function animateRadar() {
       sizeCanvas();
+      let moving = false;
       state.stats.forEach((s, i) => {
         const target = targetValue(s);
         const diff = target - disp[i];
-        if (Math.abs(diff) > 0.002) disp[i] += diff * 0.12;
-        else disp[i] = target;
+        if (Math.abs(diff) > 0.002) {
+          disp[i] += diff * 0.12;
+          moving = true;
+        } else {
+          disp[i] = target;
+        }
       });
-      drawRadar();
+      // Перерисовка только когда есть движение — экономит батарею на мобильных
+      if (moving) drawRadar();
       requestAnimationFrame(animateRadar);
     }
 
@@ -1270,12 +1317,16 @@
         state.heroLevel++;
         log(`${state.heroName} повысил уровень до ${state.heroLevel}`);
         fanfare();
+        pulses.add('hero');
+      }
+      renderHero();
+      if (pulses.has('hero')) {
         const orb = document.getElementById('heroOrb');
         orb.classList.remove('pulse');
         void orb.offsetWidth;
         orb.classList.add('pulse');
+        pulses.delete('hero');
       }
-      renderHero();
     }
 
     // ===== Задания =====
@@ -1298,7 +1349,7 @@
       skillSel.appendChild(none);
       state.skills.forEach(sk => {
         const opt = document.createElement('option');
-        opt.value = sk.name;
+        opt.value = sk.id; // храним id, а не имя — имя может измениться
         opt.textContent = 'Навык: ' + sk.name;
         skillSel.appendChild(opt);
       });
@@ -1307,8 +1358,10 @@
 
     function remainingTime(doneAt) {
       const left = Math.max(0, DAY_MS - (Date.now() - doneAt));
+      if (left <= 0) return 'обновится сейчас';
       const h = Math.floor(left / 3600000);
       const m = Math.floor((left % 3600000) / 60000);
+      if (h === 0 && m === 0) return 'обновится меньше чем через минуту';
       return `обновится через ${h} ч ${m} мин`;
     }
 
@@ -1330,23 +1383,41 @@
         checkWrap.className = 'q-check';
         const input = document.createElement('input');
         input.type = 'checkbox';
+        input.id = 'chk-' + q.id;
         input.checked = q.done;
         input.disabled = q.done;
         input.addEventListener('change', () => completeQuest(q, row));
         checkWrap.appendChild(input);
         row.appendChild(checkWrap);
 
-        const body = document.createElement('div');
+        // Тело задания — тоже label: клик по тексту переключает чекбокс,
+        // заодно растёт область нажатия на телефоне
+        const body = document.createElement('label');
         body.className = 'q-body';
+        body.htmlFor = 'chk-' + q.id;
         const text = document.createElement('div');
         text.className = 'q-text';
         text.textContent = q.text;
         const stat = state.stats.find(s => s.nom === q.stat);
+        const skill = q.skill ? state.skills.find(sk => sk.id === q.skill) : null;
+
+        // Мету собираем через DOM — пользовательский ввод не попадает в innerHTML
         const meta = document.createElement('div');
         meta.className = 'q-meta';
-        meta.innerHTML = `<span class="badge r-${q.rarity}">${cap(rar.adj)}</span>` +
-          `${xpWord(rar.xp)} · ${ptsWord(rar.pts, stat ? stat.acc : '')}` +
-          (q.skill ? ` · <span class="q-skill">+1 к навыку «${q.skill}»</span>` : '');
+        const badge = document.createElement('span');
+        badge.className = 'badge r-' + q.rarity;
+        badge.textContent = cap(rar.adj);
+        meta.appendChild(badge);
+        meta.appendChild(document.createTextNode(
+          `${xpWord(rar.xp)} · ${ptsWord(rar.pts, stat ? stat.dat : '')}`
+        ));
+        if (q.skill && skill) {
+          meta.appendChild(document.createTextNode(' · '));
+          const skillSpan = document.createElement('span');
+          skillSpan.className = 'q-skill';
+          skillSpan.textContent = `+1 к навыку «${skill.name}»`;
+          meta.appendChild(skillSpan);
+        }
         body.append(text, meta);
 
         if (q.done && rar.repeat) {
@@ -1367,6 +1438,7 @@
         del.className = 'q-del';
         del.textContent = '✕';
         del.title = 'Убрать задание из свитка';
+        del.setAttribute('aria-label', 'Убрать задание: ' + q.text);
         del.addEventListener('click', () => {
           state.quests = state.quests.filter(x => x.id !== q.id);
           save();
@@ -1385,13 +1457,13 @@
       if (rar.repeat) q.doneAt = Date.now();
 
       const stat = state.stats.find(s => s.nom === q.stat);
-      const skill = q.skill ? state.skills.find(sk => sk.name === q.skill) : null;
+      const skill = q.skill ? state.skills.find(sk => sk.id === q.skill) : null;
 
       if (row) {
         const rect = row.getBoundingClientRect();
         row.classList.add('flash');
         floatText(`+${rar.xp} опыта`, rect.left + 90, rect.top + 4, 'gold');
-        floatText(`+${rar.pts} к ${stat ? stat.nom : ''}`, rect.left + 90, rect.top + 30, rar.floatClass);
+        floatText(`+${rar.pts} к ${stat ? stat.dat : ''}`, rect.left + 90, rect.top + 30, rar.floatClass);
         floatText(`+${rar.xp} 🪙`, rect.left + 90, rect.top + 56, 'gold');
         if (skill) floatText(`+1 к «${skill.name}»`, rect.left + 90, rect.top + 82, 'blue');
       }
@@ -1430,7 +1502,7 @@
       if (!text) { textInput.focus(); return; }
 
       const q = {
-        id: Date.now() + Math.random().toString(36).slice(2, 7),
+        id: uid(),
         text,
         stat: document.getElementById('questStat').value,
         rarity: document.getElementById('questRarity').value,
@@ -1440,8 +1512,9 @@
       };
       const rar = RARITIES[q.rarity];
       const stat = state.stats.find(s => s.nom === q.stat);
-      let msg = `${state.heroName} получил ${rar.adj} задание "${q.text}", ${xpWord(rar.xp)}, ${ptsWord(rar.pts, stat ? stat.acc : '')}`;
-      if (q.skill) msg += `, +1 ${plural(1, 'очко', 'очка', 'очков')} к навыку «${q.skill}»`;
+      const skill = q.skill ? state.skills.find(sk => sk.id === q.skill) : null;
+      let msg = `${state.heroName} получил ${rar.adj} задание "${q.text}", ${xpWord(rar.xp)}, ${ptsWord(rar.pts, stat ? stat.dat : '')}`;
+      if (skill) msg += `, +1 ${plural(1, 'очко', 'очка', 'очков')} к навыку «${skill.name}»`;
       log(msg + '.');
 
       state.quests.push(q);
@@ -1484,10 +1557,10 @@
           armed = false;
           btn.classList.remove('armed');
           btn.textContent = '🗑';
-          // Полный сброс: стереть сохранение, вернуться на стартовую страницу
           try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
           state = defaultState();
           disp = state.stats.map(() => 0);
+          pulses.clear();
           renderPortrait();
           renderHeroName();
           renderCoins(false);
@@ -1508,6 +1581,7 @@
 
       setupStartScreen();
       bindPortrait('portraitInput', renderPortrait);
+      bindFrame('portraitFrame', 'portraitInput');
 
       document.getElementById('addQuestBtn').addEventListener('click', addQuest);
       document.getElementById('questText').addEventListener('keydown', e => {
