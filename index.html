@@ -1579,7 +1579,7 @@
       renderInventory();
     }
 
-    function renderShop() {
+function renderShop() {
       const container = document.getElementById('shopList');
       document.getElementById('shopCoins').textContent = state.coins;
       container.innerHTML = '';
@@ -1593,7 +1593,6 @@
         Object.keys(SHOP_ITEMS).filter(id => SHOP_ITEMS[id].type === gr.type).forEach(id => {
           const item = SHOP_ITEMS[id];
           const owned = state.owned.includes(id);
-          const equipped = state.equipped[item.type] === id;
 
           const row = document.createElement('div');
           row.className = 'shop-item';
@@ -1609,19 +1608,22 @@
           info.append(nm, ds);
           row.appendChild(info);
 
-          const btn = document.createElement('button');
-          btn.className = 'buy-btn';
           if (owned) {
-            btn.classList.add('owned');
-            btn.textContent = equipped ? 'Надето ✓' : 'Надеть';
-            btn.addEventListener('click', () => equipItem(id));
+            // Куплено: метка вместо кнопки — менять косметику можно только в инвентаре
+            const tag = document.createElement('span');
+            tag.className = 'buy-btn owned';
+            tag.style.cursor = 'default';
+            tag.textContent = 'В инвентаре ✓';
+            row.appendChild(tag);
           } else {
+            const btn = document.createElement('button');
+            btn.className = 'buy-btn';
             btn.textContent = `Купить · ${item.price} 🪙`;
             btn.disabled = state.coins < item.price;
             btn.title = state.coins < item.price ? 'Не хватает монет' : 'Купить';
             btn.addEventListener('click', () => buyItem(id));
+            row.appendChild(btn);
           }
-          row.appendChild(btn);
 
           container.appendChild(row);
         });
