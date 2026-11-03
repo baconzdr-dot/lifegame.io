@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <h1>Lifegame</h1>
+    <div class="beta-tag">Открытый бета-тест</div>
+    <div class="header-controls">
+      <div class="menu-wrap">
+        <button id="menuBtn" class="head-btn" title="Меню" aria-label="Открыть меню">☰</button>
+        <div id="menuDrop" class="menu-drop hidden">
+          <button id="helpBtn" class="menu-item">📖 Инструкция</button>
+          <button id="devBtn" class="menu-item">🛠 Режим разработчика</button>
+          <button id="resetBtn" class="menu-item menu-danger">🗑 Обнулить весь прогресс</button>
+        </div>
+      </div>
+    </div>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lifegame</title>
@@ -411,21 +423,6 @@
     margin: 0 0 10px;
   }
   .start-card .beta-tag { margin: 2px 0 18px; }
-
-  <header>
-    <h1>Lifegame</h1>
-    <div class="beta-tag">Открытый бета-тест</div>
-    <div class="header-controls">
-      <div class="menu-wrap">
-        <button id="menuBtn" class="head-btn" title="Меню" aria-label="Открыть меню">☰</button>
-        <div id="menuDrop" class="menu-drop hidden">
-          <button id="helpBtn" class="menu-item">📖 Инструкция</button>
-          <button id="devBtn" class="menu-item">🛠 Режим разработчика</button>
-          <button id="resetBtn" class="menu-item menu-danger">🗑 Обнулить весь прогресс</button>
-        </div>
-      </div>
-    </div>
-  </header>
 
   .app {
     display: grid;
