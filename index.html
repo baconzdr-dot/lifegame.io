@@ -412,43 +412,20 @@
   }
   .start-card .beta-tag { margin: 2px 0 18px; }
 
-  header { position: relative; }
-  .header-controls {
-    position: absolute;
-    top: 14px; right: 18px;
-    display: flex;
-    gap: 8px;
-  }
-  .head-btn {
-    background: linear-gradient(180deg, var(--icon-top), var(--icon-bot));
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    color: var(--ink);
-    font-size: 1.1rem;
-    width: 44px; height: 44px;
-    cursor: pointer;
-    transition: box-shadow .2s, border-color .2s;
-    flex: 0 0 auto;
-  }
-  .head-btn:hover { box-shadow: 0 0 12px rgba(245,212,122,.6); border-color: var(--gold-bright); }
-  .trash-btn {
-    background: linear-gradient(180deg, var(--icon-top), var(--icon-bot));
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    color: var(--ink);
-    font-size: 1.1rem;
-    width: 44px; height: 44px;
-    cursor: pointer;
-    transition: box-shadow .2s, border-color .2s, color .2s;
-    flex: 0 0 auto;
-  }
-  .trash-btn:hover { box-shadow: 0 0 12px rgba(163,59,46,.7); border-color: #a33b2e; }
-  .trash-btn.armed {
-    border-color: #a33b2e;
-    color: #ff9b8a;
-    font-size: .62rem;
-    box-shadow: 0 0 14px rgba(163,59,46,.8);
-  }
+  <header>
+    <h1>Lifegame</h1>
+    <div class="beta-tag">Открытый бета-тест</div>
+    <div class="header-controls">
+      <div class="menu-wrap">
+        <button id="menuBtn" class="head-btn" title="Меню" aria-label="Открыть меню">☰</button>
+        <div id="menuDrop" class="menu-drop hidden">
+          <button id="helpBtn" class="menu-item">📖 Инструкция</button>
+          <button id="devBtn" class="menu-item">🛠 Режим разработчика</button>
+          <button id="resetBtn" class="menu-item menu-danger">🗑 Обнулить весь прогресс</button>
+        </div>
+      </div>
+    </div>
+  </header>
 
   .app {
     display: grid;
@@ -1410,7 +1387,66 @@
   .intro-step .ach-item {
     margin-bottom: 0;
   }
+  
+  /* ===== Меню и режим разработчика ===== */
+  .menu-wrap { position: relative; display: inline-block; }
+  .menu-drop {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    background: var(--panel);
+    box-shadow: inset 0 0 20px var(--shadow-dark), 0 0 24px rgba(212,169,78,.35);
+    z-index: 60;
+    animation: startIn .25s ease;
+  }
+  .menu-drop.hidden { display: none; }
+  .menu-item {
+    background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
+    border: 1px solid rgba(212,169,78,.5);
+    border-radius: 8px;
+    color: var(--gold-bright);
+    font-family: inherit;
+    font-size: .82rem;
+    letter-spacing: .5px;
+    padding: 10px 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: box-shadow .2s;
+  }
+  .menu-item:hover { box-shadow: 0 0 12px rgba(245,212,122,.45); }
+  .menu-item.menu-danger { border-color: rgba(224,85,85,.6); color: #ff9b8a; }
+  .menu-item.menu-danger:hover { box-shadow: 0 0 12px rgba(224,85,85,.5); }
 
+  .dev-block { margin-bottom: 14px; }
+  .dev-block:last-child { margin-bottom: 0; }
+  .dev-label { font-size: .8rem; color: var(--gold-bright); margin-bottom: 6px; letter-spacing: .5px; }
+  .dev-row { display: flex; gap: 7px; }
+  .dev-input {
+    flex: 1 1 70px;
+    min-width: 60px;
+    background: var(--input-bg);
+    border: 1px solid rgba(212,169,78,.5);
+    border-radius: 6px;
+    color: var(--ink);
+    padding: 8px;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  #devPass { width: 100%; margin-bottom: 10px; font-size: 16px; }
+  #devPass.shake { animation: devShake .4s ease; }
+  @keyframes devShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  
   /* ===== Планшеты и узкие экраны ===== */
   @media (max-width: 1150px) {
     h1 { font-size: 1.5rem; }
@@ -1764,6 +1800,54 @@
 
   <script>
     'use strict';
+
+      <!-- РЕЖИМ РАЗРАБОТЧИКА -->
+  <div id="devModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Режим разработчика">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2>🛠 Режим разработчика</h2>
+        <button class="modal-close" id="devClose" aria-label="Закрыть режим разработчика">✕</button>
+      </div>
+      <div id="devLock">
+        <input type="password" id="devPass" placeholder="Пароль…" autocomplete="off" />
+        <button class="forge-btn" id="devUnlock" style="width:100%">Войти</button>
+      </div>
+      <div id="devPanel" class="hidden">
+        <div class="dev-block">
+          <div class="dev-label">🪙 Монеты</div>
+          <div class="dev-row">
+            <input type="number" id="devCoins" class="dev-input" value="100" min="1" max="999999" />
+            <button class="forge-btn" id="devAddCoins">Начислить</button>
+          </div>
+        </div>
+        <div class="dev-block">
+          <div class="dev-label">🧭 Уровень героя</div>
+          <div class="dev-row">
+            <input type="number" id="devLevel" class="dev-input" value="1" min="1" max="500" />
+            <button class="forge-btn" id="devAddLevel">Прибавить</button>
+          </div>
+        </div>
+        <div class="dev-block">
+          <div class="dev-label">💪 Характеристика</div>
+          <div class="dev-row">
+            <select id="devStat"></select>
+            <input type="number" id="devStatPts" class="dev-input" value="10" min="1" max="9999" />
+            <button class="forge-btn" id="devAddStat">Прибавить</button>
+          </div>
+        </div>
+        <div class="dev-block">
+          <div class="dev-label">📖 Навык</div>
+          <div class="dev-row">
+            <select id="devSkill"></select>
+            <input type="number" id="devSkillPts" class="dev-input" value="10" min="1" max="9999" />
+            <button class="forge-btn" id="devAddSkill">Прибавить</button>
+          </div>
+          <div class="empty-note">Если навыков нет — сначала добавь их в гримуаре.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
     // ===== Константы =====
     const SAVE_KEY = 'rpgHeroSave_v3';
@@ -3084,47 +3168,183 @@
       checkJournalDay();
     }
 
-    // ===== Кнопка обнуления =====
-    function setupReset() {
-      const btn = document.getElementById('resetBtn');
+        // ===== Кнопка обнуления =====
+    function doReset() {
+      try {
+        localStorage.removeItem(SAVE_KEY);
+        localStorage.removeItem(PORTRAIT_KEY);
+      } catch (e) {}
+      state = defaultState();
+      disp = state.stats.map(() => 0);
+      pulses.clear();
+      renderPortrait();
+      renderHeroName();
+      renderCoins(false);
+      applyCosmetics();
+      renderStats();
+      renderSkills();
+      renderHero();
+      renderQuestMaker();
+      renderQuests();
+      renderJournal(false);
+      renderQuestCounter();
+      redrawRadar();
+      showStartScreen();
+    }
+
+    // ===== Выпадающее меню =====
+    function setupMenu() {
+      const btn = document.getElementById('menuBtn');
+      const drop = document.getElementById('menuDrop');
+
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        drop.classList.toggle('hidden');
+      });
+      document.addEventListener('click', e => {
+        if (!drop.classList.contains('hidden') && !drop.contains(e.target) && e.target !== btn) {
+          drop.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('helpBtn').addEventListener('click', () => {
+        drop.classList.add('hidden');
+        openIntro();
+      });
+      document.getElementById('devBtn').addEventListener('click', () => {
+        drop.classList.add('hidden');
+        openDev();
+      });
+
+      // Обнуление — с тем же подтверждением в два клика, что было раньше
+      const resetBtn = document.getElementById('resetBtn');
       let armed = false, timer = null;
-      btn.addEventListener('click', () => {
+      resetBtn.addEventListener('click', () => {
         if (!armed) {
           armed = true;
-          btn.classList.add('armed');
-          btn.textContent = 'Точно?';
+          resetBtn.textContent = '🗑 Точно обнулить?';
           timer = setTimeout(() => {
             armed = false;
-            btn.classList.remove('armed');
-            btn.textContent = '🗑';
+            resetBtn.textContent = '🗑 Обнулить весь прогресс';
           }, 3000);
         } else {
           clearTimeout(timer);
           armed = false;
-          btn.classList.remove('armed');
-          btn.textContent = '🗑';
-          try {
-            localStorage.removeItem(SAVE_KEY);
-            localStorage.removeItem(PORTRAIT_KEY);
-          } catch (e) {}
-          state = defaultState();
-          disp = state.stats.map(() => 0);
-          pulses.clear();
-          renderPortrait();
-          renderHeroName();
-          renderCoins(false);
-          applyCosmetics();
-          renderStats();
-          renderSkills();
-          renderHero();
-          renderQuestMaker();
-          renderQuests();
-          renderJournal(false);
-          renderQuestCounter();
-          redrawRadar();
-          showStartScreen();
+          resetBtn.textContent = '🗑 Обнулить весь прогресс';
+          drop.classList.add('hidden');
+          doReset();
         }
       });
+    }
+
+    // ===== Режим разработчика =====
+    const DEV_PASS = 'd8t@ng&';
+
+    function openDev() { renderDevControls(); openModal('devModal'); }
+
+    function renderDevControls() {
+      // Пароль спрашиваем заново при каждом открытии
+      document.getElementById('devLock').classList.remove('hidden');
+      document.getElementById('devPanel').classList.add('hidden');
+      const pass = document.getElementById('devPass');
+      pass.value = '';
+
+      const statSel = document.getElementById('devStat');
+      statSel.innerHTML = '';
+      state.stats.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.nom;
+        opt.textContent = cap(s.nom);
+        statSel.appendChild(opt);
+      });
+
+      const skillSel = document.getElementById('devSkill');
+      skillSel.innerHTML = '';
+      if (!state.skills.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'Нет навыков';
+        opt.disabled = true;
+        skillSel.appendChild(opt);
+      } else {
+        state.skills.forEach(sk => {
+          const opt = document.createElement('option');
+          opt.value = sk.id;
+          opt.textContent = sk.name;
+          skillSel.appendChild(opt);
+        });
+      }
+    }
+
+    function devUnlock() {
+      const input = document.getElementById('devPass');
+      if (input.value === DEV_PASS) {
+        document.getElementById('devLock').classList.add('hidden');
+        document.getElementById('devPanel').classList.remove('hidden');
+        input.value = '';
+        input.blur();
+      } else {
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function devReadNum(id) {
+      const n = parseInt(document.getElementById(id).value, 10);
+      return (isFinite(n) && n > 0) ? Math.min(n, 100000) : null;
+    }
+
+    function devAddCoins() {
+      const n = devReadNum('devCoins');
+      if (!n) return;
+      state.coins += n;
+      renderCoins(true);
+      log(`${state.heroName} получил ${n} ${plural(n, 'монету', 'монеты', 'монет')} (сила разработчика)`, 'gold');
+      save();
+      checkAchievements();
+    }
+
+    function devAddLevel() {
+      const n = devReadNum('devLevel');
+      if (!n) return;
+      state.heroLevel = Math.min(state.heroLevel + n, 999);
+      log(`${state.heroName} повысил уровень до ${state.heroLevel}`, 'gold');
+      renderHero();
+      save();
+      checkAchievements();
+    }
+
+    function devAddStat() {
+      const n = devReadNum('devStatPts');
+      const stat = state.stats.find(s => s.nom === document.getElementById('devStat').value);
+      if (!n || !stat) return;
+      gainStatPoints(stat, n);
+      renderStats();
+      save();
+    }
+
+    function devAddSkill() {
+      const n = devReadNum('devSkillPts');
+      const skill = state.skills.find(sk => sk.id === document.getElementById('devSkill').value);
+      if (!n || !skill) return;
+      gainSkillPoints(skill, n);
+      renderSkills();
+      save();
+    }
+
+    function setupDev() {
+      bindModal('devModal', 'devClose');
+      document.getElementById('devUnlock').addEventListener('click', devUnlock);
+      document.getElementById('devPass').addEventListener('keydown', e => {
+        if (e.key === 'Enter') devUnlock();
+      });
+      document.getElementById('devAddCoins').addEventListener('click', devAddCoins);
+      document.getElementById('devAddLevel').addEventListener('click', devAddLevel);
+      document.getElementById('devAddStat').addEventListener('click', devAddStat);
+      document.getElementById('devAddSkill').addEventListener('click', devAddSkill);
     }
 
     // ===== Инициализация =====
@@ -3147,7 +3367,6 @@
       document.getElementById('shopBtn').addEventListener('click', openShop);
       document.getElementById('invBtn').addEventListener('click', openInventory);
       document.getElementById('achBtn').addEventListener('click', openAchievements);
-      document.getElementById('helpBtn').addEventListener('click', openIntro);
       document.getElementById('introDoneBtn').addEventListener('click', () => closeModal('introModal'));
       document.getElementById('introClose').addEventListener('click', () => closeModal('introModal'));
       bindModal('shopModal', 'shopClose');
@@ -3159,10 +3378,12 @@
           closeModal('invModal');
           closeModal('achModal');
           closeModal('introModal');
+          closeModal('devModal');
         }
       });
 
-      setupReset();
+      setupMenu();
+      setupDev();
       renderPortrait();
       renderHeroName();
       renderCoins(false);
