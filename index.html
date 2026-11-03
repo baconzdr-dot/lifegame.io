@@ -242,8 +242,7 @@
     --head-shadow: 0 1px 0 rgba(255,255,255,.9);
   }
 
-  /* Контраст светлых тем: гасим свечения, уплотняем границы,
-     темнее бейджи и особые записи журнала */
+  /* Контраст светлых тем */
   body.theme-angelic h1,
   body.theme-pink h1,
   body.theme-blue h1,
@@ -506,7 +505,6 @@
     padding: 0;
     flex: 0 0 auto;
   }
-  /* Купленные рамки */
   .portrait-frame.frame-red, .start-frame.frame-red {
     border-color: #e05555;
     box-shadow: 0 0 26px rgba(224,85,85,.55), inset 0 0 18px rgba(0,0,0,.7);
@@ -629,7 +627,6 @@
   .qc-chip.qc-legendary { border-color: rgba(200,143,245,.45); }
   .qc-chip.qc-legendary .qc-icon { color: var(--purple); }
 
-  /* Ряд: достижения — монеты — лавка — инвентарь */
   .portrait-actions {
     display: flex;
     align-items: center;
@@ -1342,7 +1339,6 @@
     margin: 0 0 10px;
     opacity: .92;
   }
-  /* Миниатюры интерфейса */
   .mock {
     border: 1px solid rgba(212,169,78,.4);
     border-radius: 10px;
@@ -1592,7 +1588,6 @@
         <div class="portrait-name" id="heroNameDisplay"></div>
         <div class="quest-counter" id="questCounter" aria-label="Счётчик выполненных заданий"></div>
 
-        <!-- Ряд: достижения, монеты, лавка, инвентарь -->
         <div class="portrait-actions">
           <button id="achBtn" class="icon-btn" title="Достижения" aria-label="Открыть достижения">🏆</button>
           <div class="coins" id="coinsBox">
@@ -1866,7 +1861,6 @@
       try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
       catch (e) { console.warn('Не удалось сохранить прогресс (localStorage):', e); }
     }
-    // Портрет хранится отдельно: его не надо сериализовать при каждом изменении
     function savePortrait() {
       try {
         if (state.portrait) localStorage.setItem(PORTRAIT_KEY, state.portrait);
@@ -3009,4 +3003,125 @@
         // Обнуление регулярных заданий — после полуночи по часам устройства
         if (q.done && RARITIES[q.rarity].repeat && now >= nextMidnight(q.doneAt)) {
           q.done = false;
-          q.doneAt =
+          q.doneAt = null;
+          changed = true;
+        }
+      });
+      document.querySelectorAll('.q-timer[data-done-at]').forEach(el => {
+        el.textContent = remainingTime(+el.dataset.doneAt);
+      });
+      if (changed) { save(); renderQuests(); }
+
+      checkJournalDay();
+    }
+
+    // ===== Кнопка обнуления =====
+    function setupReset() {
+      const btn = document.getElementById('resetBtn');
+      let armed = false, timer = null;
+      btn.addEventListener('click', () => {
+        if (!armed) {
+          armed = true;
+          btn.classList.add('armed');
+          btn.textContent = 'Точно?';
+          timer = setTimeout(() => {
+            armed = false;
+            btn.classList.remove('armed');
+            btn.textContent = '🗑';
+          }, 3000);
+        } else {
+          clearTimeout(timer);
+          armed = false;
+          btn.classList.remove('armed');
+          btn.textContent = '🗑';
+          try {
+            localStorage.removeItem(SAVE_KEY);
+            localStorage.removeItem(PORTRAIT_KEY);
+          } catch (e) {}
+          state = defaultState();
+          disp = state.stats.map(() => 0);
+          pulses.clear();
+          renderPortrait();
+          renderHeroName();
+          renderCoins(false);
+          applyCosmetics();
+          renderStats();
+          renderSkills();
+          renderHero();
+          renderQuestMaker();
+          renderQuests();
+          renderJournal(false);
+          renderQuestCounter();
+          redrawRadar();
+          showStartScreen();
+        }
+      });
+    }
+
+    // ===== Инициализация =====
+    function init() {
+      load();
+
+      setupStartScreen();
+      bindPortrait('portraitInput', renderPortrait);
+      bindFrame('portraitFrame', 'portraitInput');
+
+      document.getElementById('addQuestBtn').addEventListener('click', addQuest);
+      document.getElementById('questText').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addQuest();
+      });
+      document.getElementById('addSkillBtn').addEventListener('click', addSkill);
+      document.getElementById('skillText').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addSkill();
+      });
+
+      document.getElementById('shopBtn').addEventListener('click', openShop);
+      document.getElementById('invBtn').addEventListener('click', openInventory);
+      document.getElementById('achBtn').addEventListener('click', openAchievements);
+      document.getElementById('helpBtn').addEventListener('click', openIntro);
+      document.getElementById('introDoneBtn').addEventListener('click', () => closeModal('introModal'));
+      document.getElementById('introClose').addEventListener('click', () => closeModal('introModal'));
+      bindModal('shopModal', 'shopClose');
+      bindModal('invModal', 'invClose');
+      bindModal('achModal', 'achClose');
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closeModal('shopModal');
+          closeModal('invModal');
+          closeModal('achModal');
+          closeModal('introModal');
+        }
+      });
+
+      setupReset();
+      renderPortrait();
+      renderHeroName();
+      renderCoins(false);
+      applyCosmetics();
+      renderQuestMaker();
+      renderStats();
+      renderSkills();
+      renderHero();
+      renderQuests();
+      renderJournal(false);
+      renderQuestCounter();
+      startRadar();
+
+      // Таймеры меняются раз в минуту — тикаем раз в минуту, а не каждую секунду
+      setInterval(tick, 60000);
+      // Возврат на вкладку: сразу обновляем таймеры и радар
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          tick();
+          redrawRadar();
+        }
+      });
+
+      window.addEventListener('resize', redrawRadar);
+      window.addEventListener('orientationchange', redrawRadar);
+    }
+
+    init();
+  </script>
+</body>
+</html>
