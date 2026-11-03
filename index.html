@@ -417,7 +417,21 @@
   .header-controls {
     position: absolute;
     top: 14px; right: 18px;
+    display: flex;
+    gap: 8px;
   }
+  .head-btn {
+    background: linear-gradient(180deg, var(--icon-top), var(--icon-bot));
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    color: var(--ink);
+    font-size: 1.1rem;
+    width: 44px; height: 44px;
+    cursor: pointer;
+    transition: box-shadow .2s, border-color .2s;
+    flex: 0 0 auto;
+  }
+  .head-btn:hover { box-shadow: 0 0 12px rgba(245,212,122,.6); border-color: var(--gold-bright); }
   .trash-btn {
     background: linear-gradient(180deg, var(--icon-top), var(--icon-bot));
     border: 1px solid var(--gold);
@@ -1290,6 +1304,117 @@
   .start-btn:hover { box-shadow: 0 0 18px rgba(245,212,122,.55); }
   .start-hint { font-size: .68rem; opacity: .55; margin-top: 14px; }
 
+  /* ===== Страница инструкции ===== */
+  .intro-card { max-width: 560px; padding: 20px 22px 24px; }
+  .intro-step {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(212,169,78,.3);
+  }
+  .intro-step:last-child { border-bottom: none; padding-bottom: 4px; }
+  .intro-num {
+    flex: 0 0 30px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--gold-bright);
+    color: var(--gold-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: .9rem;
+    box-shadow: 0 0 10px rgba(245,212,122,.35);
+    margin-top: 2px;
+  }
+  .intro-body { flex: 1 1 0; min-width: 0; }
+  .intro-title {
+    font-size: .95rem;
+    font-weight: bold;
+    color: var(--gold-bright);
+    letter-spacing: .5px;
+    text-shadow: var(--head-shadow);
+    margin-bottom: 5px;
+  }
+  .intro-text {
+    font-size: .8rem;
+    line-height: 1.5;
+    margin: 0 0 10px;
+    opacity: .92;
+  }
+  /* Миниатюры интерфейса */
+  .mock {
+    border: 1px solid rgba(212,169,78,.4);
+    border-radius: 10px;
+    padding: 8px;
+    background: var(--row-bg);
+    pointer-events: none;
+    user-select: none;
+    margin-bottom: 8px;
+  }
+  .mock-input {
+    background: var(--input-bg);
+    border: 1px solid rgba(212,169,78,.5);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: .74rem;
+    opacity: .65;
+    margin-bottom: 6px;
+  }
+  .mock-row { display: flex; gap: 6px; margin-bottom: 6px; }
+  .mock-row:last-child { margin-bottom: 0; }
+  .mock-select {
+    flex: 1;
+    background: var(--btn-bot);
+    border: 1px solid rgba(212,169,78,.5);
+    border-radius: 6px;
+    padding: 6px;
+    font-size: .66rem;
+    opacity: .8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mock-btn {
+    flex: 0 0 auto;
+    background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    color: var(--gold-bright);
+    font-size: .66rem;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+  .mock-badges {
+    font-size: .74rem;
+    line-height: 1.7;
+    opacity: .92;
+  }
+  .mock-radar {
+    display: block;
+    margin: 4px auto 8px;
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+  }
+  .mock-coins {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--gold);
+    border-radius: 18px;
+    padding: 4px 14px;
+    font-size: .8rem;
+    color: var(--gold-bright);
+    margin-bottom: 8px;
+  }
+  .intro-step .quest,
+  .intro-step .stat-row,
+  .intro-step .shop-item,
+  .intro-step .ach-item {
+    margin-bottom: 0;
+  }
+
   /* ===== Планшеты и узкие экраны ===== */
   @media (max-width: 1150px) {
     h1 { font-size: 1.5rem; }
@@ -1377,6 +1502,10 @@
     .start-desc.small { font-size: .66rem; }
     .start-frame { width: 128px; height: 128px; }
     .start-btn { font-size: .95rem; }
+
+    .intro-card { padding: 16px 14px; }
+    .intro-step { gap: 8px; }
+    .intro-num { width: 26px; height: 26px; flex: 0 0 26px; font-size: .8rem; }
   }
 </style>
 </head>
@@ -1407,6 +1536,7 @@
     <h1>Lifegame</h1>
     <div class="beta-tag">Открытый бета-тест</div>
     <div class="header-controls">
+      <button id="helpBtn" class="head-btn" title="Инструкция" aria-label="Открыть инструкцию">📖</button>
       <button id="resetBtn" class="trash-btn" title="Обнулить весь прогресс" aria-label="Обнулить весь прогресс">🗑</button>
     </div>
   </header>
@@ -1530,6 +1660,110 @@
         <button class="modal-close" id="achClose" aria-label="Закрыть достижения">✕</button>
       </div>
       <div id="achList"></div>
+    </div>
+  </div>
+
+  <!-- ИНСТРУКЦИЯ -->
+  <div id="introModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Инструкция">
+    <div class="modal-card intro-card">
+      <div class="modal-head">
+        <h2>📖 Как играть</h2>
+        <button class="modal-close" id="introClose" aria-label="Закрыть инструкцию">✕</button>
+      </div>
+
+      <div class="intro-step">
+        <div class="intro-num">1</div>
+        <div class="intro-body">
+          <div class="intro-title">Свиток заданий</div>
+          <p class="intro-text">Прописывайте или выбирайте ваши задания. Задания делятся на три категории:</p>
+          <div class="mock" aria-hidden="true">
+            <div class="mock-input">Начертай задание…</div>
+            <div class="mock-row">
+              <span class="mock-select">Сила</span>
+              <span class="mock-select">Регулярное — 10 опыта, 1 очко</span>
+            </div>
+            <div class="mock-row">
+              <span class="mock-select">Навык: никакой</span>
+              <span class="mock-btn">✒ Вписать в свиток</span>
+            </div>
+          </div>
+          <div class="mock-badges">
+            <span class="badge r-regular">Регулярное</span> — задачи, которые выполняются каждый день;<br>
+            <span class="badge r-common">Обычное</span> — нерегулярные задачи;<br>
+            <span class="badge r-legendary">Легендарное</span> — задачи, требующие особых усилий.
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-step">
+        <div class="intro-num">2</div>
+        <div class="intro-body">
+          <div class="intro-title">Гримуар навыков</div>
+          <p class="intro-text">К заданиям можно привязать навыки, которые качаются при их выполнении. Для этого их нужно сперва прописать в гримуаре.</p>
+          <div class="mock" aria-hidden="true">
+            <div class="mock-input">Начертай навык…</div>
+            <div class="mock-row">
+              <span class="mock-select" style="flex:1">Навык: фехтование</span>
+              <span class="mock-btn">✒ Вписать в гримуар</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-step">
+        <div class="intro-num">3</div>
+        <div class="intro-body">
+          <div class="intro-title">Кузня характеристик</div>
+          <p class="intro-text">Сила, выносливость, интеллект, ловкость, харизма и телосложение — прокачивайте их, выполняя задания, и наблюдайте, как идёт ваше развитие на «паутинке».</p>
+          <canvas id="introRadar" class="mock-radar" width="220" height="220" aria-hidden="true"></canvas>
+          <div class="mock" aria-hidden="true">
+            <div class="stat-row">
+              <div class="stat-name">Сила</div>
+              <div class="level-orb"><span class="lvl-label">ур.</span><span class="lvl-value">3</span></div>
+              <div class="cells">
+                <div class="cell filled"></div><div class="cell filled"></div><div class="cell filled"></div>
+                <div class="cell filled"></div><div class="cell filled"></div><div class="cell"></div>
+                <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-step">
+        <div class="intro-num">4</div>
+        <div class="intro-body">
+          <div class="intro-title">Лавка чудес</div>
+          <p class="intro-text">Задания дают монеты, их количество сравнимо с получаемым опытом. Вы можете потратить их в Магазине на обновление вида вашей страницы: фоны, рамки и темы.</p>
+          <div class="mock" aria-hidden="true">
+            <div class="mock-coins"><span>🪙</span><span>120</span></div>
+            <div class="shop-item">
+              <div class="si-info">
+                <div class="si-name">Угольная бездна</div>
+                <div class="si-desc">Тёмный фон с алым узором</div>
+              </div>
+              <span class="buy-btn" style="opacity:.45">Купить · 100 🪙</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-step">
+        <div class="intro-num">5</div>
+        <div class="intro-body">
+          <div class="intro-title">Достижения</div>
+          <p class="intro-text">Стремитесь к вершинам, достигайте высот!</p>
+          <div class="ach-item unlocked" aria-hidden="true">
+            <div class="ach-icon">🌟</div>
+            <div class="si-info">
+              <div class="si-name">Большое начало</div>
+              <div class="si-desc">Повысьте уровень один раз</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="start-btn" id="introDoneBtn" style="margin-top:14px">✦ В путь! ✦</button>
     </div>
   </div>
 
@@ -2152,6 +2386,7 @@
         renderHeroName();
         screen.classList.add('hidden');
         ensureAudio();
+        openIntro(); // инструкция сразу после старта
       };
 
       btn.addEventListener('click', begin);
@@ -2161,6 +2396,88 @@
 
     function renderHeroName() {
       document.getElementById('heroNameDisplay').textContent = state.heroName;
+    }
+
+    // ===== Инструкция =====
+    function openIntro() {
+      drawIntroRadar();
+      openModal('introModal');
+    }
+
+    // Миниатюра «паутинки» для шага 3 инструкции
+    function drawIntroRadar() {
+      const canvas = document.getElementById('introRadar');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const cx = W / 2, cy = H / 2;
+      const R = Math.min(W, H) / 2 - 40;
+      const n = 6;
+      const values = [0.75, 0.45, 0.6, 0.3, 0.55, 0.4];
+      const labels = ['сила', 'вын.', 'инт.', 'лов.', 'хар.', 'тел.'];
+
+      ctx.clearRect(0, 0, W, H);
+
+      ctx.strokeStyle = 'rgba(212,169,78,.25)';
+      ctx.lineWidth = 1;
+      for (let ring = 1; ring <= 5; ring++) {
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const a = (i % n) * (2 * Math.PI / n) - Math.PI / 2;
+          const r = R * ring / 5;
+          const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = 'rgba(212,169,78,.35)';
+      const labelR = R + 22;
+      values.forEach((_, i) => {
+        const a = i * (2 * Math.PI / n) - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+        ctx.stroke();
+
+        ctx.fillStyle = '#e8d9b5';
+        ctx.font = '10px "Bookman Old Style", Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(labels[i], cx + labelR * Math.cos(a), cy + labelR * Math.sin(a));
+      });
+
+      const poly = values.map((v, i) => {
+        const a = i * (2 * Math.PI / n) - Math.PI / 2;
+        const r = R * v;
+        return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+      });
+
+      const grad = ctx.createRadialGradient(cx, cy, 6, cx, cy, R);
+      grad.addColorStop(0, 'rgba(245,212,122,.45)');
+      grad.addColorStop(1, 'rgba(163,59,46,.35)');
+
+      ctx.beginPath();
+      poly.forEach(([x, y], i) => i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y));
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.strokeStyle = '#f5d47a';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = 'rgba(245,212,122,.8)';
+      ctx.shadowBlur = 8;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      poly.forEach(([x, y]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, 3.5, 0, 2 * Math.PI);
+        ctx.fillStyle = '#f5d47a';
+        ctx.shadowColor = 'rgba(245,212,122,.9)';
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
     }
 
     // ===== Счётчик выполненных заданий =====
@@ -2692,121 +3009,4 @@
         // Обнуление регулярных заданий — после полуночи по часам устройства
         if (q.done && RARITIES[q.rarity].repeat && now >= nextMidnight(q.doneAt)) {
           q.done = false;
-          q.doneAt = null;
-          changed = true;
-        }
-      });
-      document.querySelectorAll('.q-timer[data-done-at]').forEach(el => {
-        el.textContent = remainingTime(+el.dataset.doneAt);
-      });
-      if (changed) { save(); renderQuests(); }
-
-      checkJournalDay();
-    }
-
-    // ===== Кнопка обнуления =====
-    function setupReset() {
-      const btn = document.getElementById('resetBtn');
-      let armed = false, timer = null;
-      btn.addEventListener('click', () => {
-        if (!armed) {
-          armed = true;
-          btn.classList.add('armed');
-          btn.textContent = 'Точно?';
-          timer = setTimeout(() => {
-            armed = false;
-            btn.classList.remove('armed');
-            btn.textContent = '🗑';
-          }, 3000);
-        } else {
-          clearTimeout(timer);
-          armed = false;
-          btn.classList.remove('armed');
-          btn.textContent = '🗑';
-          try {
-            localStorage.removeItem(SAVE_KEY);
-            localStorage.removeItem(PORTRAIT_KEY);
-          } catch (e) {}
-          state = defaultState();
-          disp = state.stats.map(() => 0);
-          pulses.clear();
-          renderPortrait();
-          renderHeroName();
-          renderCoins(false);
-          applyCosmetics();
-          renderStats();
-          renderSkills();
-          renderHero();
-          renderQuestMaker();
-          renderQuests();
-          renderJournal(false);
-          renderQuestCounter();
-          redrawRadar();
-          showStartScreen();
-        }
-      });
-    }
-
-    // ===== Инициализация =====
-    function init() {
-      load();
-
-      setupStartScreen();
-      bindPortrait('portraitInput', renderPortrait);
-      bindFrame('portraitFrame', 'portraitInput');
-
-      document.getElementById('addQuestBtn').addEventListener('click', addQuest);
-      document.getElementById('questText').addEventListener('keydown', e => {
-        if (e.key === 'Enter') addQuest();
-      });
-      document.getElementById('addSkillBtn').addEventListener('click', addSkill);
-      document.getElementById('skillText').addEventListener('keydown', e => {
-        if (e.key === 'Enter') addSkill();
-      });
-
-      document.getElementById('shopBtn').addEventListener('click', openShop);
-      document.getElementById('invBtn').addEventListener('click', openInventory);
-      document.getElementById('achBtn').addEventListener('click', openAchievements);
-      bindModal('shopModal', 'shopClose');
-      bindModal('invModal', 'invClose');
-      bindModal('achModal', 'achClose');
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-          closeModal('shopModal');
-          closeModal('invModal');
-          closeModal('achModal');
-        }
-      });
-
-      setupReset();
-      renderPortrait();
-      renderHeroName();
-      renderCoins(false);
-      applyCosmetics();
-      renderQuestMaker();
-      renderStats();
-      renderSkills();
-      renderHero();
-      renderQuests();
-      renderJournal(false);
-      renderQuestCounter();
-      startRadar();
-
-      // Таймеры меняются раз в минуту — тикаем раз в минуту, а не каждую секунду
-      setInterval(tick, 60000);
-      // Возврат на вкладку: сразу обновляем таймеры и радар
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) {
-          tick();
-          redrawRadar();
-        }
-      });
-
-      window.addEventListener('resize', redrawRadar);
-      window.addEventListener('orientationchange', redrawRadar);
-    }
-
-    init();
-  </script>
-</body>
-</html>
+          q.doneAt =
