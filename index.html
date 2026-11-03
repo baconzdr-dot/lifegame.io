@@ -1824,7 +1824,6 @@
     ];
 
     // ===== Достижения =====
-       // ===== Достижения =====
     const ACH_REWARD = 300; // монет за каждое достижение
 
     const ACHIEVEMENTS = [
@@ -1854,6 +1853,7 @@
 
     // Единая точка проверки всех достижений — вызывается после любых событий
     function checkAchievements() {
+      try {
       if (state.heroLevel >= 5)  unlockAchievement('level-5');
       if (state.heroLevel >= 10) unlockAchievement('level-10');
       if (state.heroLevel >= 50) unlockAchievement('level-50');
@@ -1866,6 +1866,7 @@
       if (state.completed.legendary >= 10) unlockAchievement('quests-legendary');
       if (questsDoneIn24h() >= 50) unlockAchievement('quests-24h');
       if (state.owned.length >= Object.keys(SHOP_ITEMS).length) unlockAchievement('shop-clear');
+      } catch (e) { console.warn('checkAchievements:', e); }
     }
 
     const uid = () =>
@@ -2209,6 +2210,7 @@
       renderShop();
       renderInventory();
       ding();
+       }
       checkAchievements();
     }
 
@@ -2673,6 +2675,7 @@
         log(`${state.heroName} повысил навык «${sk.name}» до ${after} уровня`, 'stat');
         ding();
         pulses.add('skill:' + sk.id);
+         }
         checkAchievements();
       }
     }
@@ -2828,15 +2831,23 @@
       document.getElementById('xpText').textContent = `Опыт: ${state.xp} / ${XP_PER_LEVEL}`;
     }
 
-    function gainXp(amount) {
+        function gainXp(amount) {
       state.xp += amount;
       while (state.xp >= XP_PER_LEVEL) {
         state.xp -= XP_PER_LEVEL;
         state.heroLevel++;
         log(`${state.heroName} повысил уровень до ${state.heroLevel}`, 'gold');
         fanfare();
-        checkAchievements();
       }
+      renderHero();
+      const orb = document.getElementById('heroOrb');
+      orb.classList.remove('pulse');
+      void orb.offsetWidth;
+      orb.classList.add('pulse');
+           }
+      checkAchievements();
+    }
+
       renderHero();
       const orb = document.getElementById('heroOrb');
       orb.classList.remove('pulse');
