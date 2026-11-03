@@ -1824,9 +1824,49 @@
     ];
 
     // ===== Достижения =====
+       // ===== Достижения =====
+    const ACH_REWARD = 300; // монет за каждое достижение
+
     const ACHIEVEMENTS = [
-      { id: 'big-start', icon: '🌟', name: 'Большое начало', desc: 'Повысьте уровень один раз' }
+      { id: 'big-start',        icon: '🌟', name: 'Большое начало',                        desc: 'Повысьте уровень один раз' },
+      { id: 'level-5',          icon: '🚶', name: 'Широкими шагами',                       desc: 'Достичь 5 уровня персонажа' },
+      { id: 'level-10',         icon: '🚀', name: 'Быстрее! Выше! Сильнее!',               desc: 'Достичь 10 уровня персонажа' },
+      { id: 'level-50',         icon: '🗿', name: 'Тяни!',                                 desc: 'Достичь 50 уровня персонажа' },
+      { id: 'skill-2',          icon: '📖', name: 'Лучше дочь ефрейтор, чем сын ...', desc: 'Повысьте любой навык до 2 уровня' },
+      { id: 'skill-5',          icon: '🛡',  name: 'Я тебя могну',                          desc: 'Повысьте любой навык до 5 уровня' },
+      { id: 'skill-10',         icon: '🎼', name: 'Моцарт военного дела',                  desc: 'Повысьте любой навык до 10 уровня' },
+      { id: 'quests-regular',   icon: '🔁', name: 'Дисциплина',                            desc: 'Выполнить 10 регулярных заданий' },
+      { id: 'quests-common',    icon: '📜', name: 'Не все полезно, что в свиток полезло',   desc: 'Выполнить 10 обычных заданий' },
+      { id: 'quests-legendary', icon: '👑', name: 'Легендарный чел',                       desc: 'Выполнить 10 легендарных заданий' },
+      { id: 'level-99',         icon: '🔥', name: 'Хватит уже!',                           desc: 'Достичь 99 уровня персонажа',  secret: true },
+      { id: 'quests-24h',       icon: '⏱',  name: 'Мамкин мотиватор',                      desc: 'Выполнить 50 заданий за 24 часа', secret: true },
+      { id: 'shop-clear',       icon: '🛒', name: 'Закрытие магазина Санлайт',             desc: 'Выкупить все предметы в магазине', secret: true }
     ];
+
+    function hasAch(id) { return state.achievements.includes(id); }
+
+    function questsDoneIn24h() {
+      const day = 24 * 3600 * 1000;
+      const now = Date.now();
+      state.doneLog = state.doneLog.filter(t => now - t < day);
+      return state.doneLog.length;
+    }
+
+    // Единая точка проверки всех достижений — вызывается после любых событий
+    function checkAchievements() {
+      if (state.heroLevel >= 5)  unlockAchievement('level-5');
+      if (state.heroLevel >= 10) unlockAchievement('level-10');
+      if (state.heroLevel >= 50) unlockAchievement('level-50');
+      if (state.heroLevel >= 99) unlockAchievement('level-99');
+      if (state.skills.some(sk => levelOf(sk) >= 2))  unlockAchievement('skill-2');
+      if (state.skills.some(sk => levelOf(sk) >= 5))  unlockAchievement('skill-5');
+      if (state.skills.some(sk => levelOf(sk) >= 10)) unlockAchievement('skill-10');
+      if (state.completed.regular   >= 10) unlockAchievement('quests-regular');
+      if (state.completed.common    >= 10) unlockAchievement('quests-common');
+      if (state.completed.legendary >= 10) unlockAchievement('quests-legendary');
+      if (questsDoneIn24h() >= 50) unlockAchievement('quests-24h');
+      if (state.owned.length >= Object.keys(SHOP_ITEMS).length) unlockAchievement('shop-clear');
+    }
 
     const uid = () =>
       (window.crypto && crypto.randomUUID)
@@ -1847,6 +1887,7 @@
         quests: [],
         journal: [],
         journalDay: null,
+        doneLog: [],
         owned: [],
         equipped: { frame: null, background: null, theme: null },
         achievements: [],
@@ -1889,6 +1930,7 @@
               parsed.completed = { regular: 0, common: 0, legendary: 0 };
             }
             ['regular', 'common', 'legendary'].forEach(k => {
+              if (!Array.isArray(parsed.doneLog)) parsed.doneLog = [];
               if (typeof parsed.completed[k] !== 'number' || !isFinite(parsed.completed[k]) || parsed.completed[k] < 0) {
                 parsed.completed[k] = 0;
               }
@@ -2167,6 +2209,7 @@
       renderShop();
       renderInventory();
       ding();
+      checkAchievements();
     }
 
     // Смена косметики в журнал не пишется
@@ -2288,6 +2331,8 @@
 
       ACHIEVEMENTS.forEach(a => {
         const unlocked = state.achievements.includes(a.id);
+        if (a.secret && !unlocked) return; // секретные скрыты до получения
+
         const row = document.createElement('div');
         row.className = 'ach-item ' + (unlocked ? 'unlocked' : 'locked');
 
@@ -2303,15 +2348,24 @@
         nm.textContent = a.name;
         const ds = document.createElement('div');
         ds.className = 'si-desc';
-        ds.textContent = unlocked ? a.desc : 'Условие: ' + a.desc;
+        ds.textContent = (unlocked ? a.desc : 'Условие: ' + a.desc) + ` · Награда: ${ACH_REWARD} 🪙`;
         info.append(nm, ds);
         row.appendChild(info);
 
         container.appendChild(row);
       });
+
+      if (ACHIEVEMENTS.some(a => a.secret && !state.achievements.includes(a.id))) {
+        const note = document.createElement('div');
+        note.className = 'empty-note';
+        note.textContent = 'В летописи есть и тайные деяния — узнаешь о них, когда совершишь.';
+        container.appendChild(note);
+      }
     }
 
-    function showToast(ach) {
+    }
+
+    function showToast(ach, reward) {
       const el = document.createElement('div');
       el.className = 'ach-toast';
       el.setAttribute('role', 'status');
@@ -2332,6 +2386,15 @@
       desc.textContent = ach.desc;
       info.append(capEl, title, desc);
 
+      if (reward) {
+        const rw = document.createElement('div');
+        rw.className = 'ach-desc';
+        rw.style.color = 'var(--gold-bright)';
+        rw.style.fontWeight = 'bold';
+        rw.textContent = `Награда: +${reward} 🪙`;
+        info.append(rw);
+      }
+
       el.append(icon, info);
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 4800);
@@ -2342,12 +2405,15 @@
       const ach = ACHIEVEMENTS.find(a => a.id === id);
       if (!ach) return;
       state.achievements.push(id);
+      state.coins += ACH_REWARD;
       save();
-      showToast(ach);
+      renderCoins(true);
+      showToast(ach, ACH_REWARD);
       achSound();
-      log(`${state.heroName} получил достижение «${ach.name}»!`, 'ach');
+      log(`${state.heroName} получил достижение «${ach.name}» и ${ACH_REWARD} монет!`, 'ach');
       renderAchievements();
     }
+
 
     // ===== Стартовая страница =====
     function showStartScreen() {
@@ -2609,6 +2675,7 @@
         log(`${state.heroName} повысил навык «${sk.name}» до ${after} уровня`, 'stat');
         ding();
         pulses.add('skill:' + sk.id);
+        checkAchievements();
       }
     }
 
@@ -2770,7 +2837,7 @@
         state.heroLevel++;
         log(`${state.heroName} повысил уровень до ${state.heroLevel}`, 'gold');
         fanfare();
-        unlockAchievement('big-start');
+        checkAchievements();
       }
       renderHero();
       const orb = document.getElementById('heroOrb');
@@ -2931,6 +2998,7 @@
 
       state.completed[q.rarity] = (state.completed[q.rarity] || 0) + 1;
       renderQuestCounter();
+      state.doneLog.push(Date.now());
 
       if (row) {
         const rect = row.getBoundingClientRect();
@@ -2954,6 +3022,7 @@
       log(msg, q.rarity === 'legendary' ? 'legend' : '');
 
       save();
+      checkAchievements();
 
       if (rar.repeat) {
         setTimeout(() => { renderStats(); renderSkills(); renderQuests(); renderJournal(false); }, 550);
@@ -3106,6 +3175,7 @@
       renderJournal(false);
       renderQuestCounter();
       startRadar();
+      checkAchievements();
 
       // Таймеры меняются раз в минуту — тикаем раз в минуту, а не каждую секунду
       setInterval(tick, 60000);
