@@ -1,4 +1,3 @@
-<style>
   :root {
     --gold: #d4a94e;
     --gold-bright: #f5d47a;
@@ -1186,4 +1185,3 @@ h1 {
     .intro-step { gap: 8px; }
     .intro-num { width: 26px; height: 26px; flex: 0 0 26px; font-size: .8rem; }
   }
-</style>
