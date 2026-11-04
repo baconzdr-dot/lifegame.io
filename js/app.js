@@ -1,6 +1,7 @@
-    'use strict';
+'use strict';
 
-// ===== Константы =====
+
+    // ===== Константы =====
     const SAVE_KEY = 'rpgHeroSave_v3';
     const PORTRAIT_KEY = 'rpgHeroPortrait_v3';
     const CELLS = 10;
@@ -1077,9 +1078,9 @@
       orb.classList.remove('pulse');
       void orb.offsetWidth;
       orb.classList.add('pulse');
-      checkAchievements();
            }
-  
+      checkAchievements();
+    
 
     // ===== Задания =====
     function renderQuestMaker() {
