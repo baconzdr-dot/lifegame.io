@@ -1078,9 +1078,9 @@
       orb.classList.remove('pulse');
       void orb.offsetWidth;
       orb.classList.add('pulse');
-           }
       checkAchievements();
-    
+           }
+  
 
     // ===== Задания =====
     function renderQuestMaker() {
