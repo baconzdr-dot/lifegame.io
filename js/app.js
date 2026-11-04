@@ -1,6 +1,5 @@
 'use strict';
 
-
     // ===== Константы =====
     const SAVE_KEY = 'rpgHeroSave_v3';
     const PORTRAIT_KEY = 'rpgHeroPortrait_v3';
