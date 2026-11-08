@@ -1,5 +1,7 @@
 'use strict';
 
+    let state = defaultState();
+
     // ===== Инициализация =====
     function init() {
       load();
