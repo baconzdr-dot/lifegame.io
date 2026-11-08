@@ -1474,6 +1474,9 @@ function hasAch(id) { return state.achievements.includes(id); }
       renderQuestCounter();
       startRadar();
       checkAchievements();
+      setTimeout (() => {
+           redrawRadar ();
+      }, 500);
 
       // Таймеры меняются раз в минуту — тикаем раз в минуту, а не каждую секунду
       setInterval(tick, 60000);
