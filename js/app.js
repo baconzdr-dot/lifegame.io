@@ -100,8 +100,8 @@ function hasAch(id) { return state.achievements.includes(id); }
               }
             });
             ['frame', 'background', 'theme'].forEach(slot => {
-               id = parsed.equipped[slot];
-               item = id ? SHOP_ITEMS[id] : null;
+              const id = parsed.equipped[slot];
+              const item = id ? SHOP_ITEMS[id] : null;
               if (!item || item.type !== slot) parsed.equipped[slot] = null;
             });
             parsed.owned = parsed.owned.filter(id => !!SHOP_ITEMS[id]);
@@ -111,14 +111,14 @@ function hasAch(id) { return state.achievements.includes(id); }
             );
             // Миграция характеристик по имени: прогресс не теряется при расширении списка
             parsed.stats = STATS.map(def => {
-               old = parsed.stats.find(s => s && s.nom === def.nom);
+              const old = parsed.stats.find(s => s && s.nom === def.nom);
               return { nom: def.nom, acc: def.acc, dat: def.dat, total: old ? (old.total || 0) : 0 };
             });
             parsed.stats.forEach(s => delete s._pulse);
             parsed.skills.forEach(s => delete s._pulse);
             state = parsed;
             try {
-               p = localStorage.getItem(PORTRAIT_KEY);
+              const p = localStorage.getItem(PORTRAIT_KEY);
               if (p) state.portrait = p;
             } catch (e) {}
             return true;
@@ -151,11 +151,11 @@ function hasAch(id) { return state.achievements.includes(id); }
       return audioCtx;
     }
     function note(freq, start, dur, vol) {
-      const ctx = ensureAudio();
+      const ctx  ensureAudio();
       if (!ctx) return;
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = 'sine';
+      const o  ctx.createOscillator();
+      const g  ctx.createGain();
+      o.type  'sine';
       o.frequency.setValueAtTime(freq, start);
       g.gain.setValueAtTime(0.0001, start);
       g.gain.exponentialRampToValueAtTime(vol, start + 0.02);
@@ -197,7 +197,7 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function checkJournalDay() {
-       key = todayKey();
+      const key = todayKey();
       if (state.journalDay === key) return;
       state.journalDay = key;
       state.journal = [];
@@ -223,7 +223,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       }
       const fragment = document.createDocumentFragment();
       state.journal.forEach((entry, i) => {
-         li = document.createElement('li');
+        const li = document.createElement('li');
         if (entry.c) li.classList.add('j-' + entry.c);
         li.textContent = entry.t;
         if (isNew && i === 0) li.classList.add('new');
@@ -251,8 +251,8 @@ function hasAch(id) { return state.achievements.includes(id); }
         tmp.onload = () => {
            c = document.createElement('canvas');
           c.width = 256; c.height = 256;
-           ctx = c.getContext('2d');
-           side = Math.min(tmp.width, tmp.height);
+           const ctx = c.getContext('2d');
+          const side = Math.min(tmp.width, tmp.height);
           ctx.drawImage(
             tmp,
             (tmp.width - side) / 2, (tmp.height - side) / 2, side, side,
@@ -270,7 +270,7 @@ function hasAch(id) { return state.achievements.includes(id); }
     function bindPortrait(inputId, apply) {
       const input = document.getElementById(inputId);
       input.addEventListener('change', () => {
-         file = input.files && input.files[0];
+         const file = input.files && input.files[0];
         if (!file) return;
         compressImage(file, (data) => {
           if (!data) return;
@@ -317,11 +317,11 @@ function hasAch(id) { return state.achievements.includes(id); }
     // ===== Модальные окна =====
     let lastFocusEl = null;
     function openModal(id) {
-      lastFocusEl = document.activeElement;
+      const lastFocusEl = document.activeElement;
       document.getElementById(id).classList.remove('hidden');
     }
     function closeModal(id) {
-       modal = document.getElementById(id);
+      const modal = document.getElementById(id);
       if (modal.classList.contains('hidden')) return;
       modal.classList.add('hidden');
       if (lastFocusEl && typeof lastFocusEl.focus === 'function') lastFocusEl.focus();
@@ -339,17 +339,17 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Применение косметики =====
     function applyCosmetics() {
-       body = document.body;
-       BG_CLASSES = ['bg-embers', 'bg-frost', 'bg-gold', 'bg-violet', 'bg-gray', 'bg-blue-check', 'bg-chess'];
-       THEME_CLASSES = ['theme-white', 'theme-red', 'theme-nature', 'theme-gothic', 'theme-angelic', 'theme-pink', 'theme-blue'];
+      const body = document.body;
+      const BG_CLASSES = ['bg-embers', 'bg-frost', 'bg-gold', 'bg-violet', 'bg-gray', 'bg-blue-check', 'bg-chess'];
+      const THEME_CLASSES = ['theme-white', 'theme-red', 'theme-nature', 'theme-gothic', 'theme-angelic', 'theme-pink', 'theme-blue'];
       BG_CLASSES.forEach(c => body.classList.remove(c));
       THEME_CLASSES.forEach(c => body.classList.remove(c));
       if (state.equipped.background) body.classList.add(state.equipped.background);
       if (state.equipped.theme) body.classList.add(state.equipped.theme);
 
-       pf = document.getElementById('portraitFrame');
-       sf = document.getElementById('startFrame');
-       FRAME_CLASSES = ['frame-red', 'frame-green', 'frame-white', 'frame-black', 'frame-black-dash', 'frame-black-dot'];
+      const pf = document.getElementById('portraitFrame');
+      const sf = document.getElementById('startFrame');
+      const FRAME_CLASSES = ['frame-red', 'frame-green', 'frame-white', 'frame-black', 'frame-black-dash', 'frame-black-dot'];
       FRAME_CLASSES.forEach(c => { pf.classList.remove(c); sf.classList.remove(c); });
       if (state.equipped.frame) {
         pf.classList.add(state.equipped.frame);
@@ -377,8 +377,8 @@ function hasAch(id) { return state.achievements.includes(id); }
     function equipItem(id) {
       const item = SHOP_ITEMS[id];
       if (!item || !state.owned.includes(id)) return;
-       slot = item.type;
-       takingOff = state.equipped[slot] === id;
+      const slot = item.type;
+      const takingOff = state.equipped[slot] === id;
       state.equipped[slot] = takingOff ? null : id;
       save();
       applyCosmetics();
@@ -398,18 +398,18 @@ function hasAch(id) { return state.achievements.includes(id); }
         container.appendChild(title);
 
         Object.keys(SHOP_ITEMS).filter(id => SHOP_ITEMS[id].type === gr.type).forEach(id => {
-           item = SHOP_ITEMS[id];
-           owned = state.owned.includes(id);
+           const item = SHOP_ITEMS[id];
+           const owned = state.owned.includes(id);
 
-           row = document.createElement('div');
+          const row = document.createElement('div');
           row.className = 'shop-item';
 
-           info = document.createElement('div');
+          const info = document.createElement('div');
           info.className = 'si-info';
-           nm = document.createElement('div');
+          const nm = document.createElement('div');
           nm.className = 'si-name';
           nm.textContent = item.name;
-           ds = document.createElement('div');
+          const ds = document.createElement('div');
           ds.className = 'si-desc';
           ds.textContent = item.desc;
           info.append(nm, ds);
@@ -417,13 +417,13 @@ function hasAch(id) { return state.achievements.includes(id); }
 
           if (owned) {
             // Куплено: метка вместо кнопки — менять косметику можно только в инвентаре
-             tag = document.createElement('span');
+            const tag = document.createElement('span');
             tag.className = 'buy-btn owned';
             tag.style.cursor = 'default';
             tag.textContent = 'В инвентаре ✓';
             row.appendChild(tag);
           } else {
-             btn = document.createElement('button');
+            const btn = document.createElement('button');
             btn.className = 'buy-btn';
             btn.textContent = `Купить · ${item.price} 🪙`;
             btn.disabled = state.coins < item.price;
@@ -457,24 +457,24 @@ function hasAch(id) { return state.achievements.includes(id); }
         container.appendChild(title);
 
         ids.forEach(id => {
-           item = SHOP_ITEMS[id];
-           equipped = state.equipped[item.type] === id;
+          const item = SHOP_ITEMS[id];
+          const equipped = state.equipped[item.type] === id;
 
-           row = document.createElement('div');
+          const row = document.createElement('div');
           row.className = 'shop-item';
 
-           info = document.createElement('div');
+          const info = document.createElement('div');
           info.className = 'si-info';
-           nm = document.createElement('div');
+          const nm = document.createElement('div');
           nm.className = 'si-name';
           nm.textContent = item.name;
-           ds = document.createElement('div');
+          const ds = document.createElement('div');
           ds.className = 'si-desc';
           ds.textContent = item.desc;
           info.append(nm, ds);
           row.appendChild(info);
 
-           btn = document.createElement('button');
+          const btn = document.createElement('button');
           btn.className = 'buy-btn' + (equipped ? ' owned' : '');
           btn.textContent = equipped ? 'Снять' : 'Надеть';
           btn.addEventListener('click', () => equipItem(id));
@@ -504,10 +504,10 @@ function hasAch(id) { return state.achievements.includes(id); }
 
         const info = document.createElement('div');
         info.className = 'si-info';
-         nm = document.createElement('div');
+        const nm = document.createElement('div');
         nm.className = 'si-name';
         nm.textContent = a.name;
-         ds = document.createElement('div');
+        const ds = document.createElement('div');
         ds.className = 'si-desc';
         ds.textContent = (unlocked ? a.desc : 'Условие: ' + a.desc) + ` · Награда: ${ACH_REWARD} 🪙`;
         info.append(nm, ds);
@@ -537,10 +537,10 @@ function hasAch(id) { return state.achievements.includes(id); }
        const capEl = document.createElement('div');
       capEl.className = 'ach-cap';
       capEl.textContent = 'Достижение получено';
-       title = document.createElement('div');
+      const title = document.createElement('div');
       title.className = 'ach-title';
       title.textContent = ach.name;
-       desc = document.createElement('div');
+      const desc = document.createElement('div');
       desc.className = 'ach-desc';
       desc.textContent = ach.desc;
       info.append(capEl, title, desc);
@@ -1250,8 +1250,8 @@ function hasAch(id) { return state.achievements.includes(id); }
         localStorage.removeItem(SAVE_KEY);
         localStorage.removeItem(PORTRAIT_KEY);
       } catch (e) {}
-      state = defaultState();
-      disp = state.stats.map(() => 0);
+      const state = defaultState();
+      const disp = state.stats.map(() => 0);
       pulses.clear();
       renderPortrait();
       renderHeroName();
