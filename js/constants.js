@@ -1,4 +1,3 @@
-    // ===== Константы =====
     export const SAVE_KEY = 'rpgHeroSave_v3';
     export const PORTRAIT_KEY = 'rpgHeroPortrait_v3';
     export const CELLS = 10;
