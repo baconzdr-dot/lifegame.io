@@ -284,7 +284,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     function bindFrame(frameId, inputId) {
       const frame = document.getElementById(frameId);
-       input = document.getElementById(inputId);
+      const input = document.getElementById(inputId);
       frame.addEventListener('click', () => input.click());
       frame.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
