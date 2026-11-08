@@ -130,7 +130,7 @@
       };
     }
 
-    let state = defaultState();
+
     const pulses = new Set();
 
     function save() {
