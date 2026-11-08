@@ -57,6 +57,9 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     let state = defaultState();
     const pulses = new Set();
+    levelOf = s => 1 + Math.floor(s.total / CELLS);
+    cellsOf = s => s.total % CELLS;
+
 
     function save() {
       try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
@@ -123,9 +126,6 @@ function hasAch(id) { return state.achievements.includes(id); }
       } catch (e) {}
       return false;
     }
-
-     levelOf = s => 1 + Math.floor(s.total / CELLS);
-     cellsOf = s => s.total % CELLS;
 
     function plural(n, one, few, many) {
        m = Math.abs(n) % 100, d = m % 10;
