@@ -24,7 +24,6 @@
       { key: 'regular',   title: 'Регулярные — обновляются после 00:00' }
     ];
 
-    // ===== Лавка: каталог товаров =====
     export const SHOP_ITEMS = {
       'frame-red':       { type: 'frame',      name: 'Алые оковы',         desc: 'Алая рамка для портрета героя',     price: 50  },
       'frame-green':     { type: 'frame',      name: 'Изумрудный оберег',  desc: 'Зелёная рамка для портрета героя',  price: 50  },
@@ -55,7 +54,6 @@
       { type: 'theme',      title: 'Темы страницы' }
     ];
 
-    // ===== Достижения =====
     export const ACH_REWARD = 300; // монет за каждое достижение
 
     export const ACHIEVEMENTS = [
