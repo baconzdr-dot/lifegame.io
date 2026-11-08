@@ -1,5 +1,4 @@
 'use strict';
-  <script src="js/constans.js" defer></script>
 
     // ===== Инициализация =====
     function init() {
