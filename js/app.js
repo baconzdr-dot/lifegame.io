@@ -1,7 +1,9 @@
 import { SAVE_KEY, PORTRAIT_KEY, CELLS, XP_PER_LEVEL, STATS, QUEST_GROUPS, SHOP_ITEMS, ACH_REWARD, ACHIEVEMENTS } from './constants.js';
 'use strict';
 function hasAch(id) { return state.achievements.includes(id); }
-
+    
+    levelOf = s => 1 + Math.floor(s.total / CELLS);
+    cellsOf = s => s.total % CELLS;
 
     function questsDoneIn24h() {
       const day = 24 * 3600 * 1000;
@@ -57,8 +59,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     let state = defaultState();
     const pulses = new Set();
-    levelOf = s => 1 + Math.floor(s.total / CELLS);
-    cellsOf = s => s.total % CELLS;
+
 
 
     function save() {
