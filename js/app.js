@@ -1,4 +1,4 @@
-import { SAVE_KEY, PORTRAIT_KEY, CELLS, XP_PER_LEVEL, STATS, QUEST_GROUPS, SHOP_ITEMS, ACH_REWARD, ACHIEVEMENTS, RARITIES } from './constants.js';
+import { SAVE_KEY, PORTRAIT_KEY, CELLS, XP_PER_LEVEL, STATS, QUEST_GROUPS, SHOP_ITEMS, ACH_REWARD, ACHIEVEMENTS, RARITIES, SHOP_GROUPS } from './constants.js';
 'use strict';
 function hasAch(id) { return state.achievements.includes(id); }
     
