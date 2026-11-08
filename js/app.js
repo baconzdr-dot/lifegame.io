@@ -443,7 +443,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       container.innerHTML = '';
 
       if (!state.owned.length) {
-       const container.innerHTML = '<div class="empty-note">Сундук пуст. Заглянь в лавку чудес!</div>';
+       container.innerHTML = '<div class="empty-note">Сундук пуст. Заглянь в лавку чудес!</div>';
         return;
       }
 
