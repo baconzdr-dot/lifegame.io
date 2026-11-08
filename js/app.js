@@ -30,7 +30,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       } catch (e) { console.warn('checkAchievements:', e); }
     }
 
-   uid = () =>
+   const uid = () =>
       (window.crypto && crypto.randomUUID)
         ? crypto.randomUUID()
         : Date.now() + '-' + Math.random().toString(36).slice(2, 9);
