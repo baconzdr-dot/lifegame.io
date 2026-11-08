@@ -1,5 +1,6 @@
 'use strict';
 
+
     // ===== Инициализация =====
     function init() {
       load();
