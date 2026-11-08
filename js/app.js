@@ -129,21 +129,21 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function plural(n, one, few, many) {
-       m = Math.abs(n) % 100, d = m % 10;
+      const m = Math.abs(n) % 100, d = m % 10;
       if (m > 10 && m < 20) return many;
       if (d > 1 && d < 5) return few;
       if (d === 1) return one;
       return many;
     }
-     xpWord  = n => `${n} ${plural(n, 'очко', 'очка', 'очков')} опыта`;
-     ptsWord = (n, dat) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${dat}`;
-     cap = s => s[0].toUpperCase() + s.slice(1);
+    const xpWord  = n => `${n} ${plural(n, 'очко', 'очка', 'очков')} опыта`;
+    const ptsWord = (n, dat) => `${n} ${plural(n, 'очко', 'очка', 'очков')} к ${dat}`;
+    const cap = s => s[0].toUpperCase() + s.slice(1);
 
     // ===== Звук =====
     let audioCtx = null;
     function ensureAudio() {
       if (!audioCtx) {
-         AC = window.AudioContext || window.webkitAudioContext;
+        const AC = window.AudioContext || window.webkitAudioContext;
         if (AC) audioCtx = new AC();
       }
       // Контекст мог уснуть, пока вкладка была в фоне — будим его
@@ -151,10 +151,10 @@ function hasAch(id) { return state.achievements.includes(id); }
       return audioCtx;
     }
     function note(freq, start, dur, vol) {
-       ctx = ensureAudio();
+      const ctx = ensureAudio();
       if (!ctx) return;
-       o = ctx.createOscillator();
-       g = ctx.createGain();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
       o.type = 'sine';
       o.frequency.setValueAtTime(freq, start);
       g.gain.setValueAtTime(0.0001, start);
@@ -165,25 +165,25 @@ function hasAch(id) { return state.achievements.includes(id); }
       o.stop(start + dur + 0.05);
     }
     function ding() {
-       ctx = ensureAudio();
+      const ctx = ensureAudio();
       if (!ctx) return;
-       t = ctx.currentTime;
+      const t = ctx.currentTime;
       note(880, t, 0.55, 0.35);
       note(1320, t + 0.05, 0.5, 0.18);
     }
     function fanfare() {
-       ctx = ensureAudio();
+      const ctx = ensureAudio();
       if (!ctx) return;
-       t = ctx.currentTime;
+      const t = ctx.currentTime;
       note(659, t, 0.5, 0.3);
       note(880, t + 0.12, 0.5, 0.3);
       note(1108, t + 0.24, 0.7, 0.32);
       note(1318, t + 0.36, 0.8, 0.3);
     }
     function achSound() {
-       ctx = ensureAudio();
+      const ctx = ensureAudio();
       if (!ctx) return;
-       t = ctx.currentTime;
+      const t = ctx.currentTime;
       note(523, t, 0.4, 0.28);
       note(659, t + 0.1, 0.4, 0.28);
       note(784, t + 0.2, 0.5, 0.3);
@@ -192,7 +192,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Журнал =====
     function todayKey() {
-       d = new Date();
+      const d = new Date();
       return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     }
 
@@ -211,7 +211,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       renderJournal(true);
     }
     function renderJournal(isNew) {
-       ul = document.getElementById('journalList');
+      const ul = document.getElementById('journalList');
       ul.innerHTML = '';
       if (!state.journal.length) {
          li = document.createElement('li');
@@ -221,7 +221,7 @@ function hasAch(id) { return state.achievements.includes(id); }
         ul.appendChild(li);
         return;
       }
-       fragment = document.createDocumentFragment();
+      const fragment = document.createDocumentFragment();
       state.journal.forEach((entry, i) => {
          li = document.createElement('li');
         if (entry.c) li.classList.add('j-' + entry.c);
@@ -234,7 +234,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Парящие награды =====
     function floatText(text, x, y, cls) {
-       el = document.createElement('div');
+      const el = document.createElement('div');
       el.className = 'float ' + cls;
       el.textContent = text;
       el.style.left = Math.min(x, window.innerWidth - 130) + 'px';
@@ -245,9 +245,9 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Изображения =====
     function compressImage(file, cb) {
-       reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = () => {
-         tmp = new Image();
+        const tmp = new Image();
         tmp.onload = () => {
            c = document.createElement('canvas');
           c.width = 256; c.height = 256;
@@ -268,7 +268,7 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function bindPortrait(inputId, apply) {
-       input = document.getElementById(inputId);
+      const input = document.getElementById(inputId);
       input.addEventListener('change', () => {
          file = input.files && input.files[0];
         if (!file) return;
@@ -283,7 +283,7 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function bindFrame(frameId, inputId) {
-       frame = document.getElementById(frameId);
+      const frame = document.getElementById(frameId);
        input = document.getElementById(inputId);
       frame.addEventListener('click', () => input.click());
       frame.addEventListener('keydown', e => {
@@ -295,10 +295,10 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function renderPortrait() {
-       img = document.getElementById('portraitImg');
-       ph = document.getElementById('portraitPlaceholder');
-       startImg = document.getElementById('startImg');
-       startPh = document.getElementById('startPlaceholder');
+      const img = document.getElementById('portraitImg');
+      const ph = document.getElementById('portraitPlaceholder');
+      const startImg = document.getElementById('startImg');
+      const startPh = document.getElementById('startPlaceholder');
       if (state.portrait) {
         img.src = state.portrait;
         img.style.display = 'block';
@@ -359,7 +359,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Лавка =====
     function buyItem(id) {
-       item = SHOP_ITEMS[id];
+      const item = SHOP_ITEMS[id];
       if (!item || state.owned.includes(id)) return;
       if (state.coins < item.price) return;
       state.coins -= item.price;
@@ -375,7 +375,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // Смена косметики в журнал не пишется
     function equipItem(id) {
-       item = SHOP_ITEMS[id];
+      const item = SHOP_ITEMS[id];
       if (!item || !state.owned.includes(id)) return;
        slot = item.type;
        takingOff = state.equipped[slot] === id;
@@ -387,12 +387,12 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function renderShop() {
-       container = document.getElementById('shopList');
+      const container = document.getElementById('shopList');
       document.getElementById('shopCoins').textContent = state.coins;
       container.innerHTML = '';
 
       SHOP_GROUPS.forEach(gr => {
-         title = document.createElement('div');
+        const title = document.createElement('div');
         title.className = 'shop-group-title';
         title.textContent = gr.title;
         container.appendChild(title);
@@ -439,19 +439,19 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Инвентарь: предметы сгруппированы по типам =====
     function renderInventory() {
-       container = document.getElementById('invList');
+      const container = document.getElementById('invList');
       container.innerHTML = '';
 
       if (!state.owned.length) {
-        container.innerHTML = '<div class="empty-note">Сундук пуст. Заглянь в лавку чудес!</div>';
+       const container.innerHTML = '<div class="empty-note">Сундук пуст. Заглянь в лавку чудес!</div>';
         return;
       }
 
       SHOP_GROUPS.forEach(gr => {
-         ids = state.owned.filter(id => SHOP_ITEMS[id] && SHOP_ITEMS[id].type === gr.type);
+        const ids = state.owned.filter(id => SHOP_ITEMS[id] && SHOP_ITEMS[id].type === gr.type);
         if (!ids.length) return;
 
-         title = document.createElement('div');
+        const title = document.createElement('div');
         title.className = 'shop-group-title';
         title.textContent = gr.title;
         container.appendChild(title);
@@ -487,22 +487,22 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     // ===== Достижения =====
     function renderAchievements() {
-       container = document.getElementById('achList');
+      const container = document.getElementById('achList');
       container.innerHTML = '';
 
       ACHIEVEMENTS.forEach(a => {
-         unlocked = state.achievements.includes(a.id);
+        const unlocked = state.achievements.includes(a.id);
         if (a.secret && !unlocked) return; // секретные скрыты до получения
 
-         row = document.createElement('div');
+       const  row = document.createElement('div');
         row.className = 'ach-item ' + (unlocked ? 'unlocked' : 'locked');
 
-         icon = document.createElement('div');
+        const icon = document.createElement('div');
         icon.className = 'ach-icon';
         icon.textContent = a.icon;
         row.appendChild(icon);
 
-         info = document.createElement('div');
+        const info = document.createElement('div');
         info.className = 'si-info';
          nm = document.createElement('div');
         nm.className = 'si-name';
@@ -517,7 +517,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       });
 
       if (ACHIEVEMENTS.some(a => a.secret && !state.achievements.includes(a.id))) {
-         note = document.createElement('div');
+        const note = document.createElement('div');
         note.className = 'empty-note';
         note.textContent = 'В летописи есть и тайные деяния — узнаешь о них, когда совершишь.';
         container.appendChild(note);
@@ -525,16 +525,16 @@ function hasAch(id) { return state.achievements.includes(id); }
     }
 
     function showToast(ach, reward) {
-       el = document.createElement('div');
+      const el = document.createElement('div');
       el.className = 'ach-toast';
       el.setAttribute('role', 'status');
 
-       icon = document.createElement('div');
+      const icon = document.createElement('div');
       icon.className = 'ach-icon';
       icon.textContent = ach.icon;
 
-       info = document.createElement('div');
-       capEl = document.createElement('div');
+      const info = document.createElement('div');
+       const capEl = document.createElement('div');
       capEl.className = 'ach-cap';
       capEl.textContent = 'Достижение получено';
        title = document.createElement('div');
@@ -546,7 +546,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       info.append(capEl, title, desc);
 
       if (reward) {
-         rw = document.createElement('div');
+        const rw = document.createElement('div');
         rw.className = 'ach-desc';
         rw.style.color = 'var(--gold-bright)';
         rw.style.fontWeight = 'bold';
@@ -561,7 +561,7 @@ function hasAch(id) { return state.achievements.includes(id); }
 
     function unlockAchievement(id) {
       if (state.achievements.includes(id)) return;
-       ach = ACHIEVEMENTS.find(a => a.id === id);
+      const ach = ACHIEVEMENTS.find(a => a.id === id);
       if (!ach) return;
       state.achievements.push(id);
       state.coins += ACH_REWARD;
