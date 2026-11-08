@@ -2,8 +2,8 @@ import { SAVE_KEY, PORTRAIT_KEY, CELLS, XP_PER_LEVEL, STATS, QUEST_GROUPS, SHOP_
 'use strict';
 function hasAch(id) { return state.achievements.includes(id); }
     
-    levelOf = s => 1 + Math.floor(s.total / CELLS);
-    cellsOf = s => s.total % CELLS;
+    const levelOf = s => 1 + Math.floor(s.total / CELLS);
+    const cellsOf = s => s.total % CELLS;
 
     function questsDoneIn24h() {
       const day = 24 * 3600 * 1000;
