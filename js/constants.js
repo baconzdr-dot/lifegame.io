@@ -12,11 +12,11 @@
       { nom: 'телосложение', acc: 'телосложение', dat: 'телосложению' }
     ];
 
-    export const RARITIES = {
+    export const RARITIES = [
       regular:   { adj: 'регулярное',  xp: 10,  pts: 1,  repeat: true,  floatClass: 'green'  },
       common:    { adj: 'обычное',     xp: 30,  pts: 3,  repeat: false, floatClass: 'gold'   },
       legendary: { adj: 'легендарное', xp: 100, pts: 10, repeat: false, floatClass: 'purple' }
-    };
+    ];
 
     export const QUEST_GROUPS = [
       { key: 'legendary', title: 'Легендарные — одноразовые' },
@@ -24,7 +24,7 @@
       { key: 'regular',   title: 'Регулярные — обновляются после 00:00' }
     ];
 
-    export const SHOP_ITEMS = {
+    export const SHOP_ITEMS = [
       'frame-red':       { type: 'frame',      name: 'Алые оковы',         desc: 'Алая рамка для портрета героя',     price: 50  },
       'frame-green':     { type: 'frame',      name: 'Изумрудный оберег',  desc: 'Зелёная рамка для портрета героя',  price: 50  },
       'frame-white':     { type: 'frame',      name: 'Белоснежная оправа', desc: 'Простая белая рамка без украшений', price: 50  },
@@ -47,7 +47,8 @@
       'theme-angelic':{ type: 'theme', name: 'Ангельский свет',   desc: 'Светлая небесная тема',      price: 150 },
       'theme-pink':   { type: 'theme', name: 'Розовые сны',       desc: 'Милая розовая тема',         price: 150 },
       'theme-blue':   { type: 'theme', name: 'Небесная дымка',    desc: 'Милая голубая тема',         price: 150 }
-    };
+    ];
+
     export const SHOP_GROUPS = [
       { type: 'frame',      title: 'Рамки для портрета' },
       { type: 'background', title: 'Фоны основного экрана' },
