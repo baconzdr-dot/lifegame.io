@@ -328,7 +328,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       lastFocusEl = null;
     }
     function bindModal(modalId, closeBtnId) {
-       modal = document.getElementById(modalId);
+      const modal = document.getElementById(modalId);
       document.getElementById(closeBtnId).addEventListener('click', () => closeModal(modalId));
       modal.addEventListener('click', e => { if (e.target === modal) closeModal(modalId); });
     }
