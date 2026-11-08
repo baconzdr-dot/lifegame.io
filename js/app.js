@@ -214,7 +214,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       const ul = document.getElementById('journalList');
       ul.innerHTML = '';
       if (!state.journal.length) {
-         li = document.createElement('li');
+        const li = document.createElement('li');
         li.textContent = 'Летопись ждёт первого деяния этого дня…';
         li.style.opacity = '.5';
         li.style.fontStyle = 'italic';
