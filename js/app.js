@@ -30,7 +30,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       } catch (e) { console.warn('checkAchievements:', e); }
     }
 
-    const uid = () =>
+   uid = () =>
       (window.crypto && crypto.randomUUID)
         ? crypto.randomUUID()
         : Date.now() + '-' + Math.random().toString(36).slice(2, 9);
@@ -151,10 +151,10 @@ function hasAch(id) { return state.achievements.includes(id); }
       return audioCtx;
     }
     function note(freq, start, dur, vol) {
-      const ctx  ensureAudio();
+    const ctx = ensureAudio();
       if (!ctx) return;
-      const o  ctx.createOscillator();
-      const g  ctx.createGain();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
       o.type  'sine';
       o.frequency.setValueAtTime(freq, start);
       g.gain.setValueAtTime(0.0001, start);
