@@ -155,7 +155,7 @@ function hasAch(id) { return state.achievements.includes(id); }
       if (!ctx) return;
       const o = ctx.createOscillator();
       const g = ctx.createGain();
-      o.type  'sine';
+      o.type = 'sine';
       o.frequency.setValueAtTime(freq, start);
       g.gain.setValueAtTime(0.0001, start);
       g.gain.exponentialRampToValueAtTime(vol, start + 0.02);
