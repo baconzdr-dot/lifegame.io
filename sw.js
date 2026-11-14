@@ -24,7 +24,7 @@ caches.keys().then((keys) => {
     if (key !== CACHE_NAME) return caches.delete (key);
    })
   );
- )}
+ ))}
 );
 
 self.addEventListener ('fetch', (e) => {
