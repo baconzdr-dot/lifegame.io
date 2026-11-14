@@ -1279,7 +1279,7 @@ function hasAch(id) { return state.achievements.includes(id); }
         openModal('menuModal');
       });
         
-      document.getElementById('menuBtn').addEventListener('click', () => closeModal('menuModal'));
+      document.getElementById('menuCloseBtn').addEventListener('click', () => closeModal('menuModal'));
 
       document.getElementById('helpBtn').addEventListener('click', () => {
         closeModal('menuModal');
