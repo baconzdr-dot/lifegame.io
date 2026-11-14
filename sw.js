@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ligegame-cache-v3.0.1'; // МЕНЯЙ ВЕРСИЮ ПРИ ОБНОВЛЕНИЯХ ДЛЯ ПРАВИЛЬНОГО ОТОБРАЖЕНИЯ
+const CACHE_NAME = 'ligegame-cache-v4'; // МЕНЯЙ ВЕРСИЮ ПРИ ОБНОВЛЕНИЯХ ДЛЯ ПРАВИЛЬНОГО ОТОБРАЖЕНИЯ
 const ASSETS = [
   './',
   './index.html',
