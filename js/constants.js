@@ -20,8 +20,8 @@
 
     export const QUEST_GROUPS = [
       { key: 'legendary', title: 'Легендарные — одноразовые' },
-      { key: 'common',    title: 'Обычные — одноразовые' },
-      { key: 'regular',   title: 'Регулярные — обновляются после 00:00' }
+      { key: 'common',    title: 'Редкие — одноразовые' },
+      { key: 'regular',   title: 'Обычные — обновляются каждые 12 часов' }
     ];
 
     export const SHOP_ITEMS = {
