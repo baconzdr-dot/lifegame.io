@@ -1033,20 +1033,22 @@ function hasAch(id) { return state.achievements.includes(id); }
       if ([...skillSel.options].some(o => o.value === prev)) skillSel.value = prev;
     }
 
-    // Ближайшая полуночь ПОСЛЕ момента ts — по локальным часам устройства
-    function nextMidnight(ts) {
-      const d = new Date(ts);
-      d.setHours(24, 0, 0, 0);
-      return d.getTime();
+    // Ближайший сброс
+    function nextResetTime(doneAt) {
+      const TWELVE_HOURS = 12 * 60 * 60 * 1000;
+      return doneAt + TWELVE_HOURS;
     }
 
     function remainingTime(doneAt) {
-      const left = Math.max(0, nextMidnight(doneAt) - Date.now());
+      const left = Math.max(0, nextResetTime(doneAt) - Date.now());
       if (left <= 0) return 'обновляется сейчас';
+        
       const h = Math.floor(left / 3600000);
       const m = Math.floor((left % 3600000) / 60000);
+        
       if (h === 0 && m === 0) return 'обновится меньше чем через минуту';
-      return `обновится в 00:00 через ${h} ч ${m} мин`;
+        if (h === 0) return 'обновится через ${m} мин';
+          return `обновится через ${h} ч ${m} мин`;
     }
 
     function buildQuestRow(q) {
@@ -1228,9 +1230,10 @@ function hasAch(id) { return state.achievements.includes(id); }
     function tick() {
       let changed = false;
       const now = Date.now();
+        
       state.quests.forEach(q => {
-        // Обнуление регулярных заданий — после полуночи по часам устройства
-        if (q.done && RARITIES[q.rarity].repeat && now >= nextMidnight(q.doneAt)) {
+        // Обнуление регулярных заданий
+        if (q.done && RARITIES[q.rarity].repeat && now >= nextResetTime(q.doneAt)) {
           q.done = false;
           q.doneAt = null;
           changed = true;
