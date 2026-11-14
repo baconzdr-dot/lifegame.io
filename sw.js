@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ligegame-cache-v2'; // МЕНЯЙ ВЕРСИЮ ПРИ ОБНОВЛЕНИЯХ ДЛЯ ПРАВИЛЬНОГО ОТОБРАЖЕНИЯ
+const CACHE_NAME = 'ligegame-cache-v3'; // МЕНЯЙ ВЕРСИЮ ПРИ ОБНОВЛЕНИЯХ ДЛЯ ПРАВИЛЬНОГО ОТОБРАЖЕНИЯ
 const ASSETS = [
   './',
   './index.html',
@@ -17,15 +17,16 @@ self.addEventListener ('install', (e) => {
 });
 
 self.addEventListener ('activate', (e) => {
-  e.waitUntil (
+  e.waitUntil(
 caches.keys().then((keys) => {
   return Promise.all(
-    keys.map ((key) => {
-    if (key !== CACHE_NAME) return caches.delete (key);
+    keys.map((key) => {
+    if (key !== CACHE_NAME) return caches.delete(key);
    })
   );
- ))}
+ })
 );
+});
 
 self.addEventListener ('fetch', (e) => {
   e.respondWith(
