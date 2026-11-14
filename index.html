@@ -37,7 +37,7 @@
     <div class="beta-tag">Открытый бета-тест</div>
     <div class="header-controls">
       <div class="menu-wrap">
-        <button id="menuBtn" aria-label="Открыть меню">☰</button>
+        <button id="menuBtn" aria-label="Меню">☰</button>
   </header>
 
   <div class="app">
@@ -311,18 +311,7 @@
       </div>
     </div>
   </div>
-
-  <script type="module" src="js/app.js" defer></script>
-  <script> 
-  if ('serviceWorker' in navigator) {
-    window.addEventListener ('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Service Worker зарегистрирован!'))
-      .catch(err => console.log('Ошибка Service Worker:', err));
-   });
-  }
-  </script>
-   <div id="menuModal" class="modal hidden">
+        <div id="menuModal" class="modal hidden">
     <div class="modal-content">
       <button class="modal-close" id="menuCloseBtn" aria-label="Закрыть">&times;</button>
       <h2 style="text-align: margin-top: 0; color: ver(--gold);">Меню</h2>
@@ -334,5 +323,16 @@
         </div>
       </div>
     </div>
+
+  <script type="module" src="js/app.js" defer></script>
+  <script> 
+  if ('serviceWorker' in navigator) {
+    window.addEventListener ('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker зарегистрирован!'))
+      .catch(err => console.log('Ошибка Service Worker:', err));
+   });
+  }
+  </script>
 </body>
 </html>
