@@ -1268,31 +1268,27 @@ function hasAch(id) { return state.achievements.includes(id); }
       showStartScreen();
     }
 
-    // ===== Выпадающее меню =====
+    // ===== Меню =====
     function setupMenu() {
       const btn = document.getElementById('menuBtn');
-      const drop = document.getElementById('menuDrop');
 
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        drop.classList.toggle('hidden');
+      btn.addEventListener('click', () => {
+        openModal('menuModal');
       });
-      document.addEventListener('click', e => {
-        if (!drop.classList.contains('hidden') && !drop.contains(e.target) && e.target !== btn) {
-          drop.classList.add('hidden');
-        }
-      });
+        
+      document.getElementById('menuBtn').addEventListener('click', () => closeModal('menuModal'));
 
       document.getElementById('helpBtn').addEventListener('click', () => {
-        drop.classList.add('hidden');
+        closeModal('menuModal');
         openIntro();
       });
+        
       document.getElementById('devBtn').addEventListener('click', () => {
-        drop.classList.add('hidden');
+        closeModal('menuModal');
         openDev();
       });
 
-      // Обнуление — с тем же подтверждением в два клика, что было раньше
+      // Обнуление — с подтверждением в два клика
       const resetBtn = document.getElementById('resetBtn');
       let armed = false, timer = null;
       resetBtn.addEventListener('click', () => {
@@ -1307,7 +1303,7 @@ function hasAch(id) { return state.achievements.includes(id); }
           clearTimeout(timer);
           armed = false;
           resetBtn.textContent = '🗑 Обнулить весь прогресс';
-          drop.classList.add('hidden');
+          closeModal('menuModal');
           doReset();
         }
       });
