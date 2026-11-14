@@ -5,7 +5,7 @@ const ASSETS = [
   './css/style.css',
   './css/themes.css',
   './js/app.js',
-  './constants.js'
+  './js/constants.js',
   './icon-192.png',
   './icon-512.png'
 ];
