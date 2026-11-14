@@ -1185,3 +1185,54 @@ h1 {
     .intro-step { gap: 8px; }
     .intro-num { width: 26px; height: 26px; flex: 0 0 26px; font-size: .8rem; }
   }
+
+/* ===== Подложка (Затемнение фона) ===== */
+.modal {
+  position: fixed;
+  inset: 0; /* Растягивает на весь экран */
+  background: rgba(0, 0, 0, 0.75); /* Темный полупрозрачный фон */
+  backdrop-filter: blur(4px); /* Легкое размытие заднего плана (эффект стекла) */
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center; /* Центрируем по вертикали */
+  justify-content: center; /* Центрируем по горизонтали */
+  z-index: 1000; /* Чтобы было поверх всего */
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Скрываем модалку, если на ней есть класс .hidden */
+.modal.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* ===== Само окно меню (Подложка окна) ===== */
+#menuModal .modal-content {
+  background: var(--panel, #1e222a); /* Используем твой цвет панели */
+  border: 2px solid var(--gold, #d4a94e); /* Золотая рамка в стиле игры */
+  border-radius: 16px; /* Скругленные углы */
+  padding: 30px 25px;
+  width: 90%; /* На телефоне окно займет 90% ширины */
+  max-width: 400px; /* На ПК не даем окну растянуться больше 400px */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(212, 169, 78, 0.1); /* Красивая тень и свечение внутри */
+  position: relative;
+  text-align: center; /* Центрируем весь текст внутри */
+  
+  /* Анимация появления (выпрыгивание) */
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+/* Заголовок "Меню" по центру */
+#menuModal h2 {
+  color: var(--gold, #d4a94e);
+  font-size: 26px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 1px solid rgba(212, 169, 78, 0.3); /* Декоративная линия под заголовком */
+  padding-bottom: 15px;
+}
