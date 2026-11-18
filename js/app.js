@@ -414,7 +414,7 @@ function hasAch(id) { return state.achievements.includes(id); }
           nm.className = 'si-name';
           nm.textContent = item.name;
           const rarText = item.rarity === 'legendary' ? 'Легендарное' : (item.rarity === 'rare' ? 'Редкое' : 'Обычное');
-          nm.innerHTML = `<span style="font-size: 10px; opacity:0.6; display:block; text-transform:uppercase;">${rartext}</span> ${item.name}`;
+          nm.innerHTML = `<span style="font-size: 10px; opacity:0.6; display:block; text-transform:uppercase;">${rarText}</span> ${item.name}`;
           const ds = document.createElement('div');
           ds.className = 'si-desc';
           ds.textContent = item.desc;
