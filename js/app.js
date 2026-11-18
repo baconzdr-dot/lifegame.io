@@ -1496,7 +1496,7 @@ function openDailyModal() {
   const btn = document.getElementById('claimDailyBtn');
   btn.disabled = false;
   btn.textContent = `Забрать ${DAILY_REWARDS[state.loginStreak - 1]} монет`;
-  
+
   // Очищаем старые обработчики, чтобы не навешивались дубли
   const newBtn = btn.cloneNode(true);
   btn.parentNode.replaceChild(newBtn, btn);
@@ -1520,6 +1520,11 @@ function openDailyModal() {
       closeModal('dailyModal');
     }, 800);
   });
+
+    // Оброботчик крестика
+     document.getElementById('dailyCloseBtn').onclick = () => {
+     closeModal('dailyModal');
+  };
 
   openModal('dailyModal');
 }
