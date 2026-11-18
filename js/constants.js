@@ -25,29 +25,46 @@
     ];
 
     export const SHOP_ITEMS = {
-      'frame-red':       { type: 'frame',      name: 'Алые оковы',         desc: 'Алая рамка для портрета героя',     price: 50  },
-      'frame-green':     { type: 'frame',      name: 'Изумрудный оберег',  desc: 'Зелёная рамка для портрета героя',  price: 50  },
-      'frame-white':     { type: 'frame',      name: 'Белоснежная оправа', desc: 'Простая белая рамка без украшений', price: 50  },
-      'frame-black':     { type: 'frame',      name: 'Угольная оправа',    desc: 'Простая чёрная рамка без украшений', price: 50 },
-      'frame-black-dash':{ type: 'frame',      name: 'Пунктирный след',    desc: 'Чёрная рамка пунктиром',            price: 50  },
-      'frame-black-dot': { type: 'frame',      name: 'Крапчатая тень',     desc: 'Чёрная рамка в крапинку',           price: 50  },
+  // ================= РАМКИ =================
+  // Обычные (50 монет) - простые цвета
+  'frame-white':     { type: 'frame',      name: 'Белоснежная оправа', desc: 'Простая белая рамка без украшений', price: 50,  rarity: 'common' },
+  'frame-black':     { type: 'frame',      name: 'Угольная оправа',    desc: 'Простая чёрная рамка без украшений', price: 50,  rarity: 'common' },
+  'frame-black-dash':{ type: 'frame',      name: 'Пунктирный след',    desc: 'Чёрная рамка пунктиром',            price: 50,  rarity: 'common' },
+  'frame-black-dot': { type: 'frame',      name: 'Крапчатая тень',     desc: 'Чёрная рамка в крапинку',           price: 50,  rarity: 'common' },
+  
+  // Редкие (100 монет) - цвета и узоры
+  'frame-red':       { type: 'frame',      name: 'Алые оковы',         desc: 'Алая рамка для портрета героя',     price: 100, rarity: 'rare' },
+  'frame-green':     { type: 'frame',      name: 'Изумрудный оберег',  desc: 'Зелёная рамка для портрета героя',  price: 100, rarity: 'rare' },
+  // (Легендарные рамки добавим сюда, когда появятся арты)
 
-      'bg-embers':    { type: 'background', name: 'Угольная бездна',   desc: 'Тёмный фон с алым узором',           price: 100 },
-      'bg-frost':     { type: 'background', name: 'Морозные кружева',  desc: 'Холодный фон в звёздную крапинку',   price: 100 },
-      'bg-gold':      { type: 'background', name: 'Золотой рассвет',   desc: 'Чистый золотой фон с градиентом',    price: 100 },
-      'bg-violet':    { type: 'background', name: 'Фиалковый сумрак',  desc: 'Чистый фиолетовый фон с градиентом', price: 100 },
-      'bg-gray':      { type: 'background', name: 'Пепельный свод',    desc: 'Однотонный тёмно-серый фон',         price: 100 },
-      'bg-blue-check':{ type: 'background', name: 'Облачная клетка',   desc: 'Белый фон в светло-синюю клетку',    price: 100 },
-      'bg-chess':     { type: 'background', name: 'Турнирный зал',     desc: 'Шахматная клетка',                   price: 100 },
+  // ================= ФОНЫ =================
+  // Обычные (100 монет) - однотонные
+  'bg-gray':      { type: 'background', name: 'Пепельный свод',    desc: 'Однотонный тёмно-серый фон',         price: 100, rarity: 'common' },
+  'bg-blue-check':{ type: 'background', name: 'Облачная клетка',   desc: 'Белый фон в светло-синюю клетку',    price: 100, rarity: 'common' },
+  'bg-chess':     { type: 'background', name: 'Турнирный зал',     desc: 'Шахматная клетка',                   price: 100, rarity: 'common' },
 
-      'theme-white':  { type: 'theme', name: 'Пергамент',         desc: 'Светлая тема всей страницы', price: 150 },
-      'theme-red':    { type: 'theme', name: 'Кровавая полночь',  desc: 'Алая тема всей страницы',    price: 150 },
-      'theme-nature': { type: 'theme', name: 'Лесной шёпот',      desc: 'Тема в природных тонах',     price: 150 },
-      'theme-gothic': { type: 'theme', name: 'Готический собор',  desc: 'Мрачная фиолетовая тема',    price: 150 },
-      'theme-angelic':{ type: 'theme', name: 'Ангельский свет',   desc: 'Светлая небесная тема',      price: 150 },
-      'theme-pink':   { type: 'theme', name: 'Розовые сны',       desc: 'Милая розовая тема',         price: 150 },
-      'theme-blue':   { type: 'theme', name: 'Небесная дымка',    desc: 'Милая голубая тема',         price: 150 }
-    };
+  // Редкие (200 монет) - градиенты и узоры
+  'bg-embers':    { type: 'background', name: 'Угольная бездна',   desc: 'Тёмный фон с алым узором',           price: 200, rarity: 'rare' },
+  'bg-frost':     { type: 'background', name: 'Морозные кружева',  desc: 'Холодный фон в звёздную крапинку',   price: 200, rarity: 'rare' },
+  'bg-violet':    { type: 'background', name: 'Фиалковый сумрак',  desc: 'Чистый фиолетовый фон с градиентом', price: 200, rarity: 'rare' },
+
+  // Легендарные (300 монет)
+  'bg-gold':      { type: 'background', name: 'Золотой рассвет',   desc: 'Чистый золотой фон с градиентом',    price: 300, rarity: 'legendary' },
+
+  // ================= ТЕМЫ =================
+  // Обычные (150 монет) - меняют цвет
+  'theme-white':  { type: 'theme', name: 'Пергамент',         desc: 'Светлая тема всей страницы', price: 150, rarity: 'common' },
+  'theme-red':    { type: 'theme', name: 'Кровавая полночь',  desc: 'Алая тема всей страницы',    price: 150, rarity: 'common' },
+
+  // Редкие (250 монет) - цвет, шрифт, иконки
+  'theme-nature': { type: 'theme', name: 'Лесной шёпот',      desc: 'Тема в природных тонах',     price: 250, rarity: 'rare' },
+  'theme-pink':   { type: 'theme', name: 'Розовые сны',       desc: 'Милая розовая тема',         price: 250, rarity: 'rare' },
+  'theme-blue':   { type: 'theme', name: 'Небесная дымка',    desc: 'Милая голубая тема',         price: 250, rarity: 'rare' },
+
+  // Легендарные (400 монет) - рисованные
+  'theme-gothic': { type: 'theme', name: 'Готический собор',  desc: 'Мрачная фиолетовая тема',    price: 400, rarity: 'legendary' },
+  'theme-angelic':{ type: 'theme', name: 'Ангельский свет',   desc: 'Светлая небесная тема',      price: 400, rarity: 'legendary' }
+};
 
     export const SHOP_GROUPS = [
       { type: 'frame',      title: 'Рамки для портрета' },
