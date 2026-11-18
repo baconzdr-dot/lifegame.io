@@ -406,7 +406,7 @@ function hasAch(id) { return state.achievements.includes(id); }
            const owned = state.owned.includes(id);
 
           const row = document.createElement('div');
-          row.className = 'shop-item rarity-${item.rarity || 'common' }';
+          row.className = `shop-item rarity-${item.rarity || 'common' }`;
 
           const info = document.createElement('div');
           info.className = 'si-info';
