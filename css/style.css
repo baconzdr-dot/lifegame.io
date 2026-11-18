@@ -283,6 +283,122 @@ h1 {
   color: var(--purple);
 }
 
+/* ===== Окно Ежедневного Входа ===== */
+#dailyModal .modal-content {
+  background: linear-gradient(180deg, #1f1a14 0%, #110e0a 100%); /* Тёмный фон */
+  border: 2px solid var(--gold, #d4a94e);
+  border-radius: 16px;
+  padding: 25px;
+  width: 90%;
+  max-width: 420px; /* Чуть шире меню, чтобы влезли 4 колонки */
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(212, 169, 78, 0.1);
+  position: relative;
+  text-align: center;
+  
+  /* Анимация появления */
+  transform: scale(0.9);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#dailyModal:not(.hidden) .modal-content {
+  transform: scale(1);
+}
+
+/* Крестик закрытия */
+#dailyCloseBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+#dailyCloseBtn:hover { color: #fff; }
+
+/* ===== Сетка дней ===== */
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 колонки на ПК */
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Если экран маленький (телефон), делаем 3 колонки в ряд */
+@media (max-width: 350px) {
+  .daily-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Карточка одного дня */
+.daily-day {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(212, 169, 78, 0.2);
+  border-radius: 10px;
+  padding: 12px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.daily-day .day-label {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.daily-day .day-reward {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--gold);
+  text-shadow: 0 0 5px rgba(212, 169, 78, 0.5);
+}
+
+/* Прошедшие дни (уже получены) */
+.daily-day.passed {
+  opacity: 0.4;
+  background: #000;
+  border-color: transparent;
+}
+.daily-day.passed::after {
+  content: '✓';
+  position: absolute;
+  font-size: 24px;
+  color: var(--green, #8fd47a);
+  font-weight: bold;
+}
+
+/* ТЕКУЩИЙ ДЕНЬ (светится) */
+.daily-day.current {
+  border-color: var(--gold);
+  background: rgba(212, 169, 78, 0.15);
+  box-shadow: 0 0 15px rgba(212, 169, 78, 0.4), inset 0 0 10px rgba(212, 169, 78, 0.2);
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+/* 7-й день (БОНУСНЫЙ) занимает 2 нижние ячейки */
+.daily-day:nth-child(7) {
+  grid-column: span 4; /* На всю ширину */
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.1), rgba(212, 169, 78, 0.1));
+  border-color: var(--purple, #c88ff5);
+  flex-direction: row; /* Текст в ряд */
+  gap: 10px;
+  padding: 15px;
+}
+.daily-day:nth-child(7) .day-label { margin: 0; font-size: 14px; }
+.daily-day:nth-child(7) .day-reward { font-size: 18px; color: var(--purple, #c88ff5); }
+
+.daily-day:nth-child(7).current {
+  box-shadow: 0 0 20px rgba(124, 92, 255, 0.6);
+  border-color: var(--purple, #c88ff5);
+}
+
   /* ===== Счётчик выполненных заданий ===== */
   .quest-counter {
     display: flex;
