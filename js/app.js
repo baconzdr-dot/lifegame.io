@@ -406,13 +406,15 @@ function hasAch(id) { return state.achievements.includes(id); }
            const owned = state.owned.includes(id);
 
           const row = document.createElement('div');
-          row.className = 'shop-item';
+          row.className = 'shop-item rarity-${item.rarity || 'common' }';
 
           const info = document.createElement('div');
           info.className = 'si-info';
           const nm = document.createElement('div');
           nm.className = 'si-name';
           nm.textContent = item.name;
+          const rarText = item.rarity === 'legendary' ? 'Легендарное' : (item.rarity === 'rare' ? 'Редкое' : 'Обычное');
+          nm.innerHTML = `<span style="font-size: 10px; opacity:0.6; display:block; text-transform:uppercase;">${rartext}</span> ${item.name}`;
           const ds = document.createElement('div');
           ds.className = 'si-desc';
           ds.textContent = item.desc;
@@ -472,6 +474,8 @@ function hasAch(id) { return state.achievements.includes(id); }
           const nm = document.createElement('div');
           nm.className = 'si-name';
           nm.textContent = item.name;
+          const rarText = item.rarity === 'legendary' ? 'Легендарное' : (item.rarity === 'rare' ? 'Редкое' : 'Обычное');
+          nm.innerHTML = `<span style="font-size: 10px; opacity:0.6; display:block; text-transform:uppercase;">${rartext}</span> ${item.name}`;
           const ds = document.createElement('div');
           ds.className = 'si-desc';
           ds.textContent = item.desc;
