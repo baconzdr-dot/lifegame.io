@@ -220,6 +220,68 @@ h1 {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* ===== Ежедневные награды ===== */
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.daily-day {
+  background: rgba( 0, 0, 0, 0.4);
+  border: 1px solid rgba(212, 169, 78, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  text-aling: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.daily-day.passed {
+  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.daily-day.current {
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(212, 169, 78, 0.5);
+  background: rgba(212, 169, 78, 0.1);
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+
+.daily-day.future {
+  opacity: 0.7;
+}
+
+.daily-day:nth-child(7) {
+  grid-column: span 4;
+  background: rgba(124, 92, 255, 0.15);
+  border-color: var(--purple);
+}
+
+.daily-day:nth-child(7).current {
+  box-shadow: 0 0 15px rgba(124, 92, 255, 0.7);
+}
+
+.day-label {
+  font-size: 12px;
+  opacity: 0/7;
+  margin-bottom: 5px;
+}
+
+.day-reward {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--gold);
+}
+
+.daily-day:nth-child(7) .day-reward {
+  color: var(--purple);
+}
 
   /* ===== Счётчик выполненных заданий ===== */
   .quest-counter {
