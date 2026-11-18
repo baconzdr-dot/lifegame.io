@@ -15,6 +15,9 @@
     --input-bg: rgba(0,0,0,.5);
     --shadow-dark: rgba(0,0,0,.7);
     --head-shadow: 0 0 10px rgba(245,212,122,.4);
+    --rar-common: #9aa0b4;
+    --rar-rare: #22d3ee;
+    --rar-legendary: #f5d47a;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -921,6 +924,10 @@ h1 {
   .buy-btn:hover { box-shadow: 0 0 12px rgba(245,212,122,.5); }
   .buy-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
   .buy-btn.owned { border-color: var(--green); color: var(--green); }
+
+  .shop-item.rarity-common { border-left: 4px solid var(--rar-common); }
+  .shop-item.rarity-rare { border-left: 4px solid var(--rar-rare); box-shadow: inset 10px 0 10px -10px rgba(34, 211, 238, 0.3); }
+  .shop-item.rarity-legendary { border-left: 4px solid var(--rar-legendary); box-shadow: inset 10px 0 10px -10px rgba(245, 212, 122, 0.3); }
 
   /* ===== Достижения ===== */
   .ach-item {
