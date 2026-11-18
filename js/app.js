@@ -1531,7 +1531,7 @@ function openDailyModal() {
       setupStartScreen();
       bindPortrait('portraitInput', renderPortrait);
       bindFrame('portraitFrame', 'portraitInput');
-      setTimeout(checkDailyLofin, 1000);
+      setTimeout(checkDailyLogin, 1000);
 
       document.getElementById('addQuestBtn').addEventListener('click', addQuest);
       document.getElementById('questText').addEventListener('keydown', e => {
