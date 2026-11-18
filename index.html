@@ -330,15 +330,19 @@
 <!-- Модалка Ежедневного Входа -->
 <div id="dailyModal" class="modal hidden">
   <div class="modal-content daily-content">
-    <h2 style="color: var(--gold); text-align: center; margin-top: 0;">Ежедневный вход</h2>
-    <p style="text-align: center; opacity: 0.8; margin-bottom: 20px;">Заходи каждый день, чтобы получать всё больше монет!</p>
+    <button class="modal-close" id="dailyCloseBtn" aria-label="Закрыть">&times;</button>
+    
+    <h2 style="color: var(--gold); text-align: center; margin-top: 0; font-size: 26px;">Ежедневный вход</h2>
+    <p style="text-align: center; opacity: 0.8; margin-bottom: 20px; font-size: 14px;">
+      Заходи каждый день, чтобы получать больше монет!
+    </p>
     
     <!-- Сетка с днями -->
     <div class="daily-grid" id="dailyGrid">
       <!-- Сюда JS сгенерирует 7 блоков -->
     </div>
 
-    <button id="claimDailyBtn" class="buy-btn" style="width: 100%; margin-top: 20px; font-size: 18px; padding: 12px;">
+    <button id="claimDailyBtn" class="buy-btn" style="width: 100%; margin-top: 20px; font-size: 18px; padding: 12px; font-weight: bold;">
       Забрать награду
     </button>
   </div>
