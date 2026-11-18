@@ -1426,6 +1426,103 @@ function hasAch(id) { return state.achievements.includes(id); }
       document.getElementById('devAddSkill').addEventListener('click', devAddSkill);
     }
  
+// ===== ЕЖЕДНЕВНЫЙ ВХОД =====
+const DAILY_REWARDS = [40, 50, 60, 70, 80, 90, 110]; // 7-й день = 100 + 10 бонус
+
+// Функция для получения сегодняшней даты в формате "YYYY-MM-DD"
+function getTodayDate() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+// Проверка, нужно ли показать награду при запуске игры
+function checkDailyLogin() {
+  const today = getTodayDate();
+  
+  // Если уже заходил сегодня — ничего не показываем
+  if (state.lastLoginDate === today) return;
+
+  // Если заходил вчера — увеличиваем стрик
+  if (state.lastLoginDate) {
+    const lastDate = new Date(state.lastLoginDate);
+    const todayDate = new Date(today);
+    const diffDays = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) {
+      state.loginStreak++;
+      if (state.loginStreak > 7) state.loginStreak = 1; // Начался новый цикл
+    } else {
+      state.loginStreak = 1; // Пропустил день — сброс
+    }
+  } else {
+    state.loginStreak = 1; // Самый первый вход
+  }
+
+  // Обновляем дату и сохраняем (монеты пока не даем, ждем клика)
+  state.lastLoginDate = today;
+  save();
+  
+  // Показываем модалку
+  openDailyModal();
+}
+
+// Рендер модалки
+function openDailyModal() {
+  const grid = document.getElementById('dailyGrid');
+  grid.innerHTML = '';
+
+  DAILY_REWARDS.forEach((reward, index) => {
+    const dayNum = index + 1;
+    const div = document.createElement('div');
+    div.className = 'daily-day';
+    
+    // Определяем статус дня (пройден, текущий, будущий)
+    if (dayNum < state.loginStreak) {
+      div.classList.add('passed');
+    } else if (dayNum === state.loginStreak) {
+      div.classList.add('current');
+    } else {
+      div.classList.add('future');
+    }
+
+    div.innerHTML = `
+      <div class="day-label">День ${dayNum}${dayNum === 7 ? ' + бонус' : ''}</div>
+      <div class="day-reward">${reward} 🪙</div>
+    `;
+    grid.appendChild(div);
+  });
+
+  // Настраиваем кнопку "Забрать"
+  const btn = document.getElementById('claimDailyBtn');
+  btn.disabled = false;
+  btn.textContent = `Забрать ${DAILY_REWARDS[state.loginStreak - 1]} монет`;
+  
+  // Очищаем старые обработчики, чтобы не навешивались дубли
+  const newBtn = btn.cloneNode(true);
+  btn.parentNode.replaceChild(newBtn, btn);
+
+  newBtn.addEventListener('click', () => {
+    const reward = DAILY_REWARDS[state.loginStreak - 1];
+    
+    // Выдаем награду
+    state.coins += reward;
+    renderCoins(true);
+    save();
+    
+    // Эффекты
+    fanfare();
+    log(`Ежедневная награда: +${reward} монет (День ${state.loginStreak})`, 'gold');
+    
+    // Блокируем кнопку и закрываем
+    newBtn.disabled = true;
+    newBtn.textContent = 'Награда получена!';
+    setTimeout(() => {
+      closeModal('dailyModal');
+    }, 800);
+  });
+
+  openModal('dailyModal');
+}
 
     // ===== Инициализация =====
     function init() {
