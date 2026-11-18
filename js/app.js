@@ -53,7 +53,9 @@ function hasAch(id) { return state.achievements.includes(id); }
         owned: [],
         equipped: { frame: null, background: null, theme: null },
         achievements: [],
-        completed: { regular: 0, common: 0, legendary: 0 }
+        completed: { regular: 0, common: 0, legendary: 0 },
+        loginStreak: 0,
+        lastLoginDate: null
       };
     }
 
@@ -106,6 +108,8 @@ function hasAch(id) { return state.achievements.includes(id); }
             });
             parsed.owned = parsed.owned.filter(id => !!SHOP_ITEMS[id]);
             parsed.achievements = parsed.achievements.filter(id => ACHIEVEMENTS.some(a => a.id === id));
+            if (typeof parsed.loginStreak !=='number') parsed.loginStreak = 0;
+            if (typeof parsed.lastLoginDate !== 'string') parsed.lastLoginDate = null;
             parsed.journal = parsed.journal.map(e =>
               typeof e === 'string' ? { t: e, c: '' } : { t: String(e.t || ''), c: e.c || '' }
             );
